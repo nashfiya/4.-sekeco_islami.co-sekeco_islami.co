@@ -179,6 +179,10 @@ function applyLanguage(lang) {
   }
 
   // 3. Search Placeholder
+  const homeSearchInput = document.getElementById('homeSearchInput');
+  if (homeSearchInput && dict.ask_question_placeholder) {
+    homeSearchInput.placeholder = dict.ask_question_placeholder;
+  }
   const searchPlace = document.querySelector('#view-home .truncate');
   if (searchPlace && dict.ask_question_placeholder) {
     searchPlace.textContent = dict.ask_question_placeholder;
