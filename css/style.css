@@ -335,26 +335,28 @@ body {
   border: none !important;
 }
 
-/* Dark Mode Warm Glassmorphism */
-.dark .card-warm-cream {
-  background: linear-gradient(145deg, rgba(38, 28, 20, 0.45) 0%, rgba(20, 14, 10, 0.6) 100%) !important;
-  border: 1px solid rgba(245, 158, 11, 0.12) !important;
+/* Dark Mode Luxury Obsidian Glassmorphism (Seragam, Bersih & Elegan) */
+.dark .card-warm-cream,
+.dark .card-warm-amber,
+.dark .card-warm-ivory,
+.dark .card-warm-maroon,
+.dark .card-warm-wood,
+.dark .clay-card {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
 }
-.dark .card-warm-amber {
-  background: linear-gradient(145deg, rgba(45, 30, 12, 0.45) 0%, rgba(25, 16, 6, 0.6) 100%) !important;
-  border: 1px solid rgba(251, 191, 36, 0.12) !important;
-}
-.dark .card-warm-ivory {
-  background: linear-gradient(145deg, rgba(35, 30, 24, 0.45) 0%, rgba(18, 15, 12, 0.6) 100%) !important;
-  border: 1px solid rgba(253, 230, 138, 0.12) !important;
-}
-.dark .card-warm-maroon {
-  background: linear-gradient(145deg, rgba(55, 15, 15, 0.45) 0%, rgba(30, 8, 8, 0.6) 100%) !important;
-  border: 1px solid rgba(239, 68, 68, 0.15) !important;
-}
-.dark .card-warm-wood {
-  background: linear-gradient(145deg, rgba(42, 24, 14, 0.45) 0%, rgba(22, 12, 7, 0.6) 100%) !important;
-  border: 1px solid rgba(217, 119, 6, 0.12) !important;
+
+.dark .card-warm-cream:hover,
+.dark .card-warm-amber:hover,
+.dark .card-warm-ivory:hover,
+.dark .card-warm-maroon:hover,
+.dark .card-warm-wood:hover,
+.dark .clay-card:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 /* ==============================================================================
