@@ -686,12 +686,216 @@ function navigateBack() {
 }
 
 function focusSearch() {
-  switchTab('articles');
-  setTimeout(() => {
-    const input = document.getElementById('articleSearchInput');
-    if (input) input.focus();
-  }, 100);
+  const input = document.getElementById('homeSearchInput');
+  if (input) {
+    input.focus();
+    input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 }
+
+function clearHomeSearch() {
+  const input = document.getElementById('homeSearchInput');
+  const clearBtn = document.getElementById('btnHomeSearchClear');
+  const resultsDropdown = document.getElementById('homeSearchResults');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
+  if (clearBtn) clearBtn.classList.add('hidden');
+  if (resultsDropdown) {
+    resultsDropdown.innerHTML = '';
+    resultsDropdown.classList.add('hidden');
+  }
+}
+
+function startVoiceSearch() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const input = document.getElementById('homeSearchInput');
+  if (!SpeechRecognition) {
+    showToast('Pencarian suara belum didukung peramban ini. Silakan ketik kata kunci.');
+    if (input) input.focus();
+    return;
+  }
+
+  try {
+    const recognition = new SpeechRecognition();
+    recognition.lang = AppState.currentLang === 'en' ? 'en-US' : (AppState.currentLang === 'ms' ? 'ms-MY' : 'id-ID');
+    recognition.interimResults = false;
+    showToast('🎙️ Mendengarkan suara... Silakan ucapkan kata kunci');
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      if (input) {
+        input.value = transcript;
+        handleHomeSearch(transcript);
+      }
+    };
+    recognition.onerror = () => {
+      showToast('Tidak ada suara terdeteksi. Silakan coba lagi.');
+    };
+    recognition.start();
+  } catch (e) {
+    if (input) input.focus();
+  }
+}
+
+function handleHomeSearch(query) {
+  const clearBtn = document.getElementById('btnHomeSearchClear');
+  const resultsDropdown = document.getElementById('homeSearchResults');
+  if (!resultsDropdown) return;
+
+  const q = (query || '').trim().toLowerCase();
+
+  if (!q) {
+    if (clearBtn) clearBtn.classList.add('hidden');
+    resultsDropdown.innerHTML = '';
+    resultsDropdown.classList.add('hidden');
+    return;
+  }
+
+  if (clearBtn) clearBtn.classList.remove('hidden');
+
+  const results = [];
+
+  // A. Fitur & Layanan Utama
+  const mainFeatures = [
+    { title: "Praying Time (Jadwal Sholat)", desc: "Jadwal 5 waktu sholat & pengingat adzan", category: "Layanan", icon: "clock", action: "switchTab('calendar')" },
+    { title: "Al-Qur'an 30 Juz", desc: "Baca mushaf lengkap & audio murottal", category: "Ibadah", icon: "book-open", action: "switchTab('quran')" },
+    { title: "Hadits Nabawi", desc: "Kumpulan hadits shahih Bukhari, Muslim & Syarah", category: "Literasi", icon: "book-marked", action: "switchTab('hadith')" },
+    { title: "Doa Harian & Zikir", desc: "Kumpulan doa harian mustajab & zikir nabawi", category: "Ibadah", icon: "sparkles", action: "switchTab('doa')" },
+    { title: "Yasin & Tahlil", desc: "Teks bacaan surat Yasin, tahlil lengkap & doa arwah", category: "Ibadah", icon: "scroll", action: "switchTab('yasin')" },
+    { title: "Direktori Masjid", desc: "Peta masjid terdekat, ramah & bersejarah", category: "Layanan", icon: "landmark", action: "openMasjidDirectory()" },
+    { title: "Makam Ulama & Wali", desc: "Peta ziarah makam wali & habaib Nusantara", category: "Ziarah", icon: "map-pin", action: "openMakamDirectory()" },
+    { title: "Cari Ustadz & Khotib", desc: "Layanan pemesanan khotib Jumat & ustadz kajian", category: "Layanan", icon: "mic", action: "switchTab('services')" },
+    { title: "Tanggap Jenazah 24 Jam", desc: "Ambulan darurat, pemulasaraan & imam shalat jenazah", category: "Darurat", icon: "truck", action: "switchTab('funeral')" },
+    { title: "Arah Kiblat (Kompas)", desc: "Penunjuk arah Ka'bah presisi real-time", category: "Ibadah", icon: "compass", action: "switchTab('qibla')" },
+    { title: "Kalkulator Zakat Maal", desc: "Simulasi hitung nisab 85g emas & zakat 2.5%", category: "Finansial", icon: "coins", action: "openZakatFeature()" },
+    { title: "Tasbih Digital", desc: "Penghitung zikir interaktif dengan getar haptic", category: "Ibadah", icon: "circle-dot", action: "openTasbihFeature()" },
+    { title: "Maulid & Sholawat", desc: "Simtudduror, Ad-Diba'i & Qasidah Burdah", category: "Kitab", icon: "book", action: "openMaulidFeature()" }
+  ];
+
+  mainFeatures.forEach(f => {
+    if (f.title.toLowerCase().includes(q) || f.desc.toLowerCase().includes(q) || f.category.toLowerCase().includes(q)) {
+      results.push({ ...f, type: 'feature' });
+    }
+  });
+
+  // B. Surah Al-Qur'an (114 Surah) & Potongan Ayat
+  if (window.quranData && window.quranData.surahs) {
+    window.quranData.surahs.forEach(s => {
+      const matchName = s.name.toLowerCase().includes(q);
+      const matchMeaning = s.meaning.toLowerCase().includes(q);
+      const matchNum = s.number.toString() === q;
+      
+      let matchedVerseSnippet = '';
+      if (window.quranData.verses && window.quranData.verses[s.number]) {
+        const foundV = window.quranData.verses[s.number].find(v => 
+          v.translation.toLowerCase().includes(q) || 
+          v.latin.toLowerCase().includes(q) || 
+          v.arabic.includes(q)
+        );
+        if (foundV) {
+          matchedVerseSnippet = 'Ayat ' + foundV.number + ': "' + foundV.translation.substring(0, 60) + '..."';
+        }
+      }
+
+      if (matchName || matchMeaning || matchNum || matchedVerseSnippet) {
+        results.push({
+          title: 'Surah ' + s.name + ' (' + s.number + ')',
+          desc: matchedVerseSnippet || (s.meaning + ' • ' + s.ayahs + ' Ayat • ' + s.type),
+          category: "Al-Qur'an",
+          icon: "book-open",
+          action: "openQuranReader(" + s.number + ")"
+        });
+      }
+    });
+  }
+
+  // C. Hadits
+  if (window.IslamiMockData && window.IslamiMockData.hadith) {
+    window.IslamiMockData.hadith.forEach(h => {
+      const idStr = (h.id || '').toLowerCase();
+      const narration = (h.narrator || h.perawi || '').toLowerCase();
+      const text = (h.text || h.matan || h.content || '').toLowerCase();
+      if (idStr.includes(q) || narration.includes(q) || text.includes(q)) {
+        results.push({
+          title: 'Hadits ' + (h.narrator || 'Shahih'),
+          desc: text.substring(0, 65) + '...',
+          category: "Hadits",
+          icon: "book-marked",
+          action: "switchTab('hadith')"
+        });
+      }
+    });
+  }
+
+  // D. Artikel Islami.co
+  if (window.IslamiMockData && window.IslamiMockData.articles) {
+    window.IslamiMockData.articles.forEach(a => {
+      if (a.title.toLowerCase().includes(q) || (a.summary || '').toLowerCase().includes(q)) {
+        results.push({
+          title: a.title,
+          desc: a.category + ' • ' + a.author,
+          category: "Artikel",
+          icon: "newspaper",
+          action: "openArticleModal('" + a.id + "')"
+        });
+      }
+    });
+  }
+
+  // Render hasil
+  if (results.length === 0) {
+    resultsDropdown.innerHTML = `
+      <div class="py-6 px-4 text-center">
+        <i data-lucide="search-x" class="w-7 h-7 mx-auto mb-2 text-stone-400 opacity-60"></i>
+        <p class="text-xs font-bold text-stone-700 dark:text-stone-300">Tidak ada hasil untuk "${query}"</p>
+        <p class="text-[10.5px] text-stone-400 mt-1">Coba kata kunci: Al-Baqarah, ustadz, jenazah, zakat, doa, atau jadwal</p>
+      </div>
+    `;
+  } else {
+    const limited = results.slice(0, 8);
+    resultsDropdown.innerHTML = `
+      <div class="pb-1 px-1 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between text-[10px] text-stone-400">
+        <span>Ditemukan ${results.length} hasil</span>
+        <button onclick="clearHomeSearch()" class="hover:text-red-700 font-bold">Tutup</button>
+      </div>
+      <div class="space-y-1.5 pt-1">
+        ${limited.map(r => `
+          <div onclick="${r.action}; clearHomeSearch()"
+            class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/60 hover:bg-red-50 dark:hover:bg-red-950/40 border border-transparent hover:border-red-200 dark:hover:border-red-900 flex items-center justify-between gap-2.5 cursor-pointer transition group">
+            <div class="flex items-center gap-2.5 flex-1 min-w-0">
+              <div class="w-8 h-8 rounded-lg bg-white dark:bg-stone-800 flex items-center justify-center text-[#8B1E1E] dark:text-amber-400 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <i data-lucide="${r.icon || 'search'}" class="w-4 h-4"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5">
+                  <h4 class="text-xs font-bold text-stone-900 dark:text-white truncate group-hover:text-[#8B1E1E] dark:group-hover:text-amber-300 transition">${r.title}</h4>
+                  <span class="text-[8.5px] font-bold px-1.5 py-0.2 rounded-full bg-stone-200/70 dark:bg-stone-700 text-stone-600 dark:text-stone-300 shrink-0">${r.category}</span>
+                </div>
+                <p class="text-[10px] text-stone-500 dark:text-stone-400 truncate mt-0.5">${r.desc}</p>
+              </div>
+            </div>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-stone-400 group-hover:text-[#8B1E1E] transition shrink-0"></i>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  resultsDropdown.classList.remove('hidden');
+  if (window.lucide) lucide.createIcons();
+}
+
+// Tutup dropdown pencarian beranda saat klik di luar
+document.addEventListener('click', (e) => {
+  const container = document.getElementById('homeSearchContainer');
+  const dropdown = document.getElementById('homeSearchResults');
+  if (container && dropdown && !container.contains(e.target)) {
+    dropdown.classList.add('hidden');
+  }
+});
+
 
 // ------------------------------------------------------------------------------
 // 6. RENDER ALL RICH FEATURES (CRIMSON RED BRANDING)
@@ -1695,10 +1899,30 @@ function renderQuranSurahs(filter = '') {
   const surahs = window.quranData.surahs || [];
   const q = filter.toLowerCase().trim();
 
-  const filtered = surahs.filter(s => {
-    return s.name.toLowerCase().includes(q) ||
-           s.meaning.toLowerCase().includes(q) ||
-           s.number.toString() === q;
+  const filtered = [];
+  const verseMatchesMap = {};
+
+  surahs.forEach(s => {
+    const matchName = s.name.toLowerCase().includes(q);
+    const matchMeaning = s.meaning.toLowerCase().includes(q);
+    const matchNum = s.number.toString() === q;
+
+    // Search verses mock data for matching snippet
+    let matchedVerse = null;
+    if (q && window.quranData.verses && window.quranData.verses[s.number]) {
+      matchedVerse = window.quranData.verses[s.number].find(v => 
+        v.translation.toLowerCase().includes(q) ||
+        v.latin.toLowerCase().includes(q) ||
+        v.arabic.includes(q)
+      );
+    }
+
+    if (!q || matchName || matchMeaning || matchNum || matchedVerse) {
+      filtered.push(s);
+      if (matchedVerse) {
+        verseMatchesMap[s.number] = matchedVerse;
+      }
+    }
   });
 
   if (filtered.length === 0) {
@@ -1745,8 +1969,24 @@ function renderQuranSurahs(filter = '') {
 // 4. Filter Input Surah
 function filterQuranSurahs() {
   const input = document.getElementById('quranSearchInput');
+  const clearBtn = document.getElementById('btnQuranSearchClear');
   const val = input ? input.value : '';
+  if (clearBtn) {
+    if (val.trim()) clearBtn.classList.remove('hidden');
+    else clearBtn.classList.add('hidden');
+  }
   renderQuranSurahs(val);
+}
+
+function clearQuranSearch() {
+  const input = document.getElementById('quranSearchInput');
+  const clearBtn = document.getElementById('btnQuranSearchClear');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
+  if (clearBtn) clearBtn.classList.add('hidden');
+  renderQuranSurahs('');
 }
 
 function focusQuranSearchInput() {

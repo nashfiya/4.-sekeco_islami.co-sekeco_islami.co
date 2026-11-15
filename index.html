@@ -272,19 +272,34 @@
         </div>
 
         <!-- ==================== SEARCH / ASK A QUESTIONS PILL (SESUAI GAMBAR 1) ==================== -->
-        <div class="relative">
-          <div
-            class="w-full pl-4 pr-2 py-2 rounded-full bg-white dark:bg-stone-900 shadow-xs flex items-center justify-between gap-2 hover:shadow-sm transition">
-            <div class="flex items-center gap-2 flex-1 cursor-pointer" onclick="focusSearch()">
-              <span class="text-stone-700 dark:text-stone-300 font-bold text-sm leading-none">+</span>
-              <span class="text-xs text-stone-400 dark:text-stone-500 font-normal truncate">Ask a Question...</span>
+        <div class="relative z-30" id="homeSearchContainer">
+          <div class="w-full pl-3.5 pr-2 py-1.5 rounded-full bg-white dark:bg-stone-900/90 backdrop-blur-md shadow-xs flex items-center justify-between gap-2 hover:shadow-sm border border-stone-200/60 dark:border-white/10 transition focus-within:ring-2 focus-within:ring-[#8B1E1E]/40 focus-within:border-[#8B1E1E]">
+            <div class="flex items-center gap-2 flex-1 min-w-0">
+              <i data-lucide="search" class="w-4 h-4 text-stone-400 dark:text-stone-500 shrink-0"></i>
+              <input type="text" id="homeSearchInput"
+                oninput="handleHomeSearch(this.value)"
+                onfocus="handleHomeSearch(this.value)"
+                placeholder="Ask a Question..."
+                class="w-full bg-transparent text-xs text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none border-none py-1">
             </div>
-            <div class="flex items-center pr-1">
-              <button onclick="focusSearch()"
-                class="p-1.5 rounded-full text-stone-500 dark:text-stone-400 hover:text-red-700 transition" title="Tanya Suara">
+            <div class="flex items-center gap-1 shrink-0">
+              <!-- Clear X Button (Muncul Saat Mengetik) -->
+              <button id="btnHomeSearchClear" onclick="clearHomeSearch()"
+                class="hidden p-1 rounded-full text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 transition" title="Hapus Pencarian">
+                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+              </button>
+              <!-- Microphone Button -->
+              <button onclick="startVoiceSearch()"
+                class="p-1.5 rounded-full text-stone-500 dark:text-stone-400 hover:text-[#8B1E1E] dark:hover:text-amber-400 transition" title="Pencarian Suara">
                 <i data-lucide="mic" class="w-4 h-4"></i>
               </button>
             </div>
+          </div>
+
+          <!-- Live Search Results Dropdown -->
+          <div id="homeSearchResults"
+            class="hidden absolute top-full left-0 right-0 mt-2 bg-white/95 dark:bg-[#1C1917]/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-stone-200/80 dark:border-white/10 z-50 max-h-[380px] overflow-y-auto p-2.5 space-y-2 no-scrollbar">
+            <!-- Results populated dynamically by JS -->
           </div>
         </div>
 
@@ -375,144 +390,108 @@
             <span class="text-[10px] text-stone-400 font-medium">Lengkap & Terpadu</span>
           </div>
 
-          <div class="grid grid-cols-3 gap-2.5">
+                    <div class="grid grid-cols-3 gap-2.5">
 
             <!-- 1. Praying Time (Jadwal Sholat & Kiblat) -->
-            <div
-              class="clay-card card-warm-cream p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs"
-              onclick="switchTab('calendar')">
-              <div
-                class="w-11 h-11 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
-                <img src="assets/3d/icon_prayer_time.png?v=3.5.0" alt="Praying Time"
-                  class="w-full h-full object-contain filter drop-shadow-md">
+            <div class="clay-card card-warm-cream flex flex-col items-center justify-between text-center p-4 min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('calendar')">
+              <div class="w-12 h-12 flex items-center justify-center mb-2 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/icon_prayer_time.png?v=3.5.0" alt="Praying Time" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
-              <div class="space-y-0.5 w-full">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Praying Time</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Jadwal & Adzan</p>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Praying Time</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Jadwal & Adzan</p>
               </div>
             </div>
 
             <!-- 2. Al-Qur'an -->
-            <div
-              class="clay-card card-warm-cream p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs"
-              onclick="switchTab('quran')">
-              <div
-                class="w-11 h-11 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
-                <img src="assets/3d/real_quran.png?v=4.0.0" alt="Al-Qur'an"
-                  class="w-full h-full object-contain filter drop-shadow-md">
+            <div class="clay-card card-warm-cream flex flex-col items-center justify-between text-center p-4 min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('quran')">
+              <div class="w-12 h-12 flex items-center justify-center mb-2 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_quran.png?v=4.0.0" alt="Al-Qur'an" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
-              <div class="space-y-0.5 w-full">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Al-Qur'an</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">30 Juz & Audio</p>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Al-Qur'an</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">30 Juz & Audio</p>
               </div>
             </div>
 
             <!-- 3. Hadits -->
-            <div
-              class="clay-card card-warm-amber p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs"
-              onclick="switchTab('hadith')">
-              <div
-                class="w-11 h-11 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
-                <img src="assets/3d/real_hadith.png?v=4.0.0" alt="Hadits"
-                  class="w-full h-full object-contain filter drop-shadow-md">
+            <div class="clay-card card-warm-amber flex flex-col items-center justify-between text-center p-4 min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('hadith')">
+              <div class="w-12 h-12 flex items-center justify-center mb-2 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_hadith.png?v=4.0.0" alt="Hadits" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
-              <div class="space-y-0.5 w-full">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Hadits</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Shahih & Syarah</p>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Hadits</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Shahih & Syarah</p>
               </div>
             </div>
 
             <!-- 4. Doa Harian -->
-            <div
-              class="clay-card card-warm-ivory p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs"
-              onclick="switchTab('doa')">
-              <div
-                class="w-11 h-11 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
-                <img src="assets/3d/real_doa.png?v=4.0.0" alt="Doa Harian"
-                  class="w-full h-full object-contain filter drop-shadow-md">
+            <div class="clay-card card-warm-ivory flex flex-col items-center justify-between text-center p-4 min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('doa')">
+              <div class="w-12 h-12 flex items-center justify-center mb-2 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_doa.png?v=4.0.0" alt="Doa Harian" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
-              <div class="space-y-0.5 w-full">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Doa Harian</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Doa & Zikir</p>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Doa Harian</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Doa & Zikir</p>
               </div>
             </div>
 
             <!-- 5. Yasin & Tahlil -->
-            <div
-              class="clay-card card-warm-maroon p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs"
-              onclick="switchTab('yasin')">
-              <div
-                class="w-11 h-11 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
-                <img src="assets/3d/real_yasin.png?v=4.2.0" alt="Yasin & Tahlil"
-                  class="w-full h-full object-contain filter drop-shadow-md">
+            <div class="clay-card card-warm-maroon flex flex-col items-center justify-between text-center p-4 min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('yasin')">
+              <div class="w-12 h-12 flex items-center justify-center mb-2 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_yasin.png?v=4.2.0" alt="Yasin & Tahlil" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
-              <div class="space-y-0.5 w-full">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Yasin & Tahlil</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Teks & Panduan</p>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Yasin & Tahlil</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Teks & Panduan</p>
               </div>
             </div>
 
             <!-- 6. Direktori Masjid -->
-            <div
-              class="clay-card card-warm-cream p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs"
-              onclick="openMasjidDirectory()">
-              <div
-                class="w-11 h-11 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
-                <img src="assets/3d/real_masjid.png?v=4.2.0" alt="Direktori Masjid"
-                  class="w-full h-full object-contain filter drop-shadow-md">
+            <div class="clay-card card-warm-cream flex flex-col items-center justify-between text-center p-4 min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="openMasjidDirectory()">
+              <div class="w-12 h-12 flex items-center justify-center mb-2 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_masjid.png?v=4.2.0" alt="Direktori Masjid" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
-              <div class="space-y-0.5 w-full">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Masjid</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Peta & Fasilitas</p>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Masjid</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Peta & Fasilitas</p>
               </div>
             </div>
 
             <!-- 7. Makam Ulama -->
-            <div
-              class="clay-card card-warm-ivory p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs"
-              onclick="openMakamDirectory()">
-              <div
-                class="w-11 h-11 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
-                <img src="assets/3d/real_makam.png?v=4.0.0" alt="Makam Ulama"
-                  class="w-full h-full object-contain filter drop-shadow-md">
+            <div class="clay-card card-warm-ivory flex flex-col items-center justify-between text-center p-4 min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="openMakamDirectory()">
+              <div class="w-12 h-12 flex items-center justify-center mb-2 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_makam.png?v=4.0.0" alt="Makam Ulama" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
-              <div class="space-y-0.5 w-full">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Makam Ulama</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Ziarah Wali</p>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Makam Ulama</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Ziarah Wali</p>
               </div>
             </div>
 
             <!-- 8. Cari Ustadz & Khotib -->
-            <div
-              class="clay-card card-warm-amber p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs"
-              onclick="switchTab('services')">
-              <div
-                class="w-11 h-11 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
-                <img src="assets/3d/real_ustadz.png?v=4.0.0" alt="Cari Ustadz"
-                  class="w-full h-full object-contain filter drop-shadow-md">
+            <div class="clay-card card-warm-amber flex flex-col items-center justify-between text-center p-4 min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('services')">
+              <div class="w-12 h-12 flex items-center justify-center mb-2 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_ustadz.png?v=4.0.0" alt="Cari Ustadz" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
-              <div class="space-y-0.5 w-full">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Cari Ustadz</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Khotib & Kajian</p>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Cari Ustadz</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Khotib & Kajian</p>
               </div>
             </div>
 
             <!-- 9. Tanggap Jenazah 24 Jam -->
-            <div
-              class="clay-card card-warm-maroon p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs"
-              onclick="switchTab('funeral')">
-              <div
-                class="w-11 h-11 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
-                <img src="assets/3d/real_jenazah.png?v=4.0.0" alt="Tanggap Jenazah"
-                  class="w-full h-full object-contain filter drop-shadow-md">
+            <div class="clay-card card-warm-maroon flex flex-col items-center justify-between text-center p-4 min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('funeral')">
+              <div class="w-12 h-12 flex items-center justify-center mb-2 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_jenazah.png?v=4.0.0" alt="Tanggap Jenazah" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
-              <div class="space-y-0.5 w-full">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Tanggap Jenazah
-                </h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Ambulan 24 Jam</p>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Tanggap Jenazah</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Ambulan 24 Jam</p>
               </div>
             </div>
 
+            <!-- 10. Kartu 'Lainnya' (More) - Membentang Penuh col-span-3 -->
             <!-- 10. Kartu 'Lainnya' (More) - Membentang Penuh col-span-3 -->
             <div
               class="col-span-3 clay-card card-warm-cream p-3 flex items-center justify-between gap-3 cursor-pointer group hover:shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all border border-amber-200/50 dark:border-amber-900/40"
@@ -660,8 +639,11 @@
           <!-- Search Input Bar Kapsul (Cari Nama Surah) -->
           <div id="quranSearchContainer" class="relative">
             <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-            <input type="text" id="quranSearchInput" oninput="filterQuranSurahs()" placeholder="Cari Nama Surah"
-              class="w-full pl-10 pr-4 py-2.5 bg-stone-100 dark:bg-stone-900 border border-stone-200/60 dark:border-stone-800 rounded-2xl text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#8B1E1E] shadow-xs">
+            <input type="text" id="quranSearchInput" oninput="filterQuranSurahs()" placeholder="Cari surah, arti, atau potongan ayat (contoh: Al-Baqarah, petunjuk, bismillah)..."
+              class="w-full pl-10 pr-9 py-2.5 bg-stone-100 dark:bg-stone-900 border border-stone-200/60 dark:border-stone-800 rounded-2xl text-xs text-stone-900 dark:text-white placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-[#8B1E1E] shadow-xs">
+            <button id="btnQuranSearchClear" onclick="clearQuranSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 p-1 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200" title="Hapus">
+              <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            </button>
           </div>
 
           <!-- TAB 1: DAFTAR SURAH (Persis Sesuai Gambar Referensi) -->
