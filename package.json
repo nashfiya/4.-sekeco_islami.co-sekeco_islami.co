@@ -1,12 +1,11 @@
 {
   "name": "islami-co",
   "version": "1.0.0",
-  "description": "Islami.co - SuperApp Ekosistem Muslim Modern Responsif (Tailwind CSS, Bun, Mock Data Multi-Bahasa)",
-  "main": "server.js",
+  "description": "Islami.co - SuperApp Ekosistem Muslim Modern Responsif (Tailwind CSS, Mock Data Multi-Bahasa)",
   "scripts": {
-    "dev": "bun run server.js",
-    "start": "bun run server.js",
-    "serve:node": "node server.js"
+    "dev": "node server.js",
+    "serve": "node server.js",
+    "serve:bun": "bun run server.js"
   },
   "keywords": [
     "islami",
@@ -15,13 +14,8 @@
     "hadith",
     "prayer-times",
     "qibla",
-    "bun",
     "tailwindcss"
   ],
   "author": "Islami.co Core Team",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/bun": "latest"
-  }
+  "license": "MIT"
 }
-
