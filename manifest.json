@@ -1,0 +1,18 @@
+{
+  "name": "Islami.co - Media Islam Ramah",
+  "short_name": "Islami.co",
+  "description": "Media Islam Ramah yang Mencerahkan. Layanan Al-Qur'an, Hadits tematik, jadwal shalat, kompas kiblat, dan artikel keislaman moderat.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#B91C1C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./assets/logo.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "islami-co",
+  "version": "1.0.0",
+  "description": "Islami.co - SuperApp Ekosistem Muslim Modern Responsif (Tailwind CSS, Bun, Mock Data Multi-Bahasa)",
+  "main": "server.js",
+  "scripts": {
+    "dev": "bun run server.js",
+    "start": "bun run server.js",
+    "serve:node": "node server.js"
+  },
+  "keywords": [
+    "islami",
+    "islamic-app",
+    "quran",
+    "hadith",
+    "prayer-times",
+    "qibla",
+    "bun",
+    "tailwindcss"
+  ],
+  "author": "Islami.co Core Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
+

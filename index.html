@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Islami.co - Media Islam Ramah yang Mencerahkan</title>
+  <meta name="description" content="Platform digital keislaman ramah & mencerahkan. Al-Qur'an, Hadist, Jadwal Sholat, Arah Kiblat, Kolom Pemikiran & Layanan Ummat.">
+
+  <!-- PWA Manifest & Theme -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#B91C1C">
+  <link rel="apple-touch-icon" href="assets/logo.png">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#B91C1C',
+              redDark: '#991B1B',
+              redDeep: '#7F1D1D',
+              amber: '#D97706',
+              gold: '#F59E0B',
+              ivory: '#FAF7F2'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Design System Styles -->
+  <link rel="stylesheet" href="css/style.css?v=2.4.8">
+
+  <!-- Service Worker Cache Buster & Live Freshness -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let r of registrations) {
+          r.update();
+        }
+      });
+    }
+    if ('caches' in window) {
+      caches.keys().then(names => {
+        for (let name of names) {
+          if (name !== 'islami-live-v3') caches.delete(name);
+        }
+      });
+    }
+  </script>
+</head>
+
+<body class="bg-stone-200/60 sm:bg-slate-950 font-sans antialiased text-stone-900 dark:text-stone-100 selection:bg-red-200">
+
+  <!-- ==================== MOBILE APPLICATION FRAME ==================== -->
+  <div id="mobileAppRoot" class="w-full max-w-[480px] mx-auto min-h-screen bg-[#FAF7F2] dark:bg-[#0B0E14] flex flex-col shadow-2xl relative">
+
+    <!-- ==================== 1. ONBOARDING OVERLAY ==================== -->
+    <div id="onboardingScreen" class="absolute inset-0 z-50 bg-[#FAF7F2] dark:bg-slate-950 flex flex-col justify-between p-6 transition-all duration-500">
+      <div class="flex-1 flex flex-col items-center justify-center text-center mt-6">
+        <!-- Logo Emblem -->
+        <div class="w-24 h-24 rounded-3xl bg-[#B91C1C] p-4 shadow-xl mb-5 flex items-center justify-center">
+          <img src="assets/logo.png?v=2.4.5" alt="Islami.co" class="w-full h-auto object-contain">
+        </div>
+
+        <h1 id="onboardingGreeting" class="text-2xl font-black text-stone-900 dark:text-white tracking-tight">
+          Selamat Datang
+        </h1>
+        <p id="onboardingSub" class="text-xs text-red-700 dark:text-red-400 mt-2 font-medium tracking-wide">
+          Media Islam Ramah yang Mencerahkan
+        </p>
+      </div>
+
+      <div class="space-y-2.5 mb-6">
+        <p class="text-xs font-bold text-stone-400 uppercase tracking-wider text-center" data-i18n="onboarding_select">
+          Pilih Bahasa Pengantar
+        </p>
+        
+        <button onclick="selectLanguageFromOnboarding('id')" 
+          class="w-full p-3.5 rounded-2xl bg-white dark:bg-slate-900 hover:bg-red-50 dark:hover:bg-red-950/40 border border-stone-200 dark:border-slate-800 hover:border-red-600 text-left transition flex items-center justify-between group">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">🇮🇩</span>
+            <div>
+              <p class="text-sm font-bold text-stone-900 dark:text-white group-hover:text-red-600">Bahasa Indonesia</p>
+              <p class="text-[11px] text-stone-500">Kajian & literasi Islam moderat Nusantara</p>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-stone-400 group-hover:text-red-600 transition"></i>
+        </button>
+
+        <button onclick="selectLanguageFromOnboarding('en')" 
+          class="w-full p-3.5 rounded-2xl bg-white dark:bg-slate-900 hover:bg-red-50 dark:hover:bg-red-950/40 border border-stone-200 dark:border-slate-800 hover:border-red-600 text-left transition flex items-center justify-between group">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">🇬🇧</span>
+            <div>
+              <p class="text-sm font-bold text-stone-900 dark:text-white group-hover:text-red-600">English</p>
+              <p class="text-[11px] text-stone-500">Enlightening and friendly Islamic media</p>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-stone-400 group-hover:text-red-600 transition"></i>
+        </button>
+
+        <button onclick="selectLanguageFromOnboarding('ms')" 
+          class="w-full p-3.5 rounded-2xl bg-white dark:bg-slate-900 hover:bg-red-50 dark:hover:bg-red-950/40 border border-stone-200 dark:border-slate-800 hover:border-red-600 text-left transition flex items-center justify-between group">
+          <div class="flex items-center gap-3">
+            <span class="text-lg">🇲🇾</span>
+            <div>
+              <p class="text-sm font-bold text-stone-900 dark:text-white group-hover:text-red-600">Bahasa Melayu</p>
+              <p class="text-[11px] text-stone-500">Kandungan santun serantau Nusantara</p>
+            </div>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-stone-400 group-hover:text-red-600 transition"></i>
+        </button>
+      </div>
+
+      <div class="text-center pb-2">
+        <p class="text-[10px] text-stone-400">Islami.co • Rahmatan Lil 'Alamin</p>
+      </div>
+    </div>
+
+    <!-- ==================== 2. OFFICIAL TOP HEADER (LOGO MERAH MARUN BERSIH & SEJAJAR) ==================== -->
+    <header class="sticky top-0 z-40 bg-[#FAF7F2]/95 dark:bg-[#0B0E14]/95 backdrop-blur-md px-3.5 pt-3 pb-2 flex items-center justify-between gap-2 border-b border-stone-200/40 dark:border-slate-800/40">
+      <!-- Left: Menu Button & Clean Unboxed Maroon Logo islami.co -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Back Button (Dinamis Muncul Saat di Sub-Halaman) -->
+        <button id="btnHeaderBack" onclick="navigateBack()" 
+          class="hidden p-2 rounded-full bg-stone-200/70 dark:bg-slate-800 hover:bg-stone-300 text-stone-800 dark:text-white transition focus:outline-none shadow-xs" 
+          aria-label="Kembali">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Menu Round Button (Gaya Gambar Referensi) -->
+        <button onclick="switchTab('settings')" class="w-8.5 h-8.5 rounded-full bg-[#8B1E1E] hover:bg-[#991B1B] text-white flex items-center justify-center shadow-xs transition" title="Menu">
+          <i data-lucide="menu" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Logo Resmi islami.co (Lepas dari Kotak Kapsul Sempit, Font Kaligrafi Bersih Marun) -->
+        <div class="flex items-center cursor-pointer select-none py-0.5 border-none outline-none" onclick="switchTab('home')" title="islami.co">
+          <img src="assets/logo_maroon.png?v=2.4.8" alt="islami.co" class="h-6 w-auto object-contain dark:hidden border-none outline-none block">
+          <img src="assets/logo.png?v=2.4.8" alt="islami.co" class="h-6 w-auto object-contain hidden dark:block border-none outline-none">
+        </div>
+      </div>
+
+      <!-- Center: Date Teks Rapi Tanpa Terpotong -->
+      <div class="text-center flex-1 px-1 overflow-hidden">
+        <h2 id="heroHijriDate" class="text-xs sm:text-[13px] font-black text-stone-900 dark:text-white tracking-tight leading-tight whitespace-nowrap overflow-hidden text-ellipsis">
+          27 Sha'ban , 1446 AH
+        </h2>
+        <p id="heroGregorianDate" class="text-[9.5px] text-stone-500 dark:text-stone-400 font-medium leading-none mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
+          Tue, February 25, 2025
+        </p>
+      </div>
+
+      <!-- Right: Utility Actions (Theme & Lang) -->
+      <div class="flex items-center gap-1 shrink-0">
+        <button onclick="toggleTheme()" class="w-7.5 h-7.5 rounded-full bg-stone-200/70 dark:bg-slate-800 hover:bg-stone-300 text-stone-700 dark:text-stone-300 flex items-center justify-center transition" aria-label="Mode Gelap/Terang">
+          <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+        </button>
+
+        <div class="flex bg-stone-200/70 dark:bg-slate-800/80 p-0.5 rounded-full text-xs font-bold border border-stone-300/40 dark:border-slate-700 shadow-xs cursor-pointer" title="Ganti Bahasa / Buka Sambutan" onclick="openOnboardingScreen()">
+          <button id="btn-lang-id" onclick="switchLanguage('id')" class="px-1.5 py-0.5 rounded-full text-[9px] bg-[#8B1E1E] text-white font-bold transition shadow-xs">ID</button>
+          <button id="btn-lang-en" onclick="switchLanguage('en')" class="px-1.5 py-0.5 rounded-full text-[9px] text-stone-600 dark:text-stone-300 hover:text-red-700 transition">EN</button>
+          <button id="btn-lang-ms" onclick="switchLanguage('ms')" class="px-1.5 py-0.5 rounded-full text-[9px] text-stone-600 dark:text-stone-300 hover:text-red-700 transition">MY</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==================== 3. KONTEN UTAMA MOBILE (SCROLLABLE) ==================== -->
+    <main id="appMain" class="flex-1 overflow-y-auto px-4 py-2 space-y-4 no-scrollbar pb-32">
+
+      <!-- ==================== VIEW: BERANDA (HOME) ==================== -->
+      <section id="view-home" class="space-y-4 pb-36">
+
+        <!-- ==================== HERO SECTION: PRAYER CARD & REALISTIC 3D MOSQUE (BLEED TO RIGHT EDGE) ==================== -->
+        <div class="relative pt-1 min-h-[185px]">
+          <div class="flex items-start justify-between gap-2.5">
+
+            <!-- Left: Rounded Prayer Card (Maroon Theme, Tabular Nums & Ikon Tasyahud) -->
+            <div class="w-[164px] shrink-0 space-y-1.5 z-10">
+              <div class="rounded-2xl bg-gradient-to-br from-[#8B1E1E] via-[#9B2222] to-[#6E1212] text-white p-3 shadow-md relative overflow-hidden">
+                <span class="text-[9px] uppercase font-bold text-red-200/90 tracking-wider">Next Prayer</span>
+                <div class="flex items-center justify-between mt-0.5">
+                  <h3 id="nextPrayerName" class="text-lg font-black tracking-wide text-white">ASOR</h3>
+                  <!-- Ikon Siluet Duduk Berdoa / Tasyahud Sholat Sesuai Permintaan -->
+                  <div class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center text-amber-300 shadow-inner" title="Tasyahud / Sholat">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                      <circle cx="16" cy="4.5" r="2.2" />
+                      <path d="M14.5 7.5 C13 7.5, 11.8 8.8, 11 10.2 L8.8 14 C8.5 14.6, 9 15.2, 9.6 15 L12.5 14 L14 17.5 C14.3 18.2, 15 18.7, 15.8 18.7 L20 18.7 C20.6 18.7, 21 18.2, 21 17.7 C21 17.1, 20.6 16.7, 20 16.7 L16.5 16.7 L15 13.5 L17 11 C17.4 10.5, 17.2 9.8, 16.7 9.5 L14.5 7.5 Z" />
+                      <path d="M5 19 C5 17.8, 6.2 16.8, 7.5 16.8 L15 16.8 C15.6 16.8, 16 17.2, 16 17.8 C16 18.4, 15.6 18.8, 15 18.8 L7.5 18.8 C6.7 18.8, 6 19.4, 6 20 C6 20.6, 6.4 21, 7 21 L16 21 C16.6 21, 17 21.4, 17 22 C17 22.6, 16.6 23, 16 23 L7 23 C5 23, 4 21.5, 4 20 L4 19 Z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Countdown Live: Tabular Nums & Letter-Spacing Rapat (Modern Ramping) -->
+                <div id="prayerCountdownDisplay" class="text-[20px] font-sans font-semibold text-white tracking-tighter tabular-nums leading-none pt-1 pb-0.5 drop-shadow-xs select-none">
+                  -08:36:24
+                </div>
+                <div class="text-[9.5px] text-red-200/90 font-medium flex items-center gap-1 pt-0.5">
+                  <i data-lucide="clock" class="w-3 h-3 text-amber-300"></i>
+                  <span id="nextPrayerTime">03:00 PM</span>
+                </div>
+              </div>
+
+              <!-- Location Pill Button -->
+              <button onclick="switchTab('calendar')" class="w-full py-1.5 px-2.5 rounded-full bg-white dark:bg-stone-900 shadow-xs flex items-center justify-between text-xs font-semibold text-stone-800 dark:text-stone-200 hover:text-red-700 transition">
+                <div class="flex items-center gap-1.5 truncate">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5 text-stone-700 dark:text-stone-300"></i>
+                  <span class="truncate text-[11px]">Jakarta, Indonesia</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-3 h-3 text-stone-400"></i>
+              </button>
+            </div>
+
+            <!-- Right Area: Widget Cuaca & Masjid Menjulang Tinggi Bleed-To-Right-Edge (2x Lebih Besar) -->
+            <div class="flex-1 relative min-h-[185px]">
+              <!-- Weather Pill (Sejajar dengan bagian atas kartu merah Next Prayer) -->
+              <div class="inline-flex px-2.5 py-1 rounded-2xl bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 items-center gap-1.5 shadow-xs z-10 relative">
+                <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500 fill-amber-500 animate-pulse"></i>
+                <div class="text-left leading-tight">
+                  <span class="text-[11px] font-black block">24°C</span>
+                  <span class="text-[8.5px] text-stone-400 block -mt-0.5">Clear</span>
+                </div>
+              </div>
+
+              <!-- 3D Mosque Illustration (2x Lebih Besar, Menempel ke Tepi Kanan Layar, Menara Menjulang Sejajar Cuaca, Bawah Menyentuh Bar Pencarian) -->
+              <div class="absolute -right-4 bottom-0 pointer-events-none z-0 w-[245px] h-[200px] flex items-end justify-end overflow-visible">
+                <img src="assets/3d/masjid_maroon.png?v=2.4.8" alt="Masjid Arsitektur 3D" 
+                  class="w-full h-full object-contain object-bottom filter drop-shadow-md img-3d-clean" 
+                  style="mask-image: linear-gradient(to bottom, black 50%, rgba(0,0,0,0.85) 68%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 50%, rgba(0,0,0,0.85) 68%, transparent 100%);">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ==================== SEARCH / ASK A QUESTIONS PILL (SESUAI GAMBAR 1) ==================== -->
+        <div class="relative">
+          <div class="w-full pl-4 pr-2 py-2 rounded-full bg-white dark:bg-stone-900 shadow-xs flex items-center justify-between gap-2 hover:shadow-sm transition">
+            <div class="flex items-center gap-2 flex-1 cursor-pointer" onclick="focusSearch()">
+              <span class="text-stone-700 dark:text-stone-300 font-bold text-sm leading-none">+</span>
+              <span class="text-xs text-stone-400 dark:text-stone-500 font-normal truncate">Ask a Question...</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <button onclick="focusSearch()" class="p-1 rounded-full text-stone-500 dark:text-stone-400 hover:text-red-700" title="Audio Voice">
+                <i data-lucide="mic" class="w-3.5 h-3.5"></i>
+              </button>
+              <!-- Audio Wave Button Sesuai Gambar -->
+              <button onclick="focusSearch()" class="w-7.5 h-7.5 rounded-full bg-[#8B1E1E] hover:bg-[#991B1B] text-white flex items-center justify-center shadow-xs transition" title="Tanya Audio">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2v20M17 5v14M7 5v14M2 9v6M22 9v6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== FITUR ISLAMI.CO (UNIFIED 3-COLUMN GRID & EXTENSIBLE LAINNYA) ==================== -->
+        <div class="space-y-2 pt-0.5">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-[#8B1E1E]"></span>
+              Fitur Islami
+            </span>
+            <span class="text-[10px] text-stone-400 font-medium">Lengkap & Terpadu</span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2.5">
+
+            <!-- 1. Praying Time (Jadwal Sholat & Kiblat) -->
+            <div class="clay-card card-warm-cream p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('calendar')">
+              <div class="w-14 h-14 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/icon_prayer_time.png?v=3.5.0" alt="Praying Time" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Praying Time</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Jadwal & Adzan</p>
+              </div>
+            </div>
+
+            <!-- 2. Al-Qur'an -->
+            <div class="clay-card card-warm-cream p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('quran')">
+              <div class="w-14 h-14 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_quran.png?v=4.0.0" alt="Al-Qur'an" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Al-Qur'an</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">30 Juz & Audio</p>
+              </div>
+            </div>
+
+            <!-- 3. Hadits -->
+            <div class="clay-card card-warm-amber p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('hadith')">
+              <div class="w-14 h-14 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_hadith.png?v=4.0.0" alt="Hadits" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Hadits</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Shahih & Syarah</p>
+              </div>
+            </div>
+
+            <!-- 4. Doa Harian -->
+            <div class="clay-card card-warm-ivory p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('doa')">
+              <div class="w-14 h-14 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_doa.png?v=4.0.0" alt="Doa Harian" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Doa Harian</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Doa & Zikir</p>
+              </div>
+            </div>
+
+            <!-- 5. Yasin & Tahlil -->
+            <div class="clay-card card-warm-maroon p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('yasin')">
+              <div class="w-14 h-14 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_yasin.png?v=4.0.0" alt="Yasin & Tahlil" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Yasin & Tahlil</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Teks & Panduan</p>
+              </div>
+            </div>
+
+            <!-- 6. Direktori Masjid -->
+            <div class="clay-card card-warm-cream p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="openMasjidDirectory()">
+              <div class="w-14 h-14 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_masjid.png?v=4.0.0" alt="Direktori Masjid" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Masjid</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Peta & Fasilitas</p>
+              </div>
+            </div>
+
+            <!-- 7. Makam Ulama -->
+            <div class="clay-card card-warm-ivory p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="openMakamDirectory()">
+              <div class="w-14 h-14 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_makam.png?v=4.0.0" alt="Makam Ulama" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Makam Ulama</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Ziarah Wali</p>
+              </div>
+            </div>
+
+            <!-- 8. Cari Ustadz & Khotib -->
+            <div class="clay-card card-warm-amber p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('services')">
+              <div class="w-14 h-14 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_ustadz.png?v=4.0.0" alt="Cari Ustadz" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Cari Ustadz</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Khotib & Kajian</p>
+              </div>
+            </div>
+
+            <!-- 9. Tanggap Jenazah 24 Jam -->
+            <div class="clay-card card-warm-maroon p-2.5 flex flex-col items-center text-center justify-between min-h-[128px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs" onclick="switchTab('funeral')">
+              <div class="w-14 h-14 flex items-center justify-center my-0.5 group-hover:scale-108 transition-transform duration-200">
+                <img src="assets/3d/real_jenazah.png?v=4.0.0" alt="Tanggap Jenazah" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate">Tanggap Jenazah</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate">Ambulan 24 Jam</p>
+              </div>
+            </div>
+
+            <!-- 10. Kartu 'Lainnya' (More) - Membentang Penuh col-span-3 -->
+            <div class="col-span-3 clay-card card-warm-cream p-3 flex items-center justify-between gap-3 cursor-pointer group hover:shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all border border-amber-200/50 dark:border-amber-900/40" onclick="openMoreFeaturesDrawer()">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#8B1E1E] to-[#6A1212] flex items-center justify-center text-amber-300 shadow-md group-hover:scale-105 transition-transform shrink-0">
+                  <div class="grid grid-cols-2 gap-1 p-1">
+                    <span class="w-2.5 h-2.5 rounded-sm bg-amber-300"></span>
+                    <span class="w-2.5 h-2.5 rounded-sm bg-amber-400/80"></span>
+                    <span class="w-2.5 h-2.5 rounded-sm bg-amber-400/80"></span>
+                    <span class="w-2.5 h-2.5 rounded-sm bg-amber-200"></span>
+                  </div>
+                </div>
+                <div class="space-y-0.5 text-left">
+                  <div class="flex items-center gap-1.5">
+                    <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight" data-i18n="menu_more_features">Fitur Islami Lainnya</h4>
+                    <span class="text-[8.5px] font-bold px-1.5 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-[#8B1E1E] dark:text-red-300 shadow-2xs" data-i18n="more_badge">+8 Fitur</span>
+                  </div>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400 leading-tight line-clamp-1" data-i18n="menu_more_sub">Arah Kiblat, Zakat, Kalender Hijriah, Tasbih & Lainnya</p>
+                </div>
+              </div>
+              <div class="w-7 h-7 rounded-full bg-white dark:bg-stone-800 flex items-center justify-center text-stone-400 group-hover:text-[#8B1E1E] dark:group-hover:text-amber-400 transition shadow-xs shrink-0">
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ==================== DAILY VERSE CARD (RAMPING, PADAT DENGAN IKON 3D REHAL) ==================== -->
+        <div class="rounded-2xl bg-gradient-to-br from-[#8B1E1E] via-[#9B2222] to-[#6E1212] text-white p-3 pt-2.5 pb-2.5 shadow-md relative overflow-hidden">
+          <!-- Header Card: Label & Share Icon Sesuai Gambar -->
+          <div class="flex items-center justify-between pb-1 border-b border-white/10">
+            <span class="text-[10px] font-extrabold text-amber-300 uppercase tracking-wider">Daily Verse</span>
+            <button onclick="copyToClipboard('ذلك الكتاب لا ريب فيه هدى للمتقين (Surah Al-Baqarah: 2)')" 
+              class="w-6 h-6 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition" title="Bagikan Ayat">
+              <i data-lucide="share-2" class="w-3 h-3"></i>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between gap-3 pt-2">
+            <div class="flex-1 space-y-1">
+              <p class="font-arabic text-right text-base text-amber-100 leading-relaxed font-bold">
+                ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًۭى لِّلْمُتَّقِينَ
+              </p>
+              <p class="text-[10px] text-stone-200 leading-tight italic">
+                "This is the Book about which there is no doubt, a guidance for those conscious of Allah."
+              </p>
+              <span class="text-[9.5px] font-bold text-amber-300 block pt-0.5">
+                Surah Al-Baqara
+              </span>
+            </div>
+
+            <!-- 3D Holy Quran on Rehal (Persis Gambar 3D Nyata) -->
+            <div class="w-18 h-18 shrink-0 flex items-center justify-center">
+              <img src="assets/3d/icon_hadith.png?v=2.4.7" alt="3D Al-Qur'an di atas Rehal" class="w-16 h-16 object-contain filter drop-shadow-md">
+            </div>
+          </div>
+
+          <!-- Carousel Dots Sesuai Gambar -->
+          <div class="flex items-center justify-center gap-1.5 pt-1.5">
+            <span class="w-3.5 h-1 rounded-full bg-amber-400"></span>
+            <span class="w-1 h-1 rounded-full bg-white/30"></span>
+            <span class="w-1 h-1 rounded-full bg-white/30"></span>
+          </div>
+        </div>
+
+        <!-- ==================== TODAY'S DU'A CARD (SESUAI GAMBAR) ==================== -->
+        <div onclick="switchTab('doa')" class="card-islami p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-red-600 transition group bg-white dark:bg-stone-900">
+          <div class="flex items-center gap-3 flex-1">
+            <!-- Circular Praying Hands Icon Sesuai Gambar -->
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#7F1D1D] to-[#991B1B] text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FDE047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
+                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/>
+                <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+              </svg>
+            </div>
+            <div class="flex-1 space-y-0.5">
+              <span class="text-[10px] font-black uppercase text-red-700 dark:text-red-400 tracking-wider">Today's Du'a</span>
+              <p class="font-arabic text-sm text-stone-900 dark:text-stone-100 font-bold leading-normal truncate">
+                اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ
+              </p>
+              <p class="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-1">
+                "O Allah, I ask You for forgiveness and well-being in this world and the Hereafter."
+              </p>
+            </div>
+          </div>
+          <!-- Right Arrow Button Sesuai Gambar -->
+          <div class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 group-hover:bg-red-50 dark:group-hover:bg-red-950 group-hover:text-red-700 transition">
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </div>
+        </div>
+
+        </section>
+
+      <!-- ==================== VIEW: ARTIKEL & PILIHAN REDAKSI ==================== -->
+      <section id="view-articles" class="hidden space-y-4">
+        <!-- Title & Intro -->
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              Pilihan Redaksi Islami.co
+            </h2>
+            <p class="text-[11px] text-stone-500">Kajian & literasi Islam ramah yang mencerahkan</p>
+          </div>
+          <span class="badge-editorial">Artikel Terkini</span>
+        </div>
+
+        <!-- Filter Kategori Chips -->
+        <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 text-xs">
+          <button onclick="filterArticleCategory('Semua')" class="art-filter-pill px-3 py-1 rounded-full font-bold bg-[#B91C1C] text-white whitespace-nowrap shadow-sm">
+            Semua
+          </button>
+          <button onclick="filterArticleCategory('Populer')" class="art-filter-pill px-3 py-1 rounded-full font-medium bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-red-50 hover:text-red-700 whitespace-nowrap">
+            Populer
+          </button>
+          <button onclick="filterArticleCategory('Kolom')" class="art-filter-pill px-3 py-1 rounded-full font-medium bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-red-50 hover:text-red-700 whitespace-nowrap">
+            Kolom
+          </button>
+          <button onclick="filterArticleCategory('Rekomendasi')" class="art-filter-pill px-3 py-1 rounded-full font-medium bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-red-50 hover:text-red-700 whitespace-nowrap">
+            Rekomendasi
+          </button>
+          <button onclick="filterArticleCategory('Tanya Jawab')" class="art-filter-pill px-3 py-1 rounded-full font-medium bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-red-50 hover:text-red-700 whitespace-nowrap">
+            Tanya Jawab
+          </button>
+          <button onclick="filterArticleCategory('Khutbah')" class="art-filter-pill px-3 py-1 rounded-full font-medium bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-red-50 hover:text-red-700 whitespace-nowrap">
+            Khutbah
+          </button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="articleSearchInput" oninput="filterArticlesSearch()"
+            placeholder="Cari artikel, topik kajian, penulis..."
+            class="w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 rounded-xl text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-red-600 shadow-sm">
+        </div>
+
+        <!-- Article Cards Container -->
+        <div id="articlesList" class="space-y-3"></div>
+      </section>
+
+            <!-- ==================== VIEW: AL-QUR'AN (PERSIS GAMBAR REFERENSI DENGAN WARNA MARUN) ==================== -->
+      <section id="view-quran" class="hidden -mx-4 -mt-2 space-y-0 relative min-h-[calc(100vh-140px)]">
+
+        <!-- 1. Header Solid Merah Marun Islami.co (#8B1E1E) -->
+        <div class="bg-gradient-to-b from-[#8B1E1E] to-[#7B1818] text-white px-4 pt-4 pb-3 shadow-md sticky top-0 z-30">
+          <!-- Top Row: Judul & Action Buttons -->
+          <div class="flex items-center justify-between">
+            <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+              Al-Quran
+            </h1>
+            <div class="flex items-center gap-2">
+              <!-- Bookmark / Riwayat Button -->
+              <button onclick="switchQuranTab('riwayat')" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition active:scale-95" title="Penanda Bookmark">
+                <i data-lucide="bookmark" class="w-4 h-4"></i>
+              </button>
+              <!-- Settings Button -->
+              <button onclick="switchTab('settings')" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition active:scale-95" title="Pengaturan">
+                <i data-lucide="settings" class="w-4 h-4"></i>
+              </button>
+              <!-- Search Pill Button Ala Gambar -->
+              <button onclick="focusQuranSearchInput()" class="py-1 px-3 rounded-full bg-white/20 hover:bg-white/30 text-white text-xs font-bold flex items-center gap-1.5 transition active:scale-95">
+                <i data-lucide="search" class="w-3.5 h-3.5"></i>
+                <span>Cari</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Segmented Capsule Tabs: Surah | Juz | Riwayat Sesuai Gambar -->
+          <div class="mt-3.5 bg-black/25 p-1 rounded-2xl flex items-center text-xs font-bold shadow-inner">
+            <button id="quran-btn-surah" onclick="switchQuranTab('surah')" 
+              class="flex-1 py-1.5 rounded-xl bg-white text-[#8B1E1E] shadow-sm font-black transition-all duration-200">
+              Surah
+            </button>
+            <button id="quran-btn-juz" onclick="switchQuranTab('juz')" 
+              class="flex-1 py-1.5 rounded-xl text-white/80 hover:text-white transition-all duration-200 font-semibold">
+              Juz
+            </button>
+            <button id="quran-btn-riwayat" onclick="switchQuranTab('riwayat')" 
+              class="flex-1 py-1.5 rounded-xl text-white/80 hover:text-white transition-all duration-200 font-semibold">
+              Riwayat
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Main Body Content (Padding & Scroll) -->
+        <div class="px-4 pt-3 pb-28 space-y-3">
+
+          <!-- Search Input Bar Kapsul (Cari Nama Surah) -->
+          <div id="quranSearchContainer" class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input type="text" id="quranSearchInput" oninput="filterQuranSurahs()"
+              placeholder="Cari Nama Surah"
+              class="w-full pl-10 pr-4 py-2.5 bg-stone-100 dark:bg-stone-900 border border-stone-200/60 dark:border-stone-800 rounded-2xl text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#8B1E1E] shadow-xs">
+          </div>
+
+          <!-- TAB 1: DAFTAR SURAH (Persis Sesuai Gambar Referensi) -->
+          <div id="quranTabSurah" class="space-y-0.5 divide-y divide-stone-200/70 dark:divide-stone-800/70">
+            <!-- Rendered dynamically by renderQuranSurahs() -->
+          </div>
+
+          <!-- TAB 2: DAFTAR JUZ (1 - 30) -->
+          <div id="quranTabJuz" class="hidden space-y-2 pt-1">
+            <!-- Rendered dynamically by renderQuranJuz() -->
+          </div>
+
+          <!-- TAB 3: RIWAYAT & BOOKMARK -->
+          <div id="quranTabRiwayat" class="hidden space-y-2.5 pt-1">
+            <!-- Rendered dynamically by renderQuranRiwayat() -->
+          </div>
+
+        </div>
+
+        <!-- 3. Floating Bottom Banner ("Lanjutkan Membaca" Ala Gambar) -->
+        <div class="fixed bottom-20 left-1/2 -translate-x-1/2 w-[92%] max-w-[440px] z-30">
+          <div onclick="openLastReadQuran()" 
+            class="p-3 rounded-2xl bg-[#FFF9EE] dark:bg-[#1C1814] border border-amber-200/90 dark:border-amber-900/60 shadow-xl flex items-center justify-between gap-3 cursor-pointer hover:scale-[1.01] transition backdrop-blur-md">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/60 text-[#8B1E1E] dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-200 dark:border-amber-900/60 shadow-xs">
+                <i data-lucide="bookmark" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="text-[10px] uppercase font-extrabold text-amber-800 dark:text-amber-400 tracking-wider">Lanjutkan Membaca</span>
+                <p id="lastReadSurahBanner" class="text-xs font-black text-stone-900 dark:text-white">QS. Āli ‘Imrān: Ayat 115 (Juz 4)</p>
+              </div>
+            </div>
+            <div class="w-7 h-7 rounded-full bg-white dark:bg-stone-800 flex items-center justify-center text-stone-400 shadow-xs">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ==================== VIEW: KALENDER & JADWAL SHOLAT ==================== -->
+      <section id="view-calendar" class="hidden space-y-4">
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              Kalender Hijriah & Shalat
+            </h2>
+            <p class="text-[11px] text-stone-500">Panduan ibadah dan hari-hari besar Islam</p>
+          </div>
+          <span id="calendarHijriBadge" class="badge-editorial">1448 Hijriah</span>
+        </div>
+
+        <!-- Kalender Box -->
+        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-[10px] text-red-700 dark:text-red-400 font-bold uppercase">Bulan Berjalan</span>
+              <h3 class="font-extrabold text-base text-stone-900 dark:text-white">Jumadil Awal 1448 H</h3>
+              <p class="text-[11px] text-stone-400">November 2026 Masehi</p>
+            </div>
+            <div class="w-11 h-11 rounded-2xl bg-red-100 dark:bg-red-950 text-[#B91C1C] dark:text-red-400 flex items-center justify-center font-bold text-sm">
+              <i data-lucide="calendar" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <!-- Mini Calendar Grid -->
+          <div class="pt-2 border-t border-stone-100 dark:border-slate-800">
+            <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-stone-400 mb-2">
+              <span>Ahd</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span>
+            </div>
+            <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 text-center text-xs">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Jadwal Sholat Lengkap Hari Ini -->
+        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-1.5">
+              <i data-lucide="clock" class="w-3.5 h-3.5 text-red-700"></i>
+              Jadwal Sholat Hari Ini (Jakarta & Sekitarnya)
+            </h4>
+            <span class="text-[10px] text-stone-400">WIB</span>
+          </div>
+          <div class="grid grid-cols-5 gap-1.5 text-center pt-1" id="calendarPrayerCards">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Hari-Hari Besar Islam -->
+        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-2.5">
+          <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-1.5">
+            <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500"></i>
+            Hari Besar Islam Mendatang
+          </h4>
+          <div class="space-y-2 text-xs">
+            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-slate-800/60 flex items-center justify-between">
+              <div>
+                <p class="font-bold text-stone-800 dark:text-stone-200">1 Ramadhan 1448 H</p>
+                <p class="text-[10px] text-stone-400">Awal Puasa Ramadhan</p>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300">
+                Februari 2027
+              </span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-slate-800/60 flex items-center justify-between">
+              <div>
+                <p class="font-bold text-stone-800 dark:text-stone-200">1 Syawal 1448 H</p>
+                <p class="text-[10px] text-stone-400">Hari Raya Idul Fitri</p>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
+                Maret 2027
+              </span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-slate-800/60 flex items-center justify-between">
+              <div>
+                <p class="font-bold text-stone-800 dark:text-stone-200">10 Dzulhijjah 1448 H</p>
+                <p class="text-[10px] text-stone-400">Hari Raya Idul Adha</p>
+              </div>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
+                Mei 2027
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: PENGATURAN ==================== -->
+      <section id="view-settings" class="hidden space-y-4">
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              Pengaturan Aplikasi
+            </h2>
+            <p class="text-[11px] text-stone-500">Sesuaikan kenyamanan membaca & preferensi ibadah</p>
+          </div>
+          <span class="text-xs font-bold text-stone-400">v2.4.5</span>
+        </div>
+
+        <!-- 1. Notifikasi Adzan -->
+        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-3">
+          <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-2">
+            <i data-lucide="bell" class="w-4 h-4 text-[#B91C1C]"></i>
+            Pengingat Waktu Shalat (Adzan)
+          </h4>
+          <div class="space-y-2.5 text-xs pt-1">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="font-semibold text-stone-800 dark:text-stone-200">Notifikasi Suara Adzan</p>
+                <p class="text-[10px] text-stone-400">Kumandangkan adzan saat masuk waktu shalat</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="settingAdzanSound" onchange="toggleSettingAdzan()" checked class="sr-only peer">
+                <div class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#B91C1C]"></div>
+              </label>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-stone-100 dark:border-slate-800">
+              <div>
+                <p class="font-semibold text-stone-800 dark:text-stone-200">Pengingat 10 Menit Sebelum Shalat</p>
+                <p class="text-[10px] text-stone-400">Peringatan awal untuk persiapan wudhu</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="settingPrePrayerAlert" onchange="toggleSettingPreAlert()" checked class="sr-only peer">
+                <div class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#B91C1C]"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Pilihan Bahasa -->
+        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-3">
+          <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-2">
+            <i data-lucide="globe" class="w-4 h-4 text-[#B91C1C]"></i>
+            Bahasa Pengantar (Language)
+          </h4>
+          <div class="grid grid-cols-3 gap-2 pt-1">
+            <button onclick="switchLanguage('id')" id="settingLangId" class="p-2.5 rounded-xl border border-red-600 bg-red-50 dark:bg-red-950 text-center font-bold text-xs text-[#B91C1C] dark:text-red-300 transition">
+              🇮🇩 Indonesia
+            </button>
+            <button onclick="switchLanguage('en')" id="settingLangEn" class="p-2.5 rounded-xl border border-stone-200 dark:border-slate-800 bg-stone-50 dark:bg-slate-800/60 text-center font-medium text-xs text-stone-700 dark:text-stone-300 transition">
+              🇬🇧 English
+            </button>
+            <button onclick="switchLanguage('ms')" id="settingLangMs" class="p-2.5 rounded-xl border border-stone-200 dark:border-slate-800 bg-stone-50 dark:bg-slate-800/60 text-center font-medium text-xs text-stone-700 dark:text-stone-300 transition">
+              🇲🇾 Melayu
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. Ukuran Font Bacaan -->
+        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-3">
+          <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-2">
+            <i data-lucide="type" class="w-4 h-4 text-[#B91C1C]"></i>
+            Ukuran Teks Bacaan
+          </h4>
+          <div class="flex items-center justify-between gap-2 pt-1">
+            <button onclick="adjustReaderFontSize(-1)" class="flex-1 py-2 rounded-xl bg-stone-100 dark:bg-slate-800 font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-stone-200">
+              Kecil (A-)
+            </button>
+            <button onclick="resetReaderFontSize()" class="flex-1 py-2 rounded-xl bg-red-50 dark:bg-red-950 font-bold text-xs text-[#B91C1C] dark:text-red-400 border border-red-200 dark:border-red-900">
+              Standar
+            </button>
+            <button onclick="adjustReaderFontSize(1)" class="flex-1 py-2 rounded-xl bg-stone-100 dark:bg-slate-800 font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-stone-200">
+              Besar (A+)
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Tentang Islami.co -->
+        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-2 text-xs">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="h-7 px-2 py-0.5 rounded-lg bg-[#B91C1C] flex items-center justify-center">
+              <img src="assets/logo.png?v=2.4.5" alt="Islami.co" class="h-4 w-auto object-contain">
+            </div>
+            <div>
+              <p class="font-extrabold text-stone-900 dark:text-white">Islami.co</p>
+              <p class="text-[10px] text-stone-400">Media Islam Ramah yang Mencerahkan</p>
+            </div>
+          </div>
+          <p class="text-stone-600 dark:text-stone-300 leading-relaxed text-[11px]">
+            Portal keislaman independen berhaluan moderat (<span class="italic font-medium">wasathiyah</span>) yang mengedepankan pesan damai, keterbukaan, serta keramahan nilai-nilai Islam bagi seluruh alam (<span class="italic font-medium">Rahmatan Lil 'Alamin</span>).
+          </p>
+          <div class="pt-2 border-t border-stone-100 dark:border-slate-800 flex justify-between text-[10px] text-stone-400">
+            <span>© 2026 Islami.co</span>
+            <span>Versi Mobile 2.4.5</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: HADITS ==================== -->
+      <section id="view-hadith" class="hidden space-y-3">
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              Hadits Nabawi
+            </h2>
+            <p class="text-[11px] text-stone-500">Kumpulan hadits shahih & perawi mu'tabar</p>
+          </div>
+        </div>
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="hadithSearchInput" oninput="filterHadith()"
+            placeholder="Cari hadist, perawi (Bukhari/Muslim), topik..."
+            class="w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 rounded-xl text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-red-600 shadow-sm">
+        </div>
+        <div id="hadithList" class="space-y-3"></div>
+      </section>
+
+      <!-- ==================== VIEW: TANYA JAWAB SYARIAH ==================== -->
+      <section id="view-consultation" class="hidden space-y-3">
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              Tanya Jawab Syariah
+            </h2>
+            <p class="text-[11px] text-stone-500">Konsultasi fiqih santun & fatwa kontemporer</p>
+          </div>
+        </div>
+        <div id="consultationList" class="space-y-3"></div>
+      </section>
+
+      <!-- ==================== VIEW: KHUTBAH JUMAT ==================== -->
+      <section id="view-khutbah" class="hidden space-y-3">
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              Naskah Khutbah Jumat
+            </h2>
+            <p class="text-[11px] text-stone-500">Khutbah tematik sejuk, aktual & mencerahkan</p>
+          </div>
+        </div>
+        <div id="khutbahList" class="space-y-3"></div>
+      </section>
+
+      <!-- ==================== VIEW: DOA HARIAN ==================== -->
+      <section id="view-doa" class="hidden space-y-3">
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              Doa Harian & Zikir
+            </h2>
+            <p class="text-[11px] text-stone-500">Doa perlindungan, rezeki & penyejuk hati</p>
+          </div>
+        </div>
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input type="text" id="doaSearchInput" oninput="filterDoa()"
+            placeholder="Cari doa perlindungan, rezeki, keluarga..."
+            class="w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 rounded-xl text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-red-600 shadow-sm">
+        </div>
+        <div id="doaList" class="space-y-3"></div>
+      </section>
+
+      <!-- ==================== VIEW: TASBIH DIGITAL ==================== -->
+      <section id="view-yasin" class="hidden space-y-4">
+        <div class="card-islami p-6 text-center bg-white dark:bg-slate-900">
+          <span class="text-xs font-bold text-red-700 dark:text-red-400 tracking-wider uppercase">Tasbih Digital Islami.co</span>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Penghitung zikir interaktif dengan respon haptic</p>
+
+          <div class="my-6">
+            <span id="tasbihCounterNumber" class="text-6xl font-black text-stone-900 dark:text-white font-mono transition-transform duration-150 inline-block">
+              0
+            </span>
+          </div>
+
+          <div class="flex justify-center gap-3">
+            <button onclick="resetTasbih()" class="px-4 py-2.5 rounded-xl bg-stone-100 dark:bg-slate-800 hover:bg-stone-200 text-stone-700 dark:text-stone-300 text-xs font-semibold transition">
+              Reset
+            </button>
+            <button onclick="incrementTasbih()" class="px-8 py-3 rounded-2xl bg-[#B91C1C] hover:bg-red-800 text-white font-extrabold text-sm shadow-md tap-pulse transition">
+              Hitung Zikir (+1)
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: ARAH KIBLAT ==================== -->
+      <section id="view-qibla" class="hidden space-y-4">
+        <div class="card-islami p-6 text-center bg-white dark:bg-slate-900">
+          <h3 class="text-sm font-bold text-stone-900 dark:text-white">Kompas Arah Kiblat</h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-1">Arah Ka'bah: ~295° Barat Laut</p>
+
+          <div class="my-8 flex justify-center">
+            <div id="compassDial" class="w-48 h-48 rounded-full border-4 border-[#B91C1C] flex items-center justify-center relative shadow-inner bg-red-50/40 dark:bg-red-950/20 transition-transform duration-500">
+              <span class="absolute top-2 font-bold text-xs text-red-700 dark:text-red-400">U</span>
+              <span class="absolute bottom-2 font-bold text-xs text-stone-400">S</span>
+              <span class="absolute right-2 font-bold text-xs text-stone-400">T</span>
+              <span class="absolute left-2 font-bold text-xs text-stone-400">B</span>
+              <div class="w-1.5 h-24 bg-gradient-to-t from-stone-400 to-[#B91C1C] rounded-full"></div>
+            </div>
+          </div>
+
+          <button onclick="calibrateCompass()" class="px-4 py-2 rounded-xl bg-red-50 dark:bg-red-950 hover:bg-red-100 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900 text-xs font-bold transition">
+            Kalibrasi Kompas
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== VIEW: CARI USTADZ ==================== -->
+      <section id="view-services" class="hidden space-y-3">
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              Cari Ustadz & Penceramah
+            </h2>
+            <p class="text-[11px] text-stone-500">Undang dai moderat untuk kajian, nikah & khutbah</p>
+          </div>
+        </div>
+        <div id="scholarsList" class="space-y-3"></div>
+      </section>
+
+      <!-- ==================== VIEW: LAYANAN JENAZAH ==================== -->
+      <section id="view-funeral" class="hidden space-y-3">
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <div>
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>
+              Layanan Tanggap Jenazah 24 Jam
+            </h2>
+            <p class="text-[11px] text-stone-500">Ambulan, pemandian, kafan & pengurusan makam syar'i</p>
+          </div>
+        </div>
+        <div id="funeralServicesList" class="space-y-3"></div>
+      </section>
+
+      <!-- ==================== VIEW: TERSIMPAN / BOOKMARKS ==================== -->
+      <section id="view-bookmarks" class="hidden space-y-3">
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+          <h2 class="text-sm font-extrabold text-stone-900 dark:text-white">Item Tersimpan</h2>
+          <span class="text-xs text-red-700 dark:text-red-400 font-semibold">Bookmarks Pribadi</span>
+        </div>
+        <div id="bookmarksList" class="space-y-2.5"></div>
+      </section>
+
+    </main>
+
+    <!-- ==================== 4. FLOATING AUDIO PLAYER ==================== -->
+    <div id="floatingAudioPlayer" class="floating-audio-bar hidden p-2.5 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-[#B91C1C] text-white flex items-center justify-center animate-pulse">
+          <i data-lucide="music" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <span class="text-[10px] text-red-700 dark:text-red-400 font-bold block leading-none">Sedang Memutar</span>
+          <span id="floatingAudioTitle" class="text-xs font-bold text-stone-900 dark:text-white line-clamp-1">QS. Al-Fatihah: 1</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="floatingPlayBtn" onclick="toggleFloatingAudio()" class="w-8 h-8 rounded-full bg-[#B91C1C] text-white flex items-center justify-center shadow">
+          <i data-lucide="pause" class="w-4 h-4"></i>
+        </button>
+        <button onclick="closeFloatingAudio()" class="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 p-1">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== 5. FLOATING PILL BOTTOM NAVIGATION (CRIMSON RED SESUAI GAMBAR) ==================== -->
+    <nav class="floating-bottom-nav py-2 px-3 flex items-center justify-around">
+      <!-- 1. Beranda -->
+      <button onclick="switchTab('home')" id="tab-home" class="nav-btn active flex flex-col items-center gap-0.5 px-3 py-1" aria-label="Beranda">
+        <i data-lucide="home" class="w-5 h-5"></i>
+        <span class="text-[10px]" data-i18n="tab_home">Beranda</span>
+      </button>
+
+      <!-- 2. Al-Qur'an -->
+      <button onclick="switchTab('quran')" id="tab-quran" class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1" aria-label="Al-Qur'an">
+        <i data-lucide="book-open" class="w-5 h-5"></i>
+        <span class="text-[10px]" data-i18n="tab_quran">Al-Qur'an</span>
+      </button>
+
+      <!-- 3. Artikel -->
+      <button onclick="switchTab('articles')" id="tab-articles" class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1" aria-label="Artikel">
+        <i data-lucide="newspaper" class="w-5 h-5"></i>
+        <span class="text-[10px]" data-i18n="tab_articles">Artikel</span>
+      </button>
+
+      <!-- 4. Kalender -->
+      <button onclick="switchTab('calendar')" id="tab-calendar" class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1" aria-label="Kalender">
+        <i data-lucide="calendar" class="w-5 h-5"></i>
+        <span class="text-[10px]" data-i18n="tab_calendar">Kalender</span>
+      </button>
+
+      <!-- 5. Pengaturan -->
+      <button onclick="switchTab('settings')" id="tab-settings" class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1" aria-label="Pengaturan">
+        <i data-lucide="settings" class="w-5 h-5"></i>
+        <span class="text-[10px]" data-i18n="tab_settings">Pengaturan</span>
+      </button>
+    </nav>
+
+    <!-- ==================== 6. READER MODE MODAL ==================== -->
+    <div id="readerModal" class="hidden fixed inset-0 z-50 bg-[#FAF7F2] dark:bg-slate-950 flex flex-col">
+      <div class="px-4 py-3 border-b border-stone-200 dark:border-slate-800 flex items-center justify-between bg-[#B91C1C] text-white">
+        <button onclick="closeReaderMode()" class="flex items-center gap-1.5 text-xs font-bold hover:text-red-100">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
+        </button>
+        <div class="flex items-center gap-2">
+          <button onclick="adjustReaderFontSize(-1)" class="px-2 py-0.5 rounded-lg bg-black/20 text-xs font-bold">A-</button>
+          <button onclick="adjustReaderFontSize(1)" class="px-2 py-0.5 rounded-lg bg-black/20 text-xs font-bold">A+</button>
+          <button onclick="toggleTheme()" class="p-1 rounded-lg bg-black/20 text-white">
+            <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-5 py-6 max-w-xl mx-auto space-y-4">
+        <h1 id="readerTitle" class="text-xl font-black text-stone-900 dark:text-white leading-tight"></h1>
+        <div id="readerMeta" class="flex flex-wrap items-center gap-2 text-xs text-stone-500 dark:text-stone-400 pb-3 border-b border-stone-200 dark:border-slate-800"></div>
+        <div id="readerBody" class="text-stone-700 dark:text-stone-300 leading-relaxed font-sans space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- ==================== 7. MODAL BOOKING USTADZ ==================== -->
+    <div id="bookingModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="card-islami p-5 bg-white dark:bg-slate-900 w-full max-w-sm space-y-3.5 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-2">
+          <h3 class="font-bold text-sm text-stone-900 dark:text-white">Form Undangan Ustadz</h3>
+          <button onclick="closeBookingModal()" class="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200" aria-label="Tutup modal">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <p class="text-xs text-stone-600 dark:text-stone-300">
+          Mengundang: <strong id="bookingScholarName" class="text-red-700 dark:text-red-400">Ust. Ahmad Fauzan</strong>
+        </p>
+
+        <form onsubmit="submitBookingForm(event)" class="space-y-3">
+          <div>
+            <label class="block text-[11px] font-medium text-stone-700 dark:text-stone-300 mb-1">Nama Lengkap Pengundang / DKM</label>
+            <input type="text" name="inviterName" required placeholder="Contoh: Haji Abdullah"
+              class="w-full px-3 py-2 bg-stone-50 dark:bg-slate-800 border border-stone-200 dark:border-slate-700 rounded-xl text-xs text-stone-900 dark:text-white focus:outline-none focus:border-red-600">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-medium text-stone-700 dark:text-stone-300 mb-1">Jenis Acara</label>
+            <select name="eventType" class="w-full px-3 py-2 bg-stone-50 dark:bg-slate-800 border border-stone-200 dark:border-slate-700 rounded-xl text-xs text-stone-900 dark:text-white focus:outline-none focus:border-red-600">
+              <option value="Khotib Shalat Jumat">Khotib Shalat Jumat</option>
+              <option value="Kajian Rutin / Pengajian Akbar">Kajian Rutin / Pengajian Akbar</option>
+              <option value="Akad Nikah / Nasihat Pernikahan">Akad Nikah / Nasihat Pernikahan</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-medium text-stone-700 dark:text-stone-300 mb-1">Nomor WhatsApp</label>
+            <input type="tel" name="whatsappNumber" required placeholder="081234567890"
+              class="w-full px-3 py-2 bg-stone-50 dark:bg-slate-800 border border-stone-200 dark:border-slate-700 rounded-xl text-xs text-stone-900 dark:text-white focus:outline-none focus:border-red-600">
+          </div>
+
+          <div class="flex gap-2 pt-1">
+            <button type="button" onclick="closeBookingModal()" class="flex-1 py-2.5 rounded-xl bg-stone-100 dark:bg-slate-800 text-xs font-semibold text-stone-700 dark:text-stone-300 hover:bg-stone-200 transition">
+              Batal
+            </button>
+            <button type="submit" class="flex-1 py-2.5 rounded-xl bg-[#B91C1C] hover:bg-red-800 text-white font-extrabold text-xs shadow-md transition">
+              Kirim Permintaan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts: Mock Data, Translations & Main Logic (Cache Busted) -->
+  <script src="js/mock-data.js?v=2.4.5"></script>
+  <script src="js/translations.js?v=2.4.5"></script>
+  <script src="js/quran-data.js?v=3.0.0"></script>
+  <script src="js/app.js?v=2.4.5"></script>
+
+
+    <!-- ==================== WELCOME ONBOARDING SCREEN ALA IPHONE (IOS SETUP STYLE) ==================== -->
+    <div id="welcomeOnboardingModal" class="hidden fixed inset-0 z-50 bg-[#FAF7F2]/95 dark:bg-[#0B0E14]/95 backdrop-blur-2xl flex flex-col justify-between p-6 transition-all duration-300">
+      
+      <!-- Top Bar Branding -->
+      <div class="flex items-center justify-between pt-2">
+        <div class="flex items-center gap-2">
+          <img src="assets/logo_maroon.png?v=2.4.9" alt="islami.co" class="h-6 w-auto object-contain dark:hidden">
+          <img src="assets/logo.png?v=2.4.9" alt="islami.co" class="h-6 w-auto object-contain hidden dark:block">
+        </div>
+        <button onclick="closeWelcomeScreen()" class="w-8 h-8 rounded-full bg-stone-200/70 dark:bg-stone-800 text-stone-600 dark:text-stone-300 flex items-center justify-center hover:bg-stone-300 transition" aria-label="Tutup">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Center Greeting & iOS Style Language Cards -->
+      <div class="my-auto max-w-sm mx-auto w-full space-y-6 text-center">
+        <!-- Dynamic Rotating Greeting Header -->
+        <div class="space-y-1.5">
+          <div class="w-16 h-16 rounded-3xl bg-gradient-to-br from-[#8B1E1E] to-[#6E1212] text-white flex items-center justify-center mx-auto shadow-lg mb-3">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9H15V22H13V16H11V22H9V9H3V7H21V9Z"/>
+            </svg>
+          </div>
+          <h1 id="onboardingGreeting" class="text-2xl font-black text-stone-900 dark:text-white tracking-tight animate-fadeIn">
+            Assalamu'alaikum
+          </h1>
+          <p id="onboardingSubtitle" class="text-xs text-stone-500 dark:text-stone-400 max-w-xs mx-auto leading-relaxed">
+            Pilih bahasa utama Anda • Select your language • Sila pilih bahasa anda
+          </p>
+        </div>
+
+        <!-- 3 iOS Minimalist Language Cards -->
+        <div class="space-y-2.5 text-left">
+          <!-- 1. Bahasa Indonesia -->
+          <div onclick="selectOnboardingLang('id')" id="card-lang-id" class="lang-option-card p-3.5 rounded-2xl border-2 border-[#8B1E1E] bg-red-50/60 dark:bg-red-950/30 flex items-center justify-between cursor-pointer transition shadow-xs">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🇮🇩</span>
+              <div>
+                <h4 class="text-xs font-bold text-stone-900 dark:text-white">Bahasa Indonesia</h4>
+                <p class="text-[10px] text-stone-500 dark:text-stone-400">Media Islam Ramah yang Mencerahkan</p>
+              </div>
+            </div>
+            <div id="check-lang-id" class="w-5 h-5 rounded-full bg-[#8B1E1E] text-white flex items-center justify-center text-xs">
+              <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
+            </div>
+          </div>
+
+          <!-- 2. English -->
+          <div onclick="selectOnboardingLang('en')" id="card-lang-en" class="lang-option-card p-3.5 rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900/60 flex items-center justify-between cursor-pointer transition hover:border-[#8B1E1E]">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🇬🇧</span>
+              <div>
+                <h4 class="text-xs font-bold text-stone-900 dark:text-white">English</h4>
+                <p class="text-[10px] text-stone-500 dark:text-stone-400">Enlightening and Friendly Islamic Media</p>
+              </div>
+            </div>
+            <div id="check-lang-en" class="w-5 h-5 rounded-full border border-stone-300 dark:border-stone-700 hidden items-center justify-center text-xs bg-[#8B1E1E] text-white">
+              <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
+            </div>
+          </div>
+
+          <!-- 3. Bahasa Melayu -->
+          <div onclick="selectOnboardingLang('ms')" id="card-lang-ms" class="lang-option-card p-3.5 rounded-2xl border border-stone-200 dark:border-stone-800 bg-white dark:bg-stone-900/60 flex items-center justify-between cursor-pointer transition hover:border-[#8B1E1E]">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">🇲🇾</span>
+              <div>
+                <h4 class="text-xs font-bold text-stone-900 dark:text-white">Bahasa Melayu</h4>
+                <p class="text-[10px] text-stone-500 dark:text-stone-400">Media Islam Ramah yang Mencerahkan Ummah</p>
+              </div>
+            </div>
+            <div id="check-lang-ms" class="w-5 h-5 rounded-full border border-stone-300 dark:border-stone-700 hidden items-center justify-center text-xs bg-[#8B1E1E] text-white">
+              <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Pill Action Button -->
+      <div class="max-w-sm mx-auto w-full pb-2">
+        <button id="btnContinueOnboarding" onclick="confirmWelcomeScreen()" class="w-full py-3.5 px-6 rounded-full bg-[#8B1E1E] hover:bg-[#991B1B] text-white font-extrabold text-sm shadow-md tap-pulse transition flex items-center justify-center gap-2">
+          <span>Lanjutkan</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- ==================== MODAL DIREKTORI MASJID INTERAKTIF ==================== -->
+    <div id="modalMasjidDirectory" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="bg-[#FAF7F2] dark:bg-[#121721] w-full max-w-md max-h-[85vh] rounded-t-3xl sm:rounded-3xl flex flex-col overflow-hidden shadow-2xl border border-stone-200/80 dark:border-stone-800">
+        <!-- Header Modal -->
+        <div class="p-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-white dark:bg-stone-900">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 flex items-center justify-center border border-amber-200 dark:border-amber-900">
+              <i data-lucide="compass" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="font-black text-sm text-stone-900 dark:text-white">Direktori Masjid Ramah</h3>
+              <p class="text-[10px] text-stone-400">Tempat ibadah nyaman, bersih & inklusif</p>
+            </div>
+          </div>
+          <button onclick="closeMasjidDirectory()" class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-500 hover:text-stone-800 dark:hover:text-white transition">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- List Masjid (Mock Data) -->
+        <div id="masjidListContainer" class="p-4 overflow-y-auto space-y-3 flex-1 no-scrollbar">
+          <!-- Rendered dynamically by js/app.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== MODAL DIREKTORI MAKAM ULAMA INTERAKTIF ==================== -->
+    <div id="modalMakamDirectory" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="bg-[#FAF7F2] dark:bg-[#121721] w-full max-w-md max-h-[85vh] rounded-t-3xl sm:rounded-3xl flex flex-col overflow-hidden shadow-2xl border border-stone-200/80 dark:border-stone-800">
+        <!-- Header Modal -->
+        <div class="p-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-white dark:bg-stone-900">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-2xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 flex items-center justify-center border border-stone-200 dark:border-stone-700">
+              <i data-lucide="map-pin" class="w-4 h-4 text-[#8B1E1E]"></i>
+            </div>
+            <div>
+              <h3 class="font-black text-sm text-stone-900 dark:text-white">Ziarah Wali & Ulama</h3>
+              <p class="text-[10px] text-stone-400">Peta wisata religi tokoh pencerah nusantara</p>
+            </div>
+          </div>
+          <button onclick="closeMakamDirectory()" class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-500 hover:text-stone-800 dark:hover:text-white transition">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- List Makam (Mock Data) -->
+        <div id="makamListContainer" class="p-4 overflow-y-auto space-y-3 flex-1 no-scrollbar">
+          <!-- Rendered dynamically by js/app.js -->
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== MODAL BACA AYAT AL-QUR'AN LENGKAP ==================== -->
+    <div id="modalQuranReader" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+      <div class="bg-[#FAF7F2] dark:bg-[#10141D] w-full max-w-lg h-[92vh] sm:h-[88vh] rounded-t-3xl sm:rounded-3xl flex flex-col overflow-hidden shadow-2xl border border-stone-200 dark:border-stone-800">
+        <!-- Top Reader Header -->
+        <div class="p-3.5 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between bg-white dark:bg-stone-900 shrink-0">
+          <div class="flex items-center gap-2">
+            <button onclick="closeQuranReader()" class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-700 dark:text-white hover:bg-red-50 dark:hover:bg-red-950 transition">
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </button>
+            <div>
+              <h3 id="readerSurahTitle" class="font-black text-sm text-stone-900 dark:text-white leading-tight">Al-Fātiḥah</h3>
+              <p id="readerSurahSubtitle" class="text-[10px] text-stone-400">Pembuka • 7 Ayat • Makkiyyah</p>
+            </div>
+          </div>
+          <!-- Audio Play Button -->
+          <div class="flex items-center gap-1.5">
+            <button id="readerBtnPlayAudio" onclick="playCurrentSurahAudio()" class="py-1 px-3 rounded-full bg-[#8B1E1E] text-white text-xs font-bold flex items-center gap-1.5 shadow-sm hover:bg-[#991B1B] transition">
+              <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+              <span id="readerAudioLabel">Murottal</span>
+            </button>
+            <button onclick="closeQuranReader()" class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 hover:text-stone-700 dark:hover:text-white transition">
+              <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Scrollable Verses Content -->
+        <div id="readerVersesContainer" class="p-4 overflow-y-auto space-y-4 flex-1 no-scrollbar">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== DRAWER BOTTOM-SHEET: MENU LAINNYA (IOS STYLE) ==================== -->
+    <div id="drawerMoreFeatures" class="fixed inset-0 z-50 hidden transition-opacity duration-300">
+      <!-- Backdrop with blur -->
+      <div class="absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity" onclick="closeMoreFeaturesDrawer()"></div>
+      
+      <!-- Drawer Panel -->
+      <div class="absolute bottom-0 left-0 right-0 max-w-[430px] mx-auto bg-[#FAF7F2] dark:bg-slate-900 rounded-t-[28px] shadow-2xl border-t border-stone-200/70 dark:border-stone-800 flex flex-col max-h-[85vh] transform transition-transform duration-300 ease-out">
+        
+        <!-- Drag Handle -->
+        <div class="w-12 h-1.5 bg-stone-300 dark:bg-stone-700 rounded-full mx-auto my-3 shrink-0 cursor-pointer" onclick="closeMoreFeaturesDrawer()"></div>
+
+        <!-- Header -->
+        <div class="px-5 pb-3 pt-1 border-b border-stone-200/80 dark:border-stone-800/80 flex items-center justify-between shrink-0">
+          <div>
+            <h3 class="text-base font-extrabold text-stone-900 dark:text-white flex items-center gap-2" data-i18n="more_drawer_title">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#8B1E1E]"></span>
+              Fitur & Layanan Lainnya
+            </h3>
+            <p class="text-xs text-stone-500 dark:text-stone-400">Eksplorasi ragam fitur ibadah dan kemaslahatan umat</p>
+          </div>
+          <button onclick="closeMoreFeaturesDrawer()" class="w-8 h-8 rounded-full bg-stone-200/80 dark:bg-slate-800 flex items-center justify-center text-stone-600 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-slate-700 transition">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Scrollable Thematic Content (Rendered modularly via JS) -->
+        <div id="moreFeaturesContent" class="overflow-y-auto px-4 py-4 space-y-5 flex-1 no-scrollbar">
+          <!-- Rendered dynamically from window.IslamiExtraMenus -->
+        </div>
+
+        <!-- Drawer Footer Note -->
+        <div class="px-5 py-3 border-t border-stone-200/80 dark:border-stone-800 text-center bg-stone-100/60 dark:bg-slate-950/40 shrink-0">
+          <p class="text-[10px] text-stone-400">Islami.co • Media Islam Ramah yang Mencerahkan</p>
+        </div>
+      </div>
+    </div>
+
+</body>
+
+</html>

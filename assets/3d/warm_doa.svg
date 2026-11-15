@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="dFloorShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#000000" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Glossy Maroon Pearl Bead -->
+    <radialGradient id="dMaroonBead" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFA8A8"/>
+      <stop offset="25%" stop-color="#DC2626"/>
+      <stop offset="70%" stop-color="#881313"/>
+      <stop offset="100%" stop-color="#450A0A"/>
+    </radialGradient>
+
+    <!-- Glossy Amber Gold Pearl Bead -->
+    <radialGradient id="dGoldBead" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="25%" stop-color="#FDE047"/>
+      <stop offset="70%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#78350F"/>
+    </radialGradient>
+
+    <!-- Metallic Gold Minaret / Imam Bead -->
+    <linearGradient id="dImamGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="75%" stop-color="#B45309"/>
+      <stop offset="100%" stop-color="#78350F"/>
+    </linearGradient>
+
+    <!-- Silk Tassel Threads -->
+    <linearGradient id="dTassel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#92400E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Floor Shadow -->
+  <ellipse cx="100" cy="165" rx="68" ry="20" fill="url(#dFloorShadow)"/>
+
+  <!-- Tasbih Cord String in Isometric Loop -->
+  <ellipse cx="100" cy="85" rx="64" ry="46" fill="none" stroke="#78350F" stroke-width="2.5" opacity="0.3"/>
+
+  <!-- Beads Generation (Loop of 22 visible glossy beads with alternating maroon and gold) -->
+  <!-- Back Arc Beads (Drawn First for proper isometric z-index overlap) -->
+  <g id="backBeads">
+    <circle cx="100" cy="40" r="8" fill="url(#dGoldBead)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.25))"/>
+    <circle cx="118" cy="42" r="8" fill="url(#dMaroonBead)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.25))"/>
+    <circle cx="82" cy="42" r="8" fill="url(#dMaroonBead)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.25))"/>
+    <circle cx="136" cy="48" r="8.5" fill="url(#dGoldBead)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.25))"/>
+    <circle cx="64" cy="48" r="8.5" fill="url(#dGoldBead)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.25))"/>
+    <circle cx="150" cy="58" r="9" fill="url(#dMaroonBead)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.25))"/>
+    <circle cx="50" cy="58" r="9" fill="url(#dMaroonBead)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.25))"/>
+  </g>
+
+  <!-- Mid Arc Beads -->
+  <g id="midBeads">
+    <circle cx="160" cy="72" r="9.5" fill="url(#dGoldBead)" filter="drop-shadow(1px 3px 2px rgba(0,0,0,0.3))"/>
+    <circle cx="40" cy="72" r="9.5" fill="url(#dGoldBead)" filter="drop-shadow(1px 3px 2px rgba(0,0,0,0.3))"/>
+    <circle cx="162" cy="88" r="10" fill="url(#dMaroonBead)" filter="drop-shadow(1px 3px 3px rgba(0,0,0,0.3))"/>
+    <circle cx="38" cy="88" r="10" fill="url(#dMaroonBead)" filter="drop-shadow(1px 3px 3px rgba(0,0,0,0.3))"/>
+    <circle cx="158" cy="104" r="10" fill="url(#dGoldBead)" filter="drop-shadow(1px 3px 3px rgba(0,0,0,0.3))"/>
+    <circle cx="42" cy="104" r="10" fill="url(#dGoldBead)" filter="drop-shadow(1px 3px 3px rgba(0,0,0,0.3))"/>
+    <circle cx="146" cy="118" r="10.5" fill="url(#dMaroonBead)" filter="drop-shadow(1px 4px 3px rgba(0,0,0,0.35))"/>
+    <circle cx="54" cy="118" r="10.5" fill="url(#dMaroonBead)" filter="drop-shadow(1px 4px 3px rgba(0,0,0,0.35))"/>
+  </g>
+
+  <!-- Front Arc Beads (Larger in isometric foreground) -->
+  <g id="frontBeads">
+    <circle cx="130" cy="126" r="11" fill="url(#dGoldBead)" filter="drop-shadow(2px 4px 3px rgba(0,0,0,0.4))"/>
+    <circle cx="70" cy="126" r="11" fill="url(#dGoldBead)" filter="drop-shadow(2px 4px 3px rgba(0,0,0,0.4))"/>
+    <circle cx="116" cy="130" r="11" fill="url(#dMaroonBead)" filter="drop-shadow(2px 4px 4px rgba(0,0,0,0.4))"/>
+    <circle cx="84" cy="130" r="11" fill="url(#dMaroonBead)" filter="drop-shadow(2px 4px 4px rgba(0,0,0,0.4))"/>
+  </g>
+
+  <!-- Top Specular Highlight Dot on Beads -->
+  <g fill="#FFFFFF" opacity="0.6">
+    <circle cx="98" cy="38" r="2"/>
+    <circle cx="116" cy="40" r="2"/>
+    <circle cx="80" cy="40" r="2"/>
+    <circle cx="134" cy="46" r="2.2"/>
+    <circle cx="62" cy="46" r="2.2"/>
+    <circle cx="148" cy="56" r="2.5"/>
+    <circle cx="48" cy="56" r="2.5"/>
+    <circle cx="158" cy="70" r="2.8"/>
+    <circle cx="38" cy="70" r="2.8"/>
+    <circle cx="160" cy="86" r="3"/>
+    <circle cx="36" cy="86" r="3"/>
+    <circle cx="156" cy="102" r="3"/>
+    <circle cx="40" cy="102" r="3"/>
+    <circle cx="144" cy="116" r="3.2"/>
+    <circle cx="52" cy="116" r="3.2"/>
+    <circle cx="128" cy="124" r="3.5"/>
+    <circle cx="68" cy="124" r="3.5"/>
+    <circle cx="114" cy="128" r="3.5"/>
+    <circle cx="82" cy="128" r="3.5"/>
+  </g>
+
+  <!-- Ornate Golden Imam Focal Bead (Center Bottom Anchor) -->
+  <g transform="translate(100, 134)" filter="drop-shadow(2px 5px 4px rgba(0,0,0,0.4))">
+    <!-- Base Spherical Knot -->
+    <ellipse cx="0" cy="0" rx="9" ry="8" fill="url(#dImamGold)"/>
+    <circle cx="-2" cy="-2" r="2.5" fill="#FFFFFF" opacity="0.6"/>
+    <!-- Minaret Column -->
+    <path d="M -5 2 L -3 16 L 3 16 L 5 2 Z" fill="url(#dImamGold)" stroke="#78350F" stroke-width="0.5"/>
+    <!-- Ring Collar -->
+    <ellipse cx="0" cy="16" rx="6" ry="2" fill="#FEF08A"/>
+    <!-- Pendant Cone -->
+    <polygon points="-6,18 0,30 6,18" fill="url(#dImamGold)"/>
+    <circle cx="0" cy="31" r="2" fill="#FDE047"/>
+
+    <!-- Luxurious Dangling Silk Tassel (Rumbai Emas) -->
+    <path d="M -7 33 Q -10 50 -12 62 L 12 62 Q 10 50 7 33 Z" fill="url(#dTassel)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.3))"/>
+    <!-- Tassel Ring Band -->
+    <rect x="-8" y="34" width="16" height="3" rx="1.5" fill="#FEF08A"/>
+    <!-- Fine Silk Threads -->
+    <path d="M -10 62 L -8 40 M -6 62 L -4 38 M -2 62 L -1 38 M 2 62 L 1 38 M 6 62 L 4 38 M 10 62 L 8 40" stroke="#78350F" stroke-width="0.7" opacity="0.4"/>
+  </g>
+</svg>

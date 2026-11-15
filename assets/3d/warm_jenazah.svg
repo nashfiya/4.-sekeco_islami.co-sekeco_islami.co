@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="jFloorShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.4"/>
+      <stop offset="60%" stop-color="#000000" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Clean White Ambulance Body -->
+    <linearGradient id="jWhiteRoof" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F1F5F9"/>
+    </linearGradient>
+
+    <linearGradient id="jWhiteSide" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+
+    <linearGradient id="jWhiteFront" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E2E8F0"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+
+    <!-- Tinted Glass Windows -->
+    <linearGradient id="jGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="40%" stop-color="#0284C7"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+
+    <!-- Maroon Accent Stripe -->
+    <linearGradient id="jMaroon" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#B91C1C"/>
+      <stop offset="50%" stop-color="#881313"/>
+      <stop offset="100%" stop-color="#550A0A"/>
+    </linearGradient>
+
+    <!-- Glowing Red & Amber Emergency Lightbar -->
+    <linearGradient id="jSiren" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#EF4444"/>
+      <stop offset="45%" stop-color="#F59E0B"/>
+      <stop offset="55%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#DC2626"/>
+    </linearGradient>
+
+    <radialGradient id="jSirenGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#EF4444" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#EF4444" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Rubber Wheel -->
+    <radialGradient id="jTire" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="60%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Floor Shadow Under Vehicle -->
+  <ellipse cx="102" cy="158" rx="66" ry="18" fill="url(#jFloorShadow)"/>
+
+  <!-- Emergency Lightbar AURA GLOW on Top -->
+  <ellipse cx="96" cy="52" rx="36" ry="16" fill="url(#jSirenGlow)"/>
+
+  <!-- 3D Isometric Wheels (Front Left, Rear Left) -->
+  <!-- Rear Left Wheel -->
+  <g transform="translate(132, 138)">
+    <ellipse cx="0" cy="0" rx="10" ry="15" fill="url(#jTire)"/>
+    <ellipse cx="0" cy="0" rx="5.5" ry="8" fill="#CBD5E1"/>
+    <circle cx="0" cy="0" r="2.5" fill="#475569"/>
+  </g>
+
+  <!-- Front Left Wheel -->
+  <g transform="translate(68, 126)">
+    <ellipse cx="0" cy="0" rx="10" ry="15" fill="url(#jTire)"/>
+    <ellipse cx="0" cy="0" rx="5.5" ry="8" fill="#CBD5E1"/>
+    <circle cx="0" cy="0" r="2.5" fill="#475569"/>
+  </g>
+
+  <!-- MAIN AMBULANCE CABIN & BODY (Isometric 3D Extrusion) -->
+  <!-- Left Side Body -->
+  <path d="M 44 94 L 84 72 L 158 96 L 158 132 L 84 122 L 44 116 Z" fill="url(#jWhiteSide)" stroke="#CBD5E1" stroke-width="0.8" filter="drop-shadow(2px 4px 4px rgba(0,0,0,0.2))"/>
+
+  <!-- Front Nose / Bumper Face -->
+  <path d="M 44 94 L 44 116 L 36 122 L 36 102 Z" fill="url(#jWhiteFront)"/>
+  <!-- Front Hood Angle -->
+  <path d="M 36 102 L 44 94 L 64 84 L 54 92 Z" fill="#F1F5F9"/>
+
+  <!-- Roof Isometric Top Face -->
+  <path d="M 64 68 L 138 92 L 158 96 L 84 72 Z" fill="url(#jWhiteRoof)"/>
+
+  <!-- Windshield (Front Slanted Glass) -->
+  <path d="M 54 92 L 64 84 L 64 68 L 54 74 Z" fill="url(#jGlass)" stroke="#0284C7" stroke-width="0.5"/>
+  <!-- Driver Side Window -->
+  <path d="M 66 74 L 84 74 L 84 94 L 66 94 Z" fill="url(#jGlass)"/>
+  <!-- Patient Compartment Privacy Tinted Windows -->
+  <path d="M 92 78 L 120 87 L 120 102 L 92 96 Z" fill="url(#jGlass)"/>
+  <path d="M 126 89 L 152 97 L 152 108 L 126 103 Z" fill="url(#jGlass)"/>
+
+  <!-- Distinctive Maroon Side Stripe (Identitas Tanggap Jenazah Islami.co) -->
+  <path d="M 44 104 L 84 104 L 158 114 L 158 122 L 84 112 L 44 110 Z" fill="url(#jMaroon)"/>
+
+  <!-- Red Crescent Emblem (Bulan Sabit Merah) on Ambulance Door -->
+  <g transform="translate(104, 110)" filter="drop-shadow(0 1px 1px rgba(0,0,0,0.3))">
+    <circle cx="0" cy="0" r="9" fill="#FFFFFF"/>
+    <!-- Crescent Moon Path -->
+    <path d="M -2 -6 A 6 6 0 1 1 5 3 A 4.5 4.5 0 1 0 -2 -6 Z" fill="#DC2626"/>
+  </g>
+
+  <!-- Headlights & Chrome Grille -->
+  <g transform="translate(36, 110)">
+    <ellipse cx="1" cy="0" rx="2.5" ry="4" fill="#FEF08A" stroke="#F59E0B" stroke-width="0.8"/>
+    <!-- Bumper -->
+    <path d="M -2 4 L 4 0 L 4 7 L -2 9 Z" fill="#334155"/>
+  </g>
+
+  <!-- EMERGENCY LIGHTBAR ROOF SIREN (3D Isometric Cylinder with Glow) -->
+  <g transform="translate(96, 68)" filter="drop-shadow(0 2px 3px rgba(220,38,38,0.5))">
+    <!-- Siren Stanchion Feet -->
+    <rect x="-14" y="2" width="4" height="3" fill="#64748B"/>
+    <rect x="10" y="5" width="4" height="3" fill="#64748B"/>
+    <!-- Glowing LED Lightbar Bar -->
+    <polygon points="-16,-2 14,8 14,3 -16,-7" fill="#FEF08A"/>
+    <polygon points="-16,-2 14,8 14,14 -16,4" fill="url(#jSiren)"/>
+    <!-- Light Reflection Highlight -->
+    <line x1="-14" y1="0" x2="12" y2="9" stroke="#FFFFFF" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+</svg>

@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <!-- Soft Floor Shadow -->
+    <radialGradient id="qFloorShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#000000" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    
+    <!-- Maroon Leather Top Cover -->
+    <linearGradient id="qTopCover" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A52A2A"/>
+      <stop offset="40%" stop-color="#881313"/>
+      <stop offset="100%" stop-color="#550A0A"/>
+    </linearGradient>
+
+    <!-- Top Gloss Specular Highlight -->
+    <linearGradient id="qTopGloss" x1="0%" y1="0%" x2="50%" y2="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Leather Spine (Left Face) -->
+    <linearGradient id="qSpine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#5C0D0D"/>
+      <stop offset="50%" stop-color="#7B1111"/>
+      <stop offset="100%" stop-color="#3D0606"/>
+    </linearGradient>
+
+    <!-- Gold Gilded Pages (Right Face & Front Face) -->
+    <linearGradient id="qGiltPagesRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="25%" stop-color="#FCD34D"/>
+      <stop offset="70%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#92400E"/>
+    </linearGradient>
+
+    <linearGradient id="qGiltPagesFront" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="50%" stop-color="#FEF3C7"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+
+    <!-- Gold Foil Embellishments -->
+    <linearGradient id="qGoldFoil" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="30%" stop-color="#FBBF24"/>
+      <stop offset="70%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+
+    <!-- Gold Satin Ribbon -->
+    <linearGradient id="qRibbon" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Ground Shadow -->
+  <ellipse cx="100" cy="160" rx="72" ry="22" fill="url(#qFloorShadow)" />
+
+  <!-- Bottom Cover Projection -->
+  <path d="M 45 130 L 105 162 L 158 132 L 98 100 Z" fill="#3B0505" opacity="0.6"/>
+
+  <!-- Thick Pages Block (Right / Front Faces) -->
+  <!-- Pages Right Face -->
+  <path d="M 105 92 L 158 64 L 158 128 L 105 156 Z" fill="url(#qGiltPagesRight)"/>
+  <!-- Paper layer line details -->
+  <path d="M 105 98 L 158 70 M 105 104 L 158 76 M 105 110 L 158 82 M 105 116 L 158 88 M 105 122 L 158 94 M 105 128 L 158 100 M 105 134 L 158 106 M 105 140 L 158 112 M 105 146 L 158 118" stroke="#B45309" stroke-width="0.7" opacity="0.5"/>
+
+  <!-- Pages Front/Bottom Face -->
+  <path d="M 46 122 L 105 156 L 105 126 L 46 92 Z" fill="url(#qGiltPagesFront)" opacity="0.95"/>
+  <path d="M 46 98 L 105 132 M 46 104 L 105 138 M 46 110 L 105 144 M 46 116 L 105 150" stroke="#92400E" stroke-width="0.7" opacity="0.4"/>
+
+  <!-- Thick Curved Spine (Left Side) -->
+  <path d="M 42 60 Q 36 90 42 122 L 48 126 Q 42 94 48 64 Z" fill="url(#qSpine)"/>
+  <!-- Gold Ribs on Spine -->
+  <path d="M 40 72 L 46 75 M 39 88 L 45 91 M 39 104 L 45 107" stroke="url(#qGoldFoil)" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Top Leather Hardcover (Isometric Rhombus) -->
+  <path d="M 44 60 L 102 30 L 160 60 L 102 90 Z" fill="url(#qTopCover)" stroke="#550A0A" stroke-width="1.2"/>
+  
+  <!-- Hardcover Inner Rim / Bevel -->
+  <path d="M 44 60 L 102 90 L 102 96 L 44 66 Z" fill="#550A0A"/>
+  <path d="M 102 90 L 160 60 L 160 66 L 102 96 Z" fill="#3D0606"/>
+
+  <!-- Specular Sheen on Top Cover -->
+  <path d="M 44 60 L 102 30 L 130 45 L 72 75 Z" fill="url(#qTopGloss)"/>
+
+  <!-- Ornate Gold Borders on Cover -->
+  <path d="M 52 60 L 102 36 L 152 60 L 102 84 Z" fill="none" stroke="url(#qGoldFoil)" stroke-width="1.8" stroke-dasharray="none"/>
+  <path d="M 56 60 L 102 39 L 148 60 L 102 81 Z" fill="none" stroke="url(#qGoldFoil)" stroke-width="0.8" opacity="0.8"/>
+
+  <!-- Corner Arabesque Accents -->
+  <circle cx="56" cy="60" r="2.5" fill="url(#qGoldFoil)"/>
+  <circle cx="102" cy="39" r="2.5" fill="url(#qGoldFoil)"/>
+  <circle cx="148" cy="60" r="2.5" fill="url(#qGoldFoil)"/>
+  <circle cx="102" cy="81" r="2.5" fill="url(#qGoldFoil)"/>
+
+  <!-- Center Islamic Medallion (Khatam 8-Point Star) -->
+  <g transform="translate(102, 60)">
+    <!-- Medallion Glow -->
+    <ellipse cx="0" cy="0" rx="17" ry="11" fill="url(#qGoldFoil)" opacity="0.3"/>
+    <!-- 8-Pointed Star Poly -->
+    <polygon points="0,-12 3,-4 11,-4 5,2 7,10 0,5 -7,10 -5,2 -11,-4 -3,-4" fill="url(#qGoldFoil)" stroke="#78350F" stroke-width="0.6"/>
+    <ellipse cx="0" cy="0" rx="4.5" ry="3" fill="#881313"/>
+    <circle cx="0" cy="0" r="1.5" fill="#FEF08A"/>
+  </g>
+
+  <!-- Gold Satin Ribbon Bookmark Hanging Out of the Book -->
+  <path d="M 112 76 C 118 90, 122 110, 126 138 C 128 152, 134 165, 140 172 L 148 168 L 144 140 C 138 120, 130 95, 120 72 Z" fill="url(#qRibbon)" filter="drop-shadow(2px 3px 3px rgba(0,0,0,0.3))"/>
+  <!-- Ribbon V-notch End -->
+  <polygon points="140,172 148,168 145,158 137,163" fill="#D97706"/>
+</svg>

@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="yFloorShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.36"/>
+      <stop offset="60%" stop-color="#000000" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Deep Ruby Maroon Leather Cover -->
+    <linearGradient id="yCover" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#991B1B"/>
+      <stop offset="45%" stop-color="#7F1D1D"/>
+      <stop offset="100%" stop-color="#450A0A"/>
+    </linearGradient>
+
+    <linearGradient id="yCoverGloss" x1="0%" y1="0%" x2="60%" y2="60%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Stacked Pages (Side Face) -->
+    <linearGradient id="yPagesSide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="30%" stop-color="#FDE68A"/>
+      <stop offset="70%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#92400E"/>
+    </linearGradient>
+
+    <!-- Stacked Pages (Front Face) -->
+    <linearGradient id="yPagesFront" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D97706"/>
+      <stop offset="40%" stop-color="#FEF3C7"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+
+    <!-- Metallic Gold -->
+    <linearGradient id="yGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="35%" stop-color="#F59E0B"/>
+      <stop offset="75%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Floor Shadow -->
+  <ellipse cx="100" cy="160" rx="68" ry="20" fill="url(#yFloorShadow)"/>
+
+  <!-- Thick Pages Block (Isometric Depth) -->
+  <!-- Pages Right Face -->
+  <path d="M 104 96 L 154 70 L 154 126 L 104 152 Z" fill="url(#yPagesSide)"/>
+  <path d="M 104 102 L 154 76 M 104 108 L 154 82 M 104 114 L 154 88 M 104 120 L 154 94 M 104 126 L 154 100 M 104 132 L 154 106 M 104 138 L 154 112 M 104 144 L 154 118" stroke="#B45309" stroke-width="0.7" opacity="0.45"/>
+
+  <!-- Pages Bottom/Front Face -->
+  <path d="M 50 122 L 104 152 L 104 126 L 50 96 Z" fill="url(#yPagesFront)"/>
+  <path d="M 50 102 L 104 132 M 50 108 L 104 138 M 50 114 L 104 144 M 50 120 L 104 150" stroke="#78350F" stroke-width="0.7" opacity="0.4"/>
+
+  <!-- Rounded Book Spine (Left Face) -->
+  <path d="M 46 68 Q 40 95 46 122 L 51 125 Q 45 98 51 71 Z" fill="#450A0A"/>
+  <path d="M 44 80 L 49 83 M 43 95 L 48 98 M 43 110 L 48 113" stroke="url(#yGold)" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- Top Hardcover Rhombus -->
+  <path d="M 48 68 L 102 40 L 156 68 L 102 96 Z" fill="url(#yCover)" stroke="#3B0505" stroke-width="1"/>
+  <!-- Cover Bevel Edge -->
+  <path d="M 48 68 L 102 96 L 102 101 L 48 73 Z" fill="#3B0505"/>
+  <path d="M 102 96 L 156 68 L 156 73 L 102 101 Z" fill="#260303"/>
+
+  <!-- Top Specular Gloss Reflection -->
+  <path d="M 48 68 L 102 40 L 128 53 L 74 81 Z" fill="url(#yCoverGloss)"/>
+
+  <!-- Embossed Gold Decorative Frame -->
+  <path d="M 56 68 L 102 45 L 148 68 L 102 91 Z" fill="none" stroke="url(#yGold)" stroke-width="1.8"/>
+  <path d="M 60 68 L 102 48 L 144 68 L 102 88 Z" fill="none" stroke="url(#yGold)" stroke-width="0.8" opacity="0.8"/>
+
+  <!-- Center Calligraphic Medallion: Arabic 'يس' (Yasin) -->
+  <g transform="translate(102, 68)">
+    <!-- Medallion Cartouche -->
+    <ellipse cx="0" cy="0" rx="18" ry="12" fill="#500707" stroke="url(#yGold)" stroke-width="1.2"/>
+    <ellipse cx="0" cy="0" rx="15" ry="9.5" fill="none" stroke="url(#yGold)" stroke-width="0.6" stroke-dasharray="2,2"/>
+    <!-- Arabic Calligraphy 'يس' Path -->
+    <path d="M -8 2 Q -4 4 0 2 Q 4 -1 7 -4 Q 8 2 5 5 Q 0 8 -7 5 Z" fill="url(#yGold)"/>
+    <circle cx="5" cy="-7" r="1.2" fill="#FEF08A"/>
+    <circle cx="8" cy="-5" r="1.2" fill="#FEF08A"/>
+    <!-- Diacritical Tashkeel -->
+    <path d="M -3 -4 Q -1 -6 1 -4" stroke="url(#yGold)" stroke-width="1" fill="none"/>
+  </g>
+
+  <!-- Satin Gold Ribbon Bookmark Draped Out from the Headcap and Hanging Below -->
+  <!-- Top Headcap Loop -->
+  <path d="M 100 42 C 103 36, 108 34, 114 36 C 117 38, 115 44, 108 46 Z" fill="url(#yGold)"/>
+  <!-- Hanging Bottom Ribbon -->
+  <path d="M 110 84 C 116 100, 120 120, 124 145 C 126 158, 130 168, 136 174 L 144 170 L 140 146 C 135 125, 128 102, 118 80 Z" fill="url(#yGold)" filter="drop-shadow(2px 3px 3px rgba(0,0,0,0.35))"/>
+  <!-- Ribbon End Notch -->
+  <polygon points="136,174 144,170 141,162 133,166" fill="#B45309"/>
+</svg>

@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <radialGradient id="kFloorShadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.38"/>
+      <stop offset="60%" stop-color="#000000" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Teak Wood Pillar & Beam Gradients -->
+    <linearGradient id="kWood" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#92400E"/>
+      <stop offset="50%" stop-color="#78350F"/>
+      <stop offset="100%" stop-color="#451A03"/>
+    </linearGradient>
+
+    <!-- Terracotta / Dark Maroon Shingle Roof (Tiered Joglo Roof) -->
+    <linearGradient id="kRoofTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B91C1C"/>
+      <stop offset="40%" stop-color="#881313"/>
+      <stop offset="100%" stop-color="#550A0A"/>
+    </linearGradient>
+
+    <linearGradient id="kRoofRight" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7F1D1D"/>
+      <stop offset="100%" stop-color="#450A0A"/>
+    </linearGradient>
+
+    <!-- Marble Plinth -->
+    <linearGradient id="kMarble" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="50%" stop-color="#E7E5E4"/>
+      <stop offset="100%" stop-color="#D6D3D1"/>
+    </linearGradient>
+
+    <!-- Green Velvet Tomb Cloth (Kiswah Makam) -->
+    <linearGradient id="kVelvet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="50%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#064E3B"/>
+    </linearGradient>
+
+    <!-- Gold Accent -->
+    <linearGradient id="kGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FEF08A"/>
+      <stop offset="40%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Floor Shadow -->
+  <ellipse cx="100" cy="168" rx="72" ry="20" fill="url(#kFloorShadow)"/>
+
+  <!-- Stepped Marble Plinth (Isometric Platform) -->
+  <path d="M 40 144 L 100 120 L 160 144 L 100 168 Z" fill="url(#kMarble)" stroke="#D6D3D1" stroke-width="0.8"/>
+  <path d="M 40 144 L 100 168 L 100 174 L 40 150 Z" fill="#D6D3D1"/>
+  <path d="M 100 168 L 160 144 L 160 150 L 100 174 Z" fill="#A8A29E"/>
+
+  <!-- Center Dignified Makam (Tomb with Green Velvet Mantle & White Marble Headstones) -->
+  <g transform="translate(100, 134)" filter="drop-shadow(1px 3px 3px rgba(0,0,0,0.3))">
+    <!-- Tomb Base Plinth -->
+    <path d="M -22 6 L 0 -3 L 22 6 L 0 15 Z" fill="#FFFFFF" stroke="#E7E5E4" stroke-width="0.8"/>
+    <path d="M -22 6 L 0 15 L 0 20 L -22 11 Z" fill="#E7E5E4"/>
+    <path d="M 0 15 L 22 6 L 22 11 L 0 20 Z" fill="#D6D3D1"/>
+
+    <!-- Green Velvet Mantle (Kiswah Makam) -->
+    <path d="M -18 4 L 0 -4 L 18 4 L 0 12 Z" fill="url(#kVelvet)"/>
+    <!-- Gold Calligraphic Trim on Kiswah -->
+    <path d="M -14 5 L 0 -1 L 14 5" stroke="url(#kGold)" stroke-width="1.2" fill="none"/>
+
+    <!-- North & South Carved Marble Headstones (Batu Nisan) -->
+    <!-- North Headstone (Left) -->
+    <path d="M -15 2 L -15 -14 Q -13 -18 -11 -14 L -11 4 Z" fill="#FAF7F2" stroke="#E7E5E4" stroke-width="0.6"/>
+    <circle cx="-13" cy="-16" r="1.5" fill="url(#kGold)"/>
+    <!-- South Headstone (Right) -->
+    <path d="M 11 2 L 11 -14 Q 13 -18 15 -14 L 15 4 Z" fill="#FAF7F2" stroke="#E7E5E4" stroke-width="0.6"/>
+    <circle cx="13" cy="-16" r="1.5" fill="url(#kGold)"/>
+  </g>
+
+  <!-- 4 Carved Teak Wooden Pillars (Soko Guru) -->
+  <!-- Back Left Pillar -->
+  <path d="M 58 76 L 62 76 L 62 136 L 58 136 Z" fill="url(#kWood)"/>
+  <!-- Back Right Pillar -->
+  <path d="M 138 76 L 142 76 L 142 136 L 138 136 Z" fill="url(#kWood)"/>
+  <!-- Front Left Pillar -->
+  <path d="M 52 88 L 57 88 L 57 148 L 52 148 Z" fill="url(#kWood)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.25))"/>
+  <!-- Front Right Pillar -->
+  <path d="M 143 88 L 148 88 L 148 148 L 143 148 Z" fill="url(#kWood)" filter="drop-shadow(1px 2px 2px rgba(0,0,0,0.25))"/>
+
+  <!-- Multi-Tiered Joglo Roof (Nusantara Heritage Atap Tumpang) -->
+  <!-- Tier 1: Lower Flared Eaves (Tritisan) -->
+  <g filter="drop-shadow(2px 5px 4px rgba(0,0,0,0.35))">
+    <!-- Left Slope -->
+    <path d="M 32 94 L 100 66 L 100 86 L 46 106 Z" fill="url(#kRoofTop)"/>
+    <!-- Right Slope -->
+    <path d="M 100 66 L 168 94 L 154 106 L 100 86 Z" fill="url(#kRoofRight)"/>
+    <!-- Front Overhang Bevel -->
+    <path d="M 46 106 L 100 86 L 154 106 L 100 114 Z" fill="#450A0A"/>
+  </g>
+
+  <!-- Tier 2: Steep Upper Joglo Pyramid Roof (Tajug) -->
+  <g filter="drop-shadow(1px 4px 4px rgba(0,0,0,0.3))">
+    <!-- Left Face -->
+    <path d="M 68 62 L 100 24 L 100 52 L 76 74 Z" fill="url(#kRoofTop)"/>
+    <!-- Right Face -->
+    <path d="M 100 24 L 132 62 L 124 74 L 100 52 Z" fill="url(#kRoofRight)"/>
+    <!-- Front Face -->
+    <path d="M 76 74 L 100 52 L 124 74 L 100 82 Z" fill="#550A0A"/>
+  </g>
+
+  <!-- Traditional Golden Apex Finial (Mustaka / Mamolo Emas) -->
+  <g transform="translate(100, 24)" filter="drop-shadow(0px 2px 2px rgba(0,0,0,0.3))">
+    <!-- Golden Lotus Base -->
+    <ellipse cx="0" cy="0" rx="8" ry="3" fill="url(#kGold)"/>
+    <!-- Spire Jewel -->
+    <path d="M -4 0 Q 0 -14 0 -18 Q 0 -14 4 0 Z" fill="url(#kGold)"/>
+    <circle cx="0" cy="-20" r="2.5" fill="#FEF08A"/>
+  </g>
+</svg>
