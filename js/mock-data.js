@@ -706,6 +706,156 @@ const IslamiMockData = {
   // ----------------------------------------------------------------------------
   // 15. DATA DOA HARIAN MULTI-BAHASA (TODAY'S DU'A)
   // ----------------------------------------------------------------------------
+  
+  // ----------------------------------------------------------------------------
+  // 16. DATA HARI BESAR ISLAM & NASIONAL (CALENDAR EVENTS)
+  // ----------------------------------------------------------------------------
+  calendarEvents: [
+    {
+      date: "2026-11-10",
+      day: 10,
+      month: 10, // 0-indexed November
+      year: 2026,
+      title: {
+        id: "Hari Pahlawan",
+        en: "Heroes' Day",
+        ms: "Hari Pahlawan"
+      },
+      subtitle: {
+        id: "Selasa, 10 November 2026 / 30 Jumadal Ula 1448",
+        en: "Tuesday, 10 November 2026 / 30 Jumada al-Ula 1448",
+        ms: "Selasa, 10 November 2026 / 30 Jamadilawal 1448"
+      },
+      category: "Nasional",
+      isHoliday: true
+    },
+    {
+      date: "2026-11-10",
+      day: 10,
+      month: 10,
+      year: 2026,
+      title: {
+        id: "Ribuan warga NU gugur sebagai syuhada pada perang membela Tanah Air di Surabaya",
+        en: "Thousands of NU residents martyred defending the Homeland in Surabaya",
+        ms: "Ribuan warga NU gugur sebagai syuhada dalam perang mempertahankan Tanah Air di Surabaya"
+      },
+      subtitle: {
+        id: "Sejarah Resolusi Jihad 1945 & Hari Pahlawan",
+        en: "History of Jihad Resolution 1945 & Heroes' Day",
+        ms: "Sejarah Resolusi Jihad 1945 & Hari Pahlawan"
+      },
+      category: "Sejarah",
+      isHoliday: false
+    },
+    {
+      date: "2026-11-28",
+      day: 28,
+      month: 10,
+      year: 2026,
+      title: {
+        id: "Hari Menanam Pohon Indonesia",
+        en: "Indonesian Tree Planting Day",
+        ms: "Hari Menanam Pokok Indonesia"
+      },
+      subtitle: {
+        id: "Sabtu, 28 November 2026 / 18 Jumadal Akhirah 1448",
+        en: "Saturday, 28 November 2026 / 18 Jumada al-Akhirah 1448",
+        ms: "Sabtu, 28 November 2026 / 18 Jamadilakhir 1448"
+      },
+      category: "Lingkungan",
+      isHoliday: false
+    },
+    {
+      date: "2026-12-25",
+      day: 25,
+      month: 11,
+      year: 2026,
+      title: {
+        id: "Hari Raya Natal",
+        en: "Christmas Day",
+        ms: "Hari Krismas"
+      },
+      subtitle: {
+        id: "Jumat, 25 Desember 2026 / 15 Rajab 1448",
+        en: "Friday, 25 December 2026 / 15 Rajab 1448",
+        ms: "Jumaat, 25 Disember 2026 / 15 Rejab 1448"
+      },
+      category: "Nasional",
+      isHoliday: true
+    },
+    {
+      date: "2027-01-01",
+      day: 1,
+      month: 0,
+      year: 2027,
+      title: {
+        id: "Tahun Baru Masehi 2027",
+        en: "New Year's Day 2027",
+        ms: "Tahun Baharu 2027"
+      },
+      subtitle: {
+        id: "Jumat, 1 Januari 2027 / 22 Rajab 1448",
+        en: "Friday, 1 January 2027 / 22 Rajab 1448",
+        ms: "Jumaat, 1 Januari 2027 / 22 Rejab 1448"
+      },
+      category: "Nasional",
+      isHoliday: true
+    },
+    {
+      date: "2027-01-05",
+      day: 5,
+      month: 0,
+      year: 2027,
+      title: {
+        id: "Isra Mi'raj Nabi Muhammad SAW (27 Rajab 1448 H)",
+        en: "Isra and Mi'raj of the Prophet (27 Rajab 1448 AH)",
+        ms: "Israk dan Mikraj Nabi Muhammad SAW (27 Rejab 1448 H)"
+      },
+      subtitle: {
+        id: "Selasa, 5 Januari 2027 / 27 Rajab 1448",
+        en: "Tuesday, 5 January 2027 / 27 Rajab 1448",
+        ms: "Selasa, 5 Januari 2027 / 27 Rejab 1448"
+      },
+      category: "Islam",
+      isHoliday: true
+    },
+    {
+      date: "2027-02-08",
+      day: 8,
+      month: 1,
+      year: 2027,
+      title: {
+        id: "Awal Puasa Ramadhan 1448 H (1 Ramadhan)",
+        en: "First Day of Ramadan 1448 AH",
+        ms: "Awal Ramadan 1448 H"
+      },
+      subtitle: {
+        id: "Senin, 8 Februari 2027 / 1 Ramadhan 1448",
+        en: "Monday, 8 February 2027 / 1 Ramadan 1448",
+        ms: "Isnin, 8 Februari 2027 / 1 Ramadan 1448"
+      },
+      category: "Islam",
+      isHoliday: true
+    },
+    {
+      date: "2027-03-10",
+      day: 10,
+      month: 2,
+      year: 2027,
+      title: {
+        id: "Hari Raya Idul Fitri 1448 H (1 Syawal)",
+        en: "Eid al-Fitr 1448 AH",
+        ms: "Hari Raya Aidilfitri 1448 H"
+      },
+      subtitle: {
+        id: "Rabu, 10 Maret 2027 / 1 Syawal 1448",
+        en: "Wednesday, 10 March 2027 / 1 Shawwal 1448",
+        ms: "Rabu, 10 Mac 2027 / 1 Syawal 1448"
+      },
+      category: "Islam",
+      isHoliday: true
+    }
+  ],
   dailyDuas: [
     {
       id: 1,

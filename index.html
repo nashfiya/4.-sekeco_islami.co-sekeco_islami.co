@@ -689,97 +689,125 @@
       </section>
 
       <!-- ==================== VIEW: KALENDER & JADWAL SHOLAT ==================== -->
-      <section id="view-calendar" class="hidden space-y-4">
-        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+      <section id="view-calendar" class="hidden space-y-4 pb-28">
+        
+        <!-- Header Halaman Kalender -->
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-slate-800">
           <div>
-            <h2
-              class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
-              Kalender Hijriah & Shalat
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#8B1E1E]"></span>
+              <span data-i18n="title_calendar_page">Kalender Nusantara & Sholat</span>
             </h2>
-            <p class="text-[11px] text-stone-500">Panduan ibadah dan hari-hari besar Islam</p>
+            <p class="text-[11px] text-stone-500 dark:text-stone-400" data-i18n="sub_calendar_page">Masehi, Hijriah, Pasaran Jawa & Hari Besar</p>
           </div>
-          <span id="calendarHijriBadge" class="badge-editorial">1448 Hijriah</span>
+          <button onclick="goToCurrentCalendarMonth()" class="text-[10px] font-bold px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-950 text-[#8B1E1E] dark:text-red-300 hover:bg-red-200 transition" title="Kembali ke Hari Ini">
+            <span data-i18n="cal_today">Hari Ini</span>
+          </button>
         </div>
 
-        <!-- Kalender Box -->
-        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-3">
-          <div class="flex items-center justify-between">
-            <div>
-              <span class="text-[10px] text-red-700 dark:text-red-400 font-bold uppercase">Bulan Berjalan</span>
-              <h3 class="font-extrabold text-base text-stone-900 dark:text-white">Jumadil Awal 1448 H</h3>
-              <p class="text-[11px] text-stone-400">November 2026 Masehi</p>
+        <!-- Kartu Kalender Nusantara Interaktif (Masehi + Hijriah + Pasaran Jawa) -->
+        <div class="card-islami p-4 bg-white dark:bg-stone-900 border border-stone-200/70 dark:border-stone-800 space-y-3.5 shadow-sm">
+          
+          <!-- Month Navigation Bar (< Month Year >) -->
+          <div class="flex items-center justify-between px-1">
+            <button onclick="navigateCalendarMonth(-1)" class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 hover:bg-[#8B1E1E] hover:text-white text-stone-600 dark:text-stone-300 flex items-center justify-center transition shadow-2xs" title="Bulan Sebelumnya">
+              <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            </button>
+            <div class="text-center">
+              <h3 id="calHeaderMonthYear" class="text-base font-extrabold text-stone-900 dark:text-white leading-tight">November 2026</h3>
+              <p id="calHeaderHijriSpan" class="text-xs text-amber-700 dark:text-amber-400 font-bold mt-0.5">Jumadal Ula - Jumadal Akhirah 1448 H</p>
             </div>
-            <div
-              class="w-11 h-11 rounded-2xl bg-red-100 dark:bg-red-950 text-[#B91C1C] dark:text-red-400 flex items-center justify-center font-bold text-sm">
-              <i data-lucide="calendar" class="w-5 h-5"></i>
-            </div>
+            <button onclick="navigateCalendarMonth(1)" class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 hover:bg-[#8B1E1E] hover:text-white text-stone-600 dark:text-stone-300 flex items-center justify-center transition shadow-2xs" title="Bulan Berikutnya">
+              <i data-lucide="chevron-right" class="w-4 h-4"></i>
+            </button>
           </div>
 
-          <!-- Mini Calendar Grid -->
-          <div class="pt-2 border-t border-stone-100 dark:border-slate-800">
-            <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-stone-400 mb-2">
-              <span>Ahd</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span>
+          <!-- 7-Column Day Names Header (Ahad to Sabtu) -->
+          <div class="pt-2 border-t border-stone-100 dark:border-stone-800/80">
+            <div class="grid grid-cols-7 gap-1 text-center text-[10.5px] font-bold mb-1.5" id="calWeekDaysRow">
+              <span class="text-red-600 dark:text-red-400" data-i18n="day_ahad">Ahad</span>
+              <span class="text-stone-600 dark:text-stone-400" data-i18n="day_senin">Senin</span>
+              <span class="text-stone-600 dark:text-stone-400" data-i18n="day_selasa">Selasa</span>
+              <span class="text-stone-600 dark:text-stone-400" data-i18n="day_rabu">Rabu</span>
+              <span class="text-stone-600 dark:text-stone-400" data-i18n="day_kamis">Kamis</span>
+              <span class="text-teal-600 dark:text-teal-400" data-i18n="day_jumat">Jumat</span>
+              <span class="text-stone-600 dark:text-stone-400" data-i18n="day_sabtu">Sabtu</span>
             </div>
-            <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 text-center text-xs">
+
+            <!-- Nusantara Days Grid (Dynamic 7x5 or 7x6 Cells) -->
+            <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 text-center">
               <!-- Rendered via JS -->
             </div>
           </div>
+
+          <!-- Legend Bar (Titik Kuning = Puasa Sunnah, Titik Biru = Hari Besar/Libur) -->
+          <div class="pt-2 border-t border-stone-100 dark:border-stone-800/80 flex items-center justify-center gap-4 text-[10px] text-stone-500 dark:text-stone-400">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span data-i18n="cal_legend_fasting">Puasa Sunnah</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+              <span data-i18n="cal_legend_holiday">Hari Besar</span>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Jadwal Sholat Lengkap Hari Ini -->
-        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-2.5">
+        <!-- Banner Info Tanggal Aktif Terpilih -->
+        <div id="calSelectedDateBanner" class="p-3 rounded-2xl bg-stone-100 dark:bg-stone-800/70 border border-stone-200/80 dark:border-stone-700/80 flex items-center justify-between gap-3 shadow-2xs">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-xl bg-[#8B1E1E] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs">
+              <i data-lucide="calendar-check" class="w-4 h-4 text-amber-300"></i>
+            </div>
+            <div class="min-w-0">
+              <h4 id="calSelectedDateTitle" class="text-xs font-black text-stone-900 dark:text-white truncate">Ahad Pon, 22 November 2026</h4>
+              <p id="calSelectedDateSub" class="text-[10px] text-[#8B1E1E] dark:text-amber-400 font-bold truncate">12 Jumadal Akhirah 1448 H</p>
+            </div>
+          </div>
+          <button onclick="openAddAgendaModal()" class="px-2.5 py-1 rounded-xl bg-white dark:bg-stone-700 hover:bg-[#8B1E1E] hover:text-white border border-stone-200 dark:border-stone-600 text-[10.5px] font-bold text-stone-700 dark:text-stone-200 transition shadow-2xs shrink-0 flex items-center gap-1">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span data-i18n="cal_add_agenda">Agenda</span>
+          </button>
+        </div>
+
+        <!-- Tab Keterangan & Daftar Agenda di Bawah Kalender -->
+        <div class="card-islami p-4 bg-white dark:bg-stone-900 border border-stone-200/70 dark:border-stone-800 space-y-3.5 shadow-sm">
+          
+          <!-- 3 Tab Interaktif: Hari Besar | Jadwal Puasa | Agenda Saya -->
+          <div class="flex items-center justify-around border-b border-stone-200/80 dark:border-stone-800 text-xs font-bold">
+            <button onclick="switchCalendarTab('hari-besar')" id="calTabBtn-hari-besar" class="pb-2 px-2 border-b-2 border-[#8B1E1E] text-[#8B1E1E] dark:text-amber-400 font-extrabold transition">
+              <span data-i18n="cal_tab_events">Hari Besar</span>
+            </button>
+            <button onclick="switchCalendarTab('puasa')" id="calTabBtn-puasa" class="pb-2 px-2 border-b-2 border-transparent text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-200 transition">
+              <span data-i18n="cal_tab_fasting">Jadwal Puasa</span>
+            </button>
+            <button onclick="switchCalendarTab('agenda')" id="calTabBtn-agenda" class="pb-2 px-2 border-b-2 border-transparent text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-200 transition">
+              <span data-i18n="cal_tab_agenda">Agenda Saya</span>
+            </button>
+          </div>
+
+          <!-- Tab Content Container -->
+          <div id="calendarTabContent" class="space-y-2.5 pt-1">
+            <!-- Rendered dynamically by JS -->
+          </div>
+
+        </div>
+
+        <!-- Jadwal Sholat Lengkap Hari Ini (Preserved Below) -->
+        <div class="card-islami p-4 bg-white dark:bg-stone-900 border border-stone-200/70 dark:border-stone-800 space-y-2.5 shadow-sm">
           <div class="flex items-center justify-between">
             <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-1.5">
-              <i data-lucide="clock" class="w-3.5 h-3.5 text-red-700"></i>
-              Jadwal Sholat Hari Ini (Jakarta & Sekitarnya)
+              <i data-lucide="clock" class="w-3.5 h-3.5 text-[#8B1E1E] dark:text-amber-400"></i>
+              <span>Jadwal Sholat Hari Ini (Jakarta & Sekitarnya)</span>
             </h4>
-            <span class="text-[10px] text-stone-400">WIB</span>
+            <span class="text-[10px] text-stone-400 font-mono font-bold">WIB</span>
           </div>
           <div class="grid grid-cols-5 gap-1.5 text-center pt-1" id="calendarPrayerCards">
             <!-- Rendered via JS -->
           </div>
         </div>
 
-        <!-- Hari-Hari Besar Islam -->
-        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-2.5">
-          <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-1.5">
-            <i data-lucide="star" class="w-3.5 h-3.5 text-amber-500"></i>
-            Hari Besar Islam Mendatang
-          </h4>
-          <div class="space-y-2 text-xs">
-            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-slate-800/60 flex items-center justify-between">
-              <div>
-                <p class="font-bold text-stone-800 dark:text-stone-200">1 Ramadhan 1448 H</p>
-                <p class="text-[10px] text-stone-400">Awal Puasa Ramadhan</p>
-              </div>
-              <span
-                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300">
-                Februari 2027
-              </span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-slate-800/60 flex items-center justify-between">
-              <div>
-                <p class="font-bold text-stone-800 dark:text-stone-200">1 Syawal 1448 H</p>
-                <p class="text-[10px] text-stone-400">Hari Raya Idul Fitri</p>
-              </div>
-              <span
-                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-                Maret 2027
-              </span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-slate-800/60 flex items-center justify-between">
-              <div>
-                <p class="font-bold text-stone-800 dark:text-stone-200">10 Dzulhijjah 1448 H</p>
-                <p class="text-[10px] text-stone-400">Hari Raya Idul Adha</p>
-              </div>
-              <span
-                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
-                Mei 2027
-              </span>
-            </div>
-          </div>
-        </div>
       </section>
 
       <!-- ==================== VIEW: PENGATURAN ==================== -->
@@ -1462,6 +1490,46 @@
       <div
         class="px-5 py-3 border-t border-stone-200/80 dark:border-stone-800 text-center bg-stone-100/60 dark:bg-slate-950/40 shrink-0">
         <p class="text-[10px] text-stone-400">Islami.co • Media Islam Ramah yang Mencerahkan</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==================== MODAL TAMBAH AGENDA ==================== -->
+  <div id="modalAddAgenda" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-stone-900 rounded-3xl max-w-sm w-full p-5 border border-stone-200 dark:border-stone-800 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between pb-2 border-b border-stone-100 dark:border-stone-800">
+        <h3 class="text-sm font-extrabold text-stone-900 dark:text-white flex items-center gap-2">
+          <i data-lucide="calendar-plus" class="w-4 h-4 text-[#8B1E1E] dark:text-amber-400"></i>
+          <span>Tambah Agenda Pribadi</span>
+        </h3>
+        <button onclick="closeAddAgendaModal()" class="w-7 h-7 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-white flex items-center justify-center">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1">Judul Agenda</label>
+          <input type="text" id="inputAgendaTitle" placeholder="Contoh: Pengajian Kitab Al-Hikam, Puasa Nazar, dll." class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1">Tanggal</label>
+          <input type="date" id="inputAgendaDate" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1">Catatan / Waktu (Opsional)</label>
+          <input type="text" id="inputAgendaNotes" placeholder="Pukul 19.30 WIB di Masjid Al-Ikhlas" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]">
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-2">
+        <button onclick="closeAddAgendaModal()" class="flex-1 py-2 rounded-xl border border-stone-200 dark:border-stone-700 text-xs font-bold text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition">
+          Batal
+        </button>
+        <button onclick="saveUserAgenda()" class="flex-1 py-2 rounded-xl bg-[#8B1E1E] text-white text-xs font-bold hover:bg-[#6E1212] transition shadow-xs">
+          Simpan Agenda
+        </button>
       </div>
     </div>
   </div>

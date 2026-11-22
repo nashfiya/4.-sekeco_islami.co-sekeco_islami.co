@@ -11,6 +11,22 @@
 
 const IslamiTranslations = {
   id: {
+    title_calendar_page: "Kalender Nusantara & Sholat",
+    sub_calendar_page: "Masehi, Hijriah, Pasaran Jawa & Hari Besar",
+    cal_today: "Hari Ini",
+    day_ahad: "Ahad",
+    day_senin: "Senin",
+    day_selasa: "Selasa",
+    day_rabu: "Rabu",
+    day_kamis: "Kamis",
+    day_jumat: "Jumat",
+    day_sabtu: "Sabtu",
+    cal_legend_fasting: "Puasa Sunnah",
+    cal_legend_holiday: "Hari Besar / Libur",
+    cal_tab_events: "Hari Besar",
+    cal_tab_fasting: "Jadwal Puasa",
+    cal_tab_agenda: "Agenda Saya",
+    cal_add_agenda: "+ Tambah Agenda",
     // Header & Hero
     next_prayer_title: "Sholat Berikutnya",
     weather_clear: "Cerah",
@@ -125,6 +141,22 @@ const IslamiTranslations = {
   },
 
   en: {
+    title_calendar_page: "Nusantara & Prayer Calendar",
+    sub_calendar_page: "Gregorian, Hijri, Javanese Pasaran & Holidays",
+    cal_today: "Today",
+    day_ahad: "Sun",
+    day_senin: "Mon",
+    day_selasa: "Tue",
+    day_rabu: "Wed",
+    day_kamis: "Thu",
+    day_jumat: "Fri",
+    day_sabtu: "Sat",
+    cal_legend_fasting: "Sunnah Fasting",
+    cal_legend_holiday: "Holiday / Important",
+    cal_tab_events: "Holidays",
+    cal_tab_fasting: "Fasting Days",
+    cal_tab_agenda: "My Agenda",
+    cal_add_agenda: "+ Add Agenda",
     // Header & Hero
     next_prayer_title: "Next Prayer",
     weather_clear: "Clear",
@@ -239,6 +271,22 @@ const IslamiTranslations = {
   },
 
   ms: {
+    title_calendar_page: "Kalendar Nusantara & Solat",
+    sub_calendar_page: "Masihi, Hijriah, Pasaran Jawa & Hari Kebesaran",
+    cal_today: "Hari Ini",
+    day_ahad: "Ahad",
+    day_senin: "Isnin",
+    day_selasa: "Selasa",
+    day_rabu: "Rabu",
+    day_kamis: "Khamis",
+    day_jumat: "Jumaat",
+    day_sabtu: "Sabtu",
+    cal_legend_fasting: "Puasa Sunat",
+    cal_legend_holiday: "Hari Cuti / Penting",
+    cal_tab_events: "Hari Kebesaran",
+    cal_tab_fasting: "Jadual Puasa",
+    cal_tab_agenda: "Agenda Saya",
+    cal_add_agenda: "+ Tambah Agenda",
     // Header & Hero
     next_prayer_title: "Solat Seterusnya",
     weather_clear: "Cerah",

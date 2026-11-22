@@ -54,7 +54,7 @@ let greetingInterval = null;
 function initWelcomeScreen() {
   const hasOnboarded = localStorage.getItem('islami_onboarded_completed');
   const preferredLang = localStorage.getItem('islami_preferred_lang') || 'id';
-  
+
   // Set current lang
   AppState.currentLang = preferredLang;
   applyLanguage(preferredLang);
@@ -543,7 +543,44 @@ function selectLanguageFromOnboarding(lang) {
   showToast(lang === 'en' ? 'Language set to English' : (lang === 'ms' ? 'Bahasa ditukar ke Melayu' : 'Bahasa disetel ke Indonesia'));
 }
 
-// Duplicate switchLanguage & applyLanguage removed - unified in main applyLanguage above
+function switchLanguage(lang) {
+  AppState.currentLang = lang;
+  localStorage.setItem('islami_preferred_lang', lang);
+  applyLanguage(lang);
+}
+
+function applyLanguage(lang) {
+  ['id', 'en', 'ms'].forEach(l => {
+    const btn = document.getElementById(`btn-lang-${l}`);
+    if (btn) {
+      if (l === lang) {
+        btn.className = "px-2 py-0.5 rounded-full text-[10px] bg-white text-[#B91C1C] font-bold transition shadow-sm";
+      } else {
+        btn.className = "px-2 py-0.5 rounded-full text-[10px] text-white/80 hover:text-white transition";
+      }
+    }
+  });
+
+  const dict = window.IslamiTranslations ? window.IslamiTranslations[lang] : null;
+  if (!dict) return;
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) {
+      el.textContent = dict[key];
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (dict[key]) {
+      el.setAttribute('placeholder', dict[key]);
+    }
+  });
+
+  updateSettingLangUI(lang);
+  renderAllFeatures();
+}
 
 // ------------------------------------------------------------------------------
 // 4. JAM DIGITAL & HITUNG MUNDUR SHALAT REAL TIME
@@ -629,10 +666,9 @@ function renderPrayerTimesGrid(activePrayerId) {
   container.innerHTML = times.map(p => {
     const isTarget = p.id === activePrayerId;
     return `
-      <div class="px-2.5 py-1.5 rounded-xl text-center shrink-0 border transition ${
-        isTarget
-          ? 'bg-amber-400 text-slate-950 font-bold border-amber-300 shadow-md scale-105'
-          : 'bg-black/20 text-white/90 border-white/10'
+      <div class="px-2.5 py-1.5 rounded-xl text-center shrink-0 border transition ${isTarget
+        ? 'bg-amber-400 text-slate-950 font-bold border-amber-300 shadow-md scale-105'
+        : 'bg-black/20 text-white/90 border-white/10'
       }">
         <span class="text-[9px] block opacity-85 uppercase font-medium">${p.name}</span>
         <span class="text-xs font-mono font-bold">${p.time}</span>
@@ -693,6 +729,12 @@ function switchTab(targetTab, pushHistory = true) {
       renderQuranSurahs();
       renderQuranJuz();
       renderQuranRiwayat();
+    }
+  }
+
+  if (targetTab === 'calendar') {
+    if (typeof renderCalendar === 'function') {
+      renderCalendar();
     }
   }
 
@@ -828,12 +870,12 @@ function handleHomeSearch(query) {
       const matchName = s.name.toLowerCase().includes(q);
       const matchMeaning = s.meaning.toLowerCase().includes(q);
       const matchNum = s.number.toString() === q;
-      
+
       let matchedVerseSnippet = '';
       if (window.quranData.verses && window.quranData.verses[s.number]) {
-        const foundV = window.quranData.verses[s.number].find(v => 
-          v.translation.toLowerCase().includes(q) || 
-          v.latin.toLowerCase().includes(q) || 
+        const foundV = window.quranData.verses[s.number].find(v =>
+          v.translation.toLowerCase().includes(q) ||
+          v.latin.toLowerCase().includes(q) ||
           v.arabic.includes(q)
         );
         if (foundV) {
@@ -1028,8 +1070,8 @@ function filterArticleCategory(category) {
   });
 
   const articles = window.IslamiMockData.articles;
-  const filtered = category === 'Semua' 
-    ? articles 
+  const filtered = category === 'Semua'
+    ? articles
     : articles.filter(a => a.category.toLowerCase().includes(category.toLowerCase()));
 
   if (filtered.length === 0) {
@@ -1088,9 +1130,9 @@ function filterArticlesSearch() {
   if (!window.IslamiMockData || !window.IslamiMockData.articles || !container) return;
 
   const articles = window.IslamiMockData.articles;
-  const filtered = articles.filter(a => 
-    a.title.toLowerCase().includes(query) || 
-    a.summary.toLowerCase().includes(query) || 
+  const filtered = articles.filter(a =>
+    a.title.toLowerCase().includes(query) ||
+    a.summary.toLowerCase().includes(query) ||
     a.author.toLowerCase().includes(query) ||
     a.category.toLowerCase().includes(query)
   );
@@ -1776,50 +1818,561 @@ function copyToClipboard(text) {
 }
 
 // ------------------------------------------------------------------------------
-// 12. RENDER KALENDER HIJRIAH & JADWAL SHOLAT
+// 12. RENDER KALENDER HIJRIAH NUSANTARA (MASEHI + HIJRIAH + PASARAN JAWA)
 // ------------------------------------------------------------------------------
+
+AppState.calYear = 2026;
+AppState.calMonth = 10; // November (0-indexed)
+AppState.calSelectedDate = { year: 2026, month: 10, day: 22 };
+AppState.calActiveTab = 'hari-besar'; // 'hari-besar' | 'puasa' | 'agenda'
+
+// Hitung Pasaran Jawa secara matematis & presisi
+function getPasaran(year, month, day) {
+  const pasarans = ['Legi', 'Pahing', 'Pon', 'Wage', 'Kliwon'];
+  const days = Math.floor(Date.UTC(year, month, day) / 86400000);
+  return pasarans[((days + 3) % 5 + 5) % 5];
+}
+
+// Hitung Tanggal Hijriah via Intl API
+function getHijriInfo(year, month, day) {
+  const d = new Date(year, month, day);
+  try {
+    const parts = new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqura', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).formatToParts(d);
+    
+    let hDay = day, hMonth = 'Jumadal Akhirah', hYear = 1448;
+    parts.forEach(p => {
+      if (p.type === 'day') hDay = parseInt(p.value, 10);
+      if (p.type === 'month') hMonth = p.value;
+      if (p.type === 'year') hYear = parseInt(p.value, 10);
+    });
+
+    // Standarisasi nama bulan Hijriah Nusantara
+    const monthMapping = {
+      'Muharram': 'Muharram',
+      'Safar': 'Shafar',
+      'Rabiulawal': "Rabi'ul Awal",
+      'Rabiulakhir': "Rabi'ul Akhir",
+      'Jumadilawal': "Jumadal Ula",
+      'Jumadilakhir': "Jumadal Akhirah",
+      'Rejab': 'Rajab',
+      'Rajab': 'Rajab',
+      'Syaaban': "Sya'ban",
+      'Ramadan': 'Ramadhan',
+      'Syawal': 'Syawal',
+      'Zulkaedah': "Dzulqa'dah",
+      'Zulhijjah': "Dzulhijjah"
+    };
+
+    const cleanMonth = monthMapping[hMonth] || hMonth;
+    return { day: hDay, month: cleanMonth, year: hYear };
+  } catch (e) {
+    return { day: day, month: 'Jumadal Akhirah', year: 1448 };
+  }
+}
+
+// Konversi angka ke angka Arab
+function toArabicDigits(num) {
+  const digits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  return String(num).replace(/[0-9]/g, ch => digits[ch]);
+}
+
+// Navigasi bulan
+function navigateCalendarMonth(delta) {
+  AppState.calMonth += delta;
+  if (AppState.calMonth < 0) {
+    AppState.calMonth = 11;
+    AppState.calYear--;
+  } else if (AppState.calMonth > 11) {
+    AppState.calMonth = 0;
+    AppState.calYear++;
+  }
+  renderCalendar();
+}
+
+// Kembali ke bulan dan hari ini
+function goToCurrentCalendarMonth() {
+  const now = new Date();
+  AppState.calYear = now.getFullYear();
+  AppState.calMonth = now.getMonth();
+  AppState.calSelectedDate = {
+    year: now.getFullYear(),
+    month: now.getMonth(),
+    day: now.getDate()
+  };
+  renderCalendar();
+}
+
+// Pilih tanggal di grid
+function selectCalendarDate(year, month, day) {
+  AppState.calSelectedDate = { year, month, day };
+  renderCalendarGrid();
+  renderSelectedDateBanner();
+}
+
+// Switch Tab Keterangan (Hari Besar | Jadwal Puasa | Agenda Saya)
+function switchCalendarTab(tabKey) {
+  AppState.calActiveTab = tabKey;
+  ['hari-besar', 'puasa', 'agenda'].forEach(key => {
+    const btn = document.getElementById('calTabBtn-' + key);
+    if (!btn) return;
+    if (key === tabKey) {
+      btn.className = "pb-2 px-2 border-b-2 border-[#8B1E1E] text-[#8B1E1E] dark:text-amber-400 font-extrabold transition";
+    } else {
+      btn.className = "pb-2 px-2 border-b-2 border-transparent text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-200 transition";
+    }
+  });
+  renderCalendarTabContent();
+}
+
+// Render Utama Kalender
 function renderCalendar() {
+  const headerMonthYear = document.getElementById('calHeaderMonthYear');
+  const headerHijriSpan = document.getElementById('calHeaderHijriSpan');
+  if (!headerMonthYear) return;
+
+  const year = AppState.calYear;
+  const month = AppState.calMonth;
+  const lang = AppState.currentLang || 'id';
+
+  // Format Header Masehi
+  const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const monthNamesEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const monthNamesMs = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
+
+  let monthName = monthNamesId[month];
+  if (lang === 'en') monthName = monthNamesEn[month];
+  if (lang === 'ms') monthName = monthNamesMs[month];
+
+  headerMonthYear.textContent = monthName + ' ' + year;
+
+  // Rentang Bulan Hijriah (Hari pertama vs Hari terakhir bulan)
+  const totalDays = new Date(year, month + 1, 0).getDate();
+  const hijriStart = getHijriInfo(year, month, 1);
+  const hijriEnd = getHijriInfo(year, month, totalDays);
+
+  if (hijriStart.month === hijriEnd.month) {
+    headerHijriSpan.textContent = hijriStart.month + ' ' + hijriStart.year + ' H';
+  } else {
+    headerHijriSpan.textContent = hijriStart.month + ' - ' + hijriEnd.month + ' ' + hijriEnd.year + ' H';
+  }
+
+  renderCalendarGrid();
+  renderSelectedDateBanner();
+  renderCalendarTabContent();
+  renderCalendarPrayerTimes();
+
+  if (window.lucide) lucide.createIcons();
+}
+
+// Render Grid Kalender Nusantara
+function renderCalendarGrid() {
   const daysContainer = document.getElementById('calendarDaysGrid');
-  const prayerCards = document.getElementById('calendarPrayerCards');
   if (!daysContainer) return;
 
-  // Render 30 hari Jumadil Awal (Hari ini tgl 23)
-  const currentDay = 23;
-  let daysHtml = '';
-  // Offset hari awal (misal Rabu = 3 cell kosong)
-  for (let empty = 0; empty < 3; empty++) {
-    daysHtml += `<div class="p-1.5 text-slate-300 dark:text-slate-700"></div>`;
-  }
-  for (let d = 1; d <= 30; d++) {
-    const isToday = d === currentDay;
-    daysHtml += `
-      <div class="p-1.5 rounded-lg font-bold text-center transition ${isToday ? 'bg-[#B91C1C] text-white shadow-sm scale-105' : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'}">
-        <span>${d}</span>
+  const year = AppState.calYear;
+  const month = AppState.calMonth;
+  const selected = AppState.calSelectedDate || { year: 2026, month: 10, day: 22 };
+
+  const firstDayIndex = new Date(year, month, 1).getDay(); // 0 = Ahad
+  const totalDays = new Date(year, month + 1, 0).getDate();
+  const prevMonthTotalDays = new Date(year, month, 0).getDate();
+
+  const events = (window.IslamiMockData && window.IslamiMockData.calendarEvents) || [];
+
+  let html = '';
+
+  // 1. Padding hari bulan sebelumnya
+  for (let p = firstDayIndex - 1; p >= 0; p--) {
+    const prevDay = prevMonthTotalDays - p;
+    const prevDate = new Date(year, month - 1, prevDay);
+    const prevPasaran = getPasaran(prevDate.getFullYear(), prevDate.getMonth(), prevDay);
+    const prevHijri = getHijriInfo(prevDate.getFullYear(), prevDate.getMonth(), prevDay);
+
+    html += `
+      <div class="py-1 px-0.5 rounded-xl text-center opacity-30 select-none flex flex-col items-center justify-between min-h-[58px]">
+        <div class="flex items-center justify-center gap-1 w-full">
+          <span class="text-[9.5px] font-arabic font-bold text-stone-400">${toArabicDigits(prevHijri.day)}</span>
+          <span class="text-xs font-semibold text-stone-400">${prevDay}</span>
+        </div>
+        <span class="text-[9px] text-stone-400 font-medium leading-none mt-0.5">${prevPasaran}</span>
+        <div class="min-h-[5px]"></div>
       </div>
     `;
   }
-  daysContainer.innerHTML = daysHtml;
 
-  // Render 5 waktu sholat harian di kalender
-  if (prayerCards) {
-    const prayers = [
-      { name: 'Subuh', time: '04:14', icon: 'sunrise' },
-      { name: 'Dzuhur', time: '11:46', icon: 'sun' },
-      { name: 'Ashar', time: '15:05', icon: 'cloud-sun' },
-      { name: 'Maghrib', time: '17:58', icon: 'sunset' },
-      { name: 'Isya', time: '19:10', icon: 'moon' }
-    ];
+  // 2. Hari bulan berjalan
+  for (let d = 1; d <= totalDays; d++) {
+    const dateObj = new Date(year, month, d);
+    const dayOfWeek = dateObj.getDay(); // 0 = Ahad, 5 = Jumat
+    const pasaran = getPasaran(year, month, d);
+    const hijri = getHijriInfo(year, month, d);
 
-    prayerCards.innerHTML = prayers.map(p => `
-      <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-800">
-        <span class="text-[9px] font-bold text-slate-400 block">${p.name}</span>
-        <span class="text-xs font-black text-slate-900 dark:text-white font-mono mt-0.5 block">${p.time}</span>
+    const isSelected = selected.year === year && selected.month === month && selected.day === d;
+    
+    // Cek apakah hari libur/event
+    const monthStr = String(month + 1).padStart(2, '0');
+    const dayStr = String(d).padStart(2, '0');
+    const dateKey = `${year}-${monthStr}-${dayStr}`;
+    const eventMatch = events.find(e => e.date === dateKey);
+    const isHoliday = (eventMatch && eventMatch.isHoliday) || dayOfWeek === 0;
+
+    // Cek puasa sunnah: Senin (1), Kamis (4), atau Ayyamul Bidh (13, 14, 15 Hijriah)
+    const isSeninKamis = dayOfWeek === 1 || dayOfWeek === 4;
+    const isAyyamulBidh = hijri.day === 13 || hijri.day === 14 || hijri.day === 15;
+    const isFastingDay = isSeninKamis || isAyyamulBidh;
+
+    // Warna angka Masehi
+    let masehiColor = "text-stone-900 dark:text-stone-100 font-black";
+    if (isHoliday) {
+      masehiColor = "text-red-600 dark:text-red-400 font-black";
+    } else if (dayOfWeek === 5) {
+      masehiColor = "text-teal-600 dark:text-teal-400 font-black";
+    }
+
+    // Warna angka Arab Hijriah
+    let hijriColor = "text-stone-500 dark:text-stone-400";
+    if (isHoliday) {
+      hijriColor = "text-red-500 dark:text-red-400";
+    } else if (dayOfWeek === 5) {
+      hijriColor = "text-teal-600 dark:text-teal-400";
+    }
+
+    // Highlight border / background untuk tanggal aktif
+    let cellStyle = "border border-transparent hover:border-stone-200 dark:hover:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800/40 rounded-xl cursor-pointer transition";
+    if (isSelected) {
+      cellStyle = "bg-[#801818]/10 dark:bg-[#801818]/25 border-2 border-[#801818] rounded-xl shadow-xs cursor-pointer";
+    }
+
+    html += `
+      <div onclick="selectCalendarDate(${year}, ${month}, ${d})" class="py-1 px-0.5 text-center flex flex-col items-center justify-between min-h-[58px] ${cellStyle}">
+        <!-- Top: Hijri Arabic & Masehi Number -->
+        <div class="flex items-center justify-center gap-1.5 w-full">
+          <span class="text-[9.5px] font-arabic font-bold ${hijriColor}">${toArabicDigits(hijri.day)}</span>
+          <span class="text-sm ${masehiColor}">${d}</span>
+        </div>
+        <!-- Middle: Pasaran Jawa -->
+        <span class="text-[9.5px] text-stone-600 dark:text-stone-300 font-medium leading-none mt-0.5 select-none">${pasaran}</span>
+        <!-- Bottom: Indicator Dots -->
+        <div class="flex items-center justify-center gap-1 mt-0.5 min-h-[6px]">
+          ${isFastingDay ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-2xs" title="Puasa Sunnah"></span>' : ''}
+          ${eventMatch ? '<span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-2xs" title="Hari Besar"></span>' : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  // 3. Padding hari bulan berikutnya agar genap kelipatan 7
+  const filledCells = firstDayIndex + totalDays;
+  const nextMonthPadding = (7 - (filledCells % 7)) % 7;
+  for (let n = 1; n <= nextMonthPadding; n++) {
+    const nextDate = new Date(year, month + 1, n);
+    const nextPasaran = getPasaran(nextDate.getFullYear(), nextDate.getMonth(), n);
+    const nextHijri = getHijriInfo(nextDate.getFullYear(), nextDate.getMonth(), n);
+
+    html += `
+      <div class="py-1 px-0.5 rounded-xl text-center opacity-30 select-none flex flex-col items-center justify-between min-h-[58px]">
+        <div class="flex items-center justify-center gap-1 w-full">
+          <span class="text-[9.5px] font-arabic font-bold text-stone-400">${toArabicDigits(nextHijri.day)}</span>
+          <span class="text-xs font-semibold text-stone-400">${n}</span>
+        </div>
+        <span class="text-[9px] text-stone-400 font-medium leading-none mt-0.5">${nextPasaran}</span>
+        <div class="min-h-[5px]"></div>
+      </div>
+    `;
+  }
+
+  daysContainer.innerHTML = html;
+}
+
+// Banner Info Tanggal Aktif Terpilih
+function renderSelectedDateBanner() {
+  const titleEl = document.getElementById('calSelectedDateTitle');
+  const subEl = document.getElementById('calSelectedDateSub');
+  if (!titleEl || !subEl) return;
+
+  const sel = AppState.calSelectedDate || { year: 2026, month: 10, day: 22 };
+  const d = new Date(sel.year, sel.month, sel.day);
+  const lang = AppState.currentLang || 'id';
+
+  const dayNamesId = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+  const dayNamesEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const dayNamesMs = ['Ahad', 'Isnin', 'Selasa', 'Rabu', 'Khamis', 'Jumaat', 'Sabtu'];
+
+  const monthNamesId = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const monthNamesEn = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const monthNamesMs = ['Januari', 'Februari', 'Mac', 'April', 'Mei', 'Jun', 'Julai', 'Ogos', 'September', 'Oktober', 'November', 'Disember'];
+
+  let dayName = dayNamesId[d.getDay()];
+  let monthName = monthNamesId[sel.month];
+
+  if (lang === 'en') {
+    dayName = dayNamesEn[d.getDay()];
+    monthName = monthNamesEn[sel.month];
+  } else if (lang === 'ms') {
+    dayName = dayNamesMs[d.getDay()];
+    monthName = monthNamesMs[sel.month];
+  }
+
+  const pasaran = getPasaran(sel.year, sel.month, sel.day);
+  const hijri = getHijriInfo(sel.year, sel.month, sel.day);
+
+  titleEl.textContent = `${dayName} ${pasaran}, ${sel.day} ${monthName} ${sel.year}`;
+  subEl.textContent = `${hijri.day} ${hijri.month} ${hijri.year} H`;
+}
+
+// Render Tab Konten di Bawah Kalender
+function renderCalendarTabContent() {
+  const container = document.getElementById('calendarTabContent');
+  if (!container) return;
+
+  const year = AppState.calYear;
+  const month = AppState.calMonth;
+  const lang = AppState.currentLang || 'id';
+  const tab = AppState.calActiveTab || 'hari-besar';
+
+  if (tab === 'hari-besar') {
+    const events = (window.IslamiMockData && window.IslamiMockData.calendarEvents) || [];
+    // Filter events for current viewed month
+    let monthEvents = events.filter(e => e.year === year && e.month === month);
+
+    if (monthEvents.length === 0) {
+      // Tampilkan events terdekat jika bulan ini tidak ada
+      monthEvents = events.slice(0, 3);
+    }
+
+    const monthNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+    container.innerHTML = monthEvents.map(ev => {
+      const title = ev.title[lang] || ev.title['id'];
+      const sub = ev.subtitle[lang] || ev.subtitle['id'];
+      const mShort = monthNamesShort[ev.month];
+
+      return `
+        <div class="p-3 rounded-2xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-700/60 flex items-start gap-3 hover:border-[#8B1E1E] transition group">
+          <div class="w-12 py-1.5 rounded-xl border border-stone-200 dark:border-stone-700 text-center shrink-0 bg-white dark:bg-stone-800 shadow-2xs">
+            <span class="text-[9.5px] text-stone-400 block uppercase leading-none font-bold">${mShort}</span>
+            <span class="text-base font-black text-blue-600 dark:text-blue-400 block leading-tight mt-0.5">${ev.day}</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-stone-900 dark:text-white leading-tight group-hover:text-[#8B1E1E] transition">${title}</h4>
+            <p class="text-[10px] text-stone-500 dark:text-stone-400 mt-1 leading-snug">${sub}</p>
+          </div>
+          <div class="w-6 h-6 rounded-full bg-stone-100 dark:bg-stone-700 flex items-center justify-center text-stone-400 shrink-0">
+            <i data-lucide="info" class="w-3.5 h-3.5"></i>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+  } else if (tab === 'puasa') {
+    // Bangun daftar puasa sunnah untuk bulan berjalan
+    const totalDays = new Date(year, month + 1, 0).getDate();
+    const fastingDays = [];
+
+    for (let d = 1; d <= totalDays; d++) {
+      const dateObj = new Date(year, month, d);
+      const dayOfWeek = dateObj.getDay();
+      const hijri = getHijriInfo(year, month, d);
+
+      const isSenin = dayOfWeek === 1;
+      const isKamis = dayOfWeek === 4;
+      const isAyyamulBidh = hijri.day === 13 || hijri.day === 14 || hijri.day === 15;
+
+      if (isAyyamulBidh) {
+        fastingDays.push({
+          day: d,
+          type: "Ayyamul Bidh",
+          title: `Puasa Sunnah Ayyamul Bidh (${hijri.day} ${hijri.month})`,
+          desc: "Puasa tengah bulan Hijriah yang pahalanya seperti puasa sepanjang tahun."
+        });
+      } else if (isSenin) {
+        fastingDays.push({
+          day: d,
+          type: "Senin",
+          title: `Puasa Sunnah Hari Senin (${hijri.day} ${hijri.month})`,
+          desc: "Hari diperiksanya amal ibadah dan hari kelahiran Rasulullah SAW."
+        });
+      } else if (isKamis) {
+        fastingDays.push({
+          day: d,
+          type: "Kamis",
+          title: `Puasa Sunnah Hari Kamis (${hijri.day} ${hijri.month})`,
+          desc: "Hari diangkatnya catatan amalan kebajikan kepada Allah Ta'ala."
+        });
+      }
+    }
+
+    container.innerHTML = fastingDays.map(f => `
+      <div class="p-3 rounded-2xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-700/60 flex items-start gap-3 hover:border-amber-500 transition">
+        <div class="w-12 py-1.5 rounded-xl border border-amber-200 dark:border-amber-900 text-center shrink-0 bg-amber-50 dark:bg-amber-950/40 shadow-2xs">
+          <span class="text-[9px] text-amber-700 dark:text-amber-400 block uppercase font-bold leading-none">Tgl</span>
+          <span class="text-base font-black text-amber-700 dark:text-amber-400 block leading-tight mt-0.5">${f.day}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-1.5">
+            <h4 class="text-xs font-bold text-stone-900 dark:text-white leading-tight">${f.title}</h4>
+            <span class="text-[8.5px] font-bold px-1.5 py-0.2 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">${f.type}</span>
+          </div>
+          <p class="text-[10px] text-stone-500 dark:text-stone-400 mt-1 leading-snug">${f.desc}</p>
+        </div>
+        <div class="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+        </div>
       </div>
     `).join('');
+
+  } else if (tab === 'agenda') {
+    let agendas = [];
+    try {
+      agendas = JSON.parse(localStorage.getItem('islami_user_agendas') || '[]');
+    } catch (e) {
+      agendas = [];
+    }
+
+    if (agendas.length === 0) {
+      container.innerHTML = `
+        <div class="py-6 px-4 text-center rounded-2xl border border-dashed border-stone-200 dark:border-stone-800 bg-stone-50/50 dark:bg-stone-800/30">
+          <i data-lucide="calendar-plus" class="w-8 h-8 mx-auto mb-2 text-stone-400 opacity-60"></i>
+          <p class="text-xs font-bold text-stone-700 dark:text-stone-300">Belum ada agenda pribadi</p>
+          <p class="text-[10.5px] text-stone-400 mt-1">Catat jadwal pengajian, puasa nazar, haul, atau rencana ziarah Anda.</p>
+          <button onclick="openAddAgendaModal()" class="mt-3 px-3.5 py-1.5 rounded-full bg-[#8B1E1E] text-white text-xs font-bold shadow-xs hover:bg-[#6E1212] transition">
+            + Tambah Agenda Baru
+          </button>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="flex items-center justify-between pb-1 text-xs">
+          <span class="text-[10.5px] text-stone-400 font-semibold">${agendas.length} Agenda Tercatat</span>
+          <button onclick="openAddAgendaModal()" class="text-[11px] font-bold text-[#8B1E1E] dark:text-amber-400 hover:underline">
+            + Tambah Agenda
+          </button>
+        </div>
+        <div class="space-y-2">
+          ${agendas.map(ag => `
+            <div class="p-3 rounded-2xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-700/60 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-8 h-8 rounded-xl bg-red-100 dark:bg-red-950 text-[#8B1E1E] dark:text-red-300 flex items-center justify-center font-bold text-xs shrink-0">
+                  <i data-lucide="bookmark" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0">
+                  <h4 class="text-xs font-bold text-stone-900 dark:text-white truncate">${ag.title}</h4>
+                  <p class="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">${ag.date} ${ag.notes ? '• ' + ag.notes : ''}</p>
+                </div>
+              </div>
+              <button onclick="deleteUserAgenda('${ag.id}')" class="w-7 h-7 rounded-full text-stone-400 hover:text-red-600 transition flex items-center justify-center shrink-0" title="Hapus Agenda">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
   }
 
   if (window.lucide) lucide.createIcons();
 }
+
+// Render Jadwal Sholat di Bawah Kalender
+function renderCalendarPrayerTimes() {
+  const prayerCards = document.getElementById('calendarPrayerCards');
+  if (!prayerCards) return;
+
+  const prayers = [
+    { name: 'Subuh', time: '04:14', icon: 'sunrise' },
+    { name: 'Dzuhur', time: '11:46', icon: 'sun' },
+    { name: 'Ashar', time: '15:05', icon: 'cloud-sun' },
+    { name: 'Maghrib', time: '17:58', icon: 'sunset' },
+    { name: 'Isya', time: '19:10', icon: 'moon' }
+  ];
+
+  prayerCards.innerHTML = prayers.map(p => `
+    <div class="p-2 rounded-xl bg-stone-50 dark:bg-stone-800/80 border border-stone-100 dark:border-stone-800 text-center">
+      <span class="text-[9px] font-bold text-stone-400 block">${p.name}</span>
+      <span class="text-xs font-black text-stone-900 dark:text-white font-mono mt-0.5 block">${p.time}</span>
+    </div>
+  `).join('');
+}
+
+// Modal Tambah Agenda
+function openAddAgendaModal() {
+  const modal = document.getElementById('modalAddAgenda');
+  const dateInput = document.getElementById('inputAgendaDate');
+  if (modal) {
+    if (dateInput) {
+      const sel = AppState.calSelectedDate || { year: 2026, month: 10, day: 22 };
+      const mStr = String(sel.month + 1).padStart(2, '0');
+      const dStr = String(sel.day).padStart(2, '0');
+      dateInput.value = `${sel.year}-${mStr}-${dStr}`;
+    }
+    modal.classList.remove('hidden');
+  }
+}
+
+function closeAddAgendaModal() {
+  const modal = document.getElementById('modalAddAgenda');
+  if (modal) modal.classList.add('hidden');
+}
+
+function saveUserAgenda() {
+  const titleInput = document.getElementById('inputAgendaTitle');
+  const dateInput = document.getElementById('inputAgendaDate');
+  const notesInput = document.getElementById('inputAgendaNotes');
+
+  const title = (titleInput ? titleInput.value : '').trim();
+  const date = dateInput ? dateInput.value : '';
+  const notes = (notesInput ? notesInput.value : '').trim();
+
+  if (!title) {
+    showToast('Silakan isi judul agenda.');
+    return;
+  }
+
+  let agendas = [];
+  try {
+    agendas = JSON.parse(localStorage.getItem('islami_user_agendas') || '[]');
+  } catch (e) {
+    agendas = [];
+  }
+
+  const newAgenda = {
+    id: 'ag-' + Date.now(),
+    title,
+    date: date || '2026-11-22',
+    notes
+  };
+
+  agendas.unshift(newAgenda);
+  localStorage.setItem('islami_user_agendas', JSON.stringify(agendas));
+
+  if (titleInput) titleInput.value = '';
+  if (notesInput) notesInput.value = '';
+
+  closeAddAgendaModal();
+  showToast('Agenda berhasil disimpan!');
+  
+  // Switch to agenda tab and render
+  switchCalendarTab('agenda');
+}
+
+function deleteUserAgenda(id) {
+  let agendas = [];
+  try {
+    agendas = JSON.parse(localStorage.getItem('islami_user_agendas') || '[]');
+  } catch (e) {
+    agendas = [];
+  }
+
+  agendas = agendas.filter(a => a.id !== id);
+  localStorage.setItem('islami_user_agendas', JSON.stringify(agendas));
+  renderCalendarTabContent();
+  showToast('Agenda dihapus.');
+}
+
 
 // ------------------------------------------------------------------------------
 // 13. PENGATURAN & PREFERENSI APLIKASI
@@ -1873,7 +2426,7 @@ let currentReadingSurah = 1;
 // 1. Switch Tab Kapsul: Surah | Juz | Riwayat
 function switchQuranTab(tab) {
   currentQuranTab = tab;
-  
+
   const btnSurah = document.getElementById('quran-btn-surah');
   const btnJuz = document.getElementById('quran-btn-juz');
   const btnRiwayat = document.getElementById('quran-btn-riwayat');
@@ -1952,7 +2505,7 @@ function renderQuranSurahs(filter = '') {
     // Search verses mock data for matching snippet
     let matchedVerse = null;
     if (q && window.quranData.verses && window.quranData.verses[s.number]) {
-      matchedVerse = window.quranData.verses[s.number].find(v => 
+      matchedVerse = window.quranData.verses[s.number].find(v =>
         v.translation.toLowerCase().includes(q) ||
         v.latin.toLowerCase().includes(q) ||
         v.arabic.includes(q)
