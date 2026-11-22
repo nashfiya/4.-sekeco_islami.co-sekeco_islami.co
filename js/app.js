@@ -136,6 +136,66 @@ function confirmWelcomeScreen() {
   showToast(selectedTempLang === 'en' ? "Welcome to Islami.co!" : (selectedTempLang === 'ms' ? "Selamat datang ke Islami.co!" : "Selamat datang di Islami.co!"));
 }
 
+// ==============================================================================
+// MULTI-LANGUAGE DAILY VERSE & TODAY'S DU'A CAROUSEL
+// ==============================================================================
+AppState.dailyVerseIndex = 0;
+
+function switchDailyVerseSlide(index) {
+  if (!window.IslamiMockData || !window.IslamiMockData.dailyVerses) return;
+  const list = window.IslamiMockData.dailyVerses;
+  if (index < 0 || index >= list.length) return;
+  AppState.dailyVerseIndex = index;
+  renderDailyVerse(index);
+}
+
+function renderDailyVerse(index = (AppState.dailyVerseIndex || 0)) {
+  if (!window.IslamiMockData || !window.IslamiMockData.dailyVerses) return;
+  const list = window.IslamiMockData.dailyVerses;
+  const item = list[index] || list[0];
+  const lang = AppState.currentLang || 'id';
+
+  const arabicEl = document.getElementById('dailyVerseArabic');
+  const transEl = document.getElementById('dailyVerseTranslation');
+  const surahEl = document.getElementById('dailyVerseSurah');
+  const dotsContainer = document.getElementById('dailyVerseDots');
+
+  if (arabicEl) arabicEl.textContent = item.arabic;
+  if (transEl) transEl.textContent = item.translation[lang] || item.translation['id'];
+  if (surahEl) surahEl.textContent = item.surah[lang] || item.surah['id'];
+
+  if (dotsContainer) {
+    dotsContainer.innerHTML = list.map((_, i) => {
+      const isActive = i === index;
+      return '<button onclick="switchDailyVerseSlide(' + i + ')" class="' + 
+        (isActive ? 'w-3.5 h-1 rounded-full bg-amber-400' : 'w-1 h-1 rounded-full bg-white/40 hover:bg-white/80') + 
+        ' transition-all" aria-label="Slide ' + (i + 1) + '"></button>';
+    }).join('');
+  }
+}
+
+function shareDailyVerse() {
+  const index = AppState.dailyVerseIndex || 0;
+  if (!window.IslamiMockData || !window.IslamiMockData.dailyVerses) return;
+  const item = window.IslamiMockData.dailyVerses[index] || window.IslamiMockData.dailyVerses[0];
+  const lang = AppState.currentLang || 'id';
+  const text = item.arabic + '\n\n' + (item.translation[lang] || item.translation['id']) + '\n(' + (item.surah[lang] || item.surah['id']) + ')\n\nDibagikan via Islami.co';
+  copyToClipboard(text);
+  showToast(lang === 'en' ? 'Verse copied to clipboard!' : (lang === 'ms' ? 'Ayat disalin ke papan keratan!' : 'Ayat berhasil disalin!'));
+}
+
+function renderTodaysDua() {
+  if (!window.IslamiMockData || !window.IslamiMockData.dailyDuas) return;
+  const item = window.IslamiMockData.dailyDuas[0];
+  const lang = AppState.currentLang || 'id';
+
+  const arabicEl = document.getElementById('todaysDuaArabic');
+  const transEl = document.getElementById('todaysDuaTranslation');
+
+  if (arabicEl) arabicEl.textContent = item.arabic;
+  if (transEl) transEl.textContent = item.translation[lang] || item.translation['id'];
+}
+
 // Override switchLanguage with reactive translations
 function switchLanguage(lang) {
   if (!['id', 'en', 'ms'].includes(lang)) lang = 'id';
@@ -145,6 +205,9 @@ function switchLanguage(lang) {
 }
 
 function applyLanguage(lang) {
+  if (!['id', 'en', 'ms'].includes(lang)) lang = 'id';
+  AppState.currentLang = lang;
+
   const dict = window.IslamiTranslations ? (window.IslamiTranslations[lang] || window.IslamiTranslations['id']) : null;
   if (!dict) return;
 
@@ -157,6 +220,14 @@ function applyLanguage(lang) {
       } else {
         el.textContent = dict[key];
       }
+    }
+  });
+
+  // Scan and translate all [data-i18n-placeholder] tags
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (dict[key]) {
+      el.setAttribute('placeholder', dict[key]);
     }
   });
 
@@ -179,25 +250,22 @@ function applyLanguage(lang) {
   }
 
   // 3. Search Placeholder
+  const homeSearchInput = document.getElementById('homeSearchInput');
+  if (homeSearchInput && dict.ask_question_placeholder) {
+    homeSearchInput.placeholder = dict.ask_question_placeholder;
+  }
   const searchPlace = document.querySelector('#view-home .truncate');
   if (searchPlace && dict.ask_question_placeholder) {
     searchPlace.textContent = dict.ask_question_placeholder;
   }
 
-  // 4. Daily Verse Label
-  const dvLabel = document.querySelector('#view-home .uppercase.tracking-wider');
-  if (dvLabel && dict.daily_verse_title) {
-    dvLabel.textContent = dict.daily_verse_title;
+  // 4. Weather text
+  const weatherEl = document.getElementById('heroWeatherText');
+  if (weatherEl && dict.weather_clear) {
+    weatherEl.textContent = dict.weather_clear;
   }
 
-  // 5. Re-render dynamic components
-  if (typeof renderQuranList === 'function') renderQuranList();
-  if (typeof renderHadithList === 'function') renderHadithList();
-  if (typeof renderPrayersList === 'function') renderPrayersList();
-  if (typeof renderArticlesList === 'function') renderArticlesList();
-  if (typeof updatePrayerTimesCountdown === 'function') updatePrayerTimesCountdown();
-
-  // 6. Update date display based on locale
+  // 5. Update date display based on locale
   const d = new Date();
   const dateOptions = { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' };
   const gregEl = document.getElementById('heroGregorianDate');
@@ -206,9 +274,20 @@ function applyLanguage(lang) {
     gregEl.textContent = d.toLocaleDateString(localeStr, dateOptions);
   }
 
-  if (typeof renderMoreFeaturesDrawer === 'function') {
-    renderMoreFeaturesDrawer();
-  }
+  // 6. Daily Verse & Today's Du'a render
+  if (typeof renderDailyVerse === 'function') renderDailyVerse();
+  if (typeof renderTodaysDua === 'function') renderTodaysDua();
+
+  // 7. Re-render dynamic components
+  if (typeof renderQuranList === 'function') renderQuranList();
+  if (typeof renderHadithList === 'function') renderHadithList();
+  if (typeof renderPrayersList === 'function') renderPrayersList();
+  if (typeof renderArticlesList === 'function') renderArticlesList();
+  if (typeof updatePrayerTimesCountdown === 'function') updatePrayerTimesCountdown();
+  if (typeof updateSettingLangUI === 'function') updateSettingLangUI(lang);
+  if (typeof renderMoreFeaturesDrawer === 'function') renderMoreFeaturesDrawer();
+  if (typeof renderAllFeatures === 'function') renderAllFeatures();
+
   if (window.lucide) lucide.createIcons();
 }
 
@@ -464,44 +543,7 @@ function selectLanguageFromOnboarding(lang) {
   showToast(lang === 'en' ? 'Language set to English' : (lang === 'ms' ? 'Bahasa ditukar ke Melayu' : 'Bahasa disetel ke Indonesia'));
 }
 
-function switchLanguage(lang) {
-  AppState.currentLang = lang;
-  localStorage.setItem('islami_preferred_lang', lang);
-  applyLanguage(lang);
-}
-
-function applyLanguage(lang) {
-  ['id', 'en', 'ms'].forEach(l => {
-    const btn = document.getElementById(`btn-lang-${l}`);
-    if (btn) {
-      if (l === lang) {
-        btn.className = "px-2 py-0.5 rounded-full text-[10px] bg-white text-[#B91C1C] font-bold transition shadow-sm";
-      } else {
-        btn.className = "px-2 py-0.5 rounded-full text-[10px] text-white/80 hover:text-white transition";
-      }
-    }
-  });
-
-  const dict = window.IslamiTranslations ? window.IslamiTranslations[lang] : null;
-  if (!dict) return;
-
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (dict[key]) {
-      el.textContent = dict[key];
-    }
-  });
-
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (dict[key]) {
-      el.setAttribute('placeholder', dict[key]);
-    }
-  });
-
-  updateSettingLangUI(lang);
-  renderAllFeatures();
-}
+// Duplicate switchLanguage & applyLanguage removed - unified in main applyLanguage above
 
 // ------------------------------------------------------------------------------
 // 4. JAM DIGITAL & HITUNG MUNDUR SHALAT REAL TIME

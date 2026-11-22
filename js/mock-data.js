@@ -653,6 +653,102 @@ const IslamiMockData = {
       summary: "Khotbah yang mengajak jamaah menghidupkan spirit kerukunan dan tolong-menolong kepada sesama hamba Allah.",
       content: "Alhamdulillahilladzi arsala rasulahu bil huda wa dinil haq... Jamaah shalat Jumat yang dirahmati Allah, persaudaraan kemanusiaan (ukhuwah insaniyah) mengajarkan kita bahwa setiap tetangga dan sesama manusia memiliki hak atas perlakuan santun dan kasih sayang kita..."
     }
+  ],
+
+  // ----------------------------------------------------------------------------
+  // 14. DATA AYAT HARIAN MULTI-BAHASA (DAILY VERSES CAROUSEL)
+  // ----------------------------------------------------------------------------
+  dailyVerses: [
+    {
+      id: 1,
+      arabic: "ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًۭى لِّلْمُتَّقِينَ",
+      surah: {
+        id: "Surah Al-Baqarah: 2",
+        en: "Surah Al-Baqarah: 2",
+        ms: "Surah Al-Baqarah: 2"
+      },
+      translation: {
+        id: "\"Kitab (Al-Qur'an) ini tidak ada keraguan padanya; petunjuk bagi mereka yang bertakwa.\"",
+        en: "\"This is the Book about which there is no doubt, a guidance for those conscious of Allah.\"",
+        ms: "\"Kitab (Al-Quran) ini tidak ada sebarang keraguan padanya; menjadi petunjuk bagi orang-orang yang bertaqwa.\""
+      }
+    },
+    {
+      id: 2,
+      arabic: "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا • إِنَّ مَعَ ٱلْعُسْرِ يُسْرًا",
+      surah: {
+        id: "Surah Al-Insyirah: 5-6",
+        en: "Surah Ash-Sharh: 5-6",
+        ms: "Surah Asy-Syarh: 5-6"
+      },
+      translation: {
+        id: "\"Karena sesungguhnya sesudah kesulitan itu ada kemudahan, sesungguhnya sesudah kesulitan itu ada kemudahan.\"",
+        en: "\"For indeed, with hardship [will be] ease. Indeed, with hardship [will be] ease.\"",
+        ms: "\"Oleh itu, maka (tetapkanlah kepercayaanmu) bahawa sesungguhnya tiap-tiap kesukaran disertai kemudahan.\""
+      }
+    },
+    {
+      id: 3,
+      arabic: "وَمَن يَتَّقِ ٱللَّهَ يَجْعَل لَّهُۥ مَخْرَجًا وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ",
+      surah: {
+        id: "Surah At-Talaq: 2-3",
+        en: "Surah At-Talaq: 2-3",
+        ms: "Surah At-Talaq: 2-3"
+      },
+      translation: {
+        id: "\"Barangsiapa bertakwa kepada Allah niscaya Dia akan mengadakan baginya jalan keluar dan memberinya rezeki dari arah yang tiada disangka-sangka.\"",
+        en: "\"And whoever fears Allah - He will make for him a way out and will provide for him from where he does not expect.\"",
+        ms: "\"Dan sesiapa yang bertaqwa kepada Allah, nescaya Allah memudahkan baginya jalan keluar serta memberinya rezeki dari jalan yang tidak terlintas di hatinya.\""
+      }
+    }
+  ],
+
+  // ----------------------------------------------------------------------------
+  // 15. DATA DOA HARIAN MULTI-BAHASA (TODAY'S DU'A)
+  // ----------------------------------------------------------------------------
+  dailyDuas: [
+    {
+      id: 1,
+      arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ",
+      title: {
+        id: "Doa Afiyah & Keselamatan",
+        en: "Du'a for Forgiveness & Well-being",
+        ms: "Doa Afiyah & Kesejahteraan"
+      },
+      translation: {
+        id: "\"Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan di dunia dan akhirat.\"",
+        en: "\"O Allah, I ask You for forgiveness and well-being in this world and the Hereafter.\"",
+        ms: "\"Ya Allah, sesungguhnya aku memohon kepada-Mu keampunan dan kesejahteraan di dunia dan di akhirat.\""
+      }
+    },
+    {
+      id: 2,
+      arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+      title: {
+        id: "Doa Sapujagad",
+        en: "Supplication for Good in Both Worlds",
+        ms: "Doa Sapujagat"
+      },
+      translation: {
+        id: "\"Wahai Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat dan lindungilah kami dari siksa neraka.\"",
+        en: "\"Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire.\"",
+        ms: "\"Wahai Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari azab neraka.\""
+      }
+    },
+    {
+      id: 3,
+      arabic: "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ",
+      title: {
+        id: "Doa Istiqamah Ibadah",
+        en: "Supplication for Remembering & Worshiping Allah",
+        ms: "Doa Kelaziman Ibadah"
+      },
+      translation: {
+        id: "\"Ya Allah, tolonglah aku untuk senantiasa mengingat-Mu, bersyukur kepada-Mu, dan beribadah dengan baik kepada-Mu.\"",
+        en: "\"O Allah, help me remember You, thank You, and worship You in the best manner.\"",
+        ms: "\"Ya Allah, tolonglah aku untuk sentiasa mengingati-Mu, bersyukur kepada-Mu dan memperelokkan ibadah kepada-Mu.\""
+      }
+    }
   ]
 };
 

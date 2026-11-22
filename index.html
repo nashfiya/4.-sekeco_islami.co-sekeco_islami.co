@@ -208,7 +208,7 @@
             <div class="w-[164px] shrink-0 space-y-1.5 z-10">
               <div
                 class="rounded-2xl bg-gradient-to-br from-[#8B1E1E] via-[#9B2222] to-[#6E1212] text-white p-3 shadow-md relative overflow-hidden">
-                <span class="text-[9px] uppercase font-bold text-red-200/90 tracking-wider">Next Prayer</span>
+                <span class="text-[9px] uppercase font-bold text-red-200/90 tracking-wider" data-i18n="next_prayer_title">Sholat Berikutnya</span>
                 <div class="flex items-center justify-between mt-0.5">
                   <h3 id="nextPrayerName" class="text-lg font-black tracking-wide text-white">ASOR</h3>
                   <!-- Ikon Siluet Duduk Berdoa / Tasyahud Sholat Sesuai Permintaan -->
@@ -255,7 +255,7 @@
                 <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500 fill-amber-500 animate-pulse"></i>
                 <div class="text-left leading-tight">
                   <span class="text-[11px] font-black block">24°C</span>
-                  <span class="text-[8.5px] text-stone-400 block -mt-0.5">Clear</span>
+                  <span class="text-[8.5px] text-stone-400 block -mt-0.5" id="heroWeatherText" data-i18n="weather_clear">Cerah</span>
                 </div>
               </div>
 
@@ -279,7 +279,7 @@
               <input type="text" id="homeSearchInput"
                 oninput="handleHomeSearch(this.value)"
                 onfocus="handleHomeSearch(this.value)"
-                placeholder="Ask a Question..."
+                placeholder="Cari ayat, doa, hadits, atau layanan..." data-i18n-placeholder="ask_question_placeholder"
                 class="w-full bg-transparent text-xs text-stone-900 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none border-none py-1">
             </div>
             <div class="flex items-center gap-1 shrink-0">
@@ -305,12 +305,12 @@
 
         
         <!-- ==================== DAILY VERSE CARD (RAMPING, PADAT DENGAN IKON 3D REHAL) ==================== -->
-        <div
+        <div id="dailyVerseCard"
           class="rounded-2xl bg-gradient-to-br from-[#8B1E1E] via-[#9B2222] to-[#6E1212] text-white p-3 pt-2.5 pb-2.5 shadow-md relative overflow-hidden">
           <!-- Header Card: Label & Share Icon Sesuai Gambar -->
           <div class="flex items-center justify-between pb-1 border-b border-white/10">
-            <span class="text-[10px] font-extrabold text-amber-300 uppercase tracking-wider">Daily Verse</span>
-            <button onclick="copyToClipboard('ذلك الكتاب لا ريب فيه هدى للمتقين (Surah Al-Baqarah: 2)')"
+            <span class="text-[10px] font-extrabold text-amber-300 uppercase tracking-wider" data-i18n="daily_verse_title">Ayat Harian</span>
+            <button onclick="shareDailyVerse()"
               class="w-6 h-6 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition"
               title="Bagikan Ayat">
               <i data-lucide="share-2" class="w-3 h-3"></i>
@@ -319,14 +319,14 @@
 
           <div class="flex items-center justify-between gap-3 pt-2">
             <div class="flex-1 space-y-1">
-              <p class="font-arabic text-right text-base text-amber-100 leading-relaxed font-bold">
+              <p id="dailyVerseArabic" class="font-arabic text-right text-base text-amber-100 leading-relaxed font-bold">
                 ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًۭى لِّلْمُتَّقِينَ
               </p>
-              <p class="text-[10px] text-stone-200 leading-tight italic">
-                "This is the Book about which there is no doubt, a guidance for those conscious of Allah."
+              <p id="dailyVerseTranslation" class="text-[10px] text-stone-200 leading-tight italic">
+                "Kitab (Al-Qur'an) ini tidak ada keraguan padanya; petunjuk bagi mereka yang bertakwa."
               </p>
-              <span class="text-[9.5px] font-bold text-amber-300 block pt-0.5">
-                Surah Al-Baqara
+              <span id="dailyVerseSurah" class="text-[9.5px] font-bold text-amber-300 block pt-0.5">
+                Surah Al-Baqarah: 2
               </span>
             </div>
 
@@ -337,18 +337,18 @@
             </div>
           </div>
 
-          <!-- Carousel Dots Sesuai Gambar -->
-          <div class="flex items-center justify-center gap-1.5 pt-1.5">
-            <span class="w-3.5 h-1 rounded-full bg-amber-400"></span>
-            <span class="w-1 h-1 rounded-full bg-white/30"></span>
-            <span class="w-1 h-1 rounded-full bg-white/30"></span>
+          <!-- Carousel Dots Interaktif -->
+          <div id="dailyVerseDots" class="flex items-center justify-center gap-1.5 pt-1.5">
+            <button onclick="switchDailyVerseSlide(0)" class="w-3.5 h-1 rounded-full bg-amber-400 transition-all"></button>
+            <button onclick="switchDailyVerseSlide(1)" class="w-1 h-1 rounded-full bg-white/40 hover:bg-white/80 transition-all"></button>
+            <button onclick="switchDailyVerseSlide(2)" class="w-1 h-1 rounded-full bg-white/40 hover:bg-white/80 transition-all"></button>
           </div>
         </div>
 
         <!-- ==================== TODAY'S DU'A CARD (SESUAI GAMBAR) ==================== -->
         <div onclick="switchTab('doa')"
           class="card-islami p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-red-600 transition group bg-white dark:bg-white/[0.04] dark:border-white/10 dark:backdrop-blur-md">
-          <div class="flex items-center gap-3 flex-1">
+          <div class="flex items-center gap-3 flex-1 min-w-0">
             <!-- Circular Praying Hands Icon Sesuai Gambar -->
             <div
               class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#7F1D1D] to-[#991B1B] text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition">
@@ -361,20 +361,19 @@
                   d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
               </svg>
             </div>
-            <div class="flex-1 space-y-0.5">
-              <span class="text-[10px] font-black uppercase text-red-700 dark:text-red-400 tracking-wider">Today's
-                Du'a</span>
-              <p class="font-arabic text-sm text-stone-900 dark:text-stone-100 font-bold leading-normal truncate">
+            <div class="flex-1 min-w-0 space-y-0.5">
+              <span class="text-[10px] font-black uppercase text-red-700 dark:text-red-400 tracking-wider" data-i18n="todays_dua_title">Doa Harian</span>
+              <p id="todaysDuaArabic" class="font-arabic text-sm text-stone-900 dark:text-stone-100 font-bold leading-normal truncate">
                 اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ
               </p>
-              <p class="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-1">
-                "O Allah, I ask You for forgiveness and well-being in this world and the Hereafter."
+              <p id="todaysDuaTranslation" class="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-1">
+                "Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan di dunia dan akhirat."
               </p>
             </div>
           </div>
           <!-- Right Arrow Button Sesuai Gambar -->
           <div
-            class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 group-hover:bg-red-50 dark:group-hover:bg-red-950 group-hover:text-red-700 transition">
+            class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 group-hover:bg-red-50 dark:group-hover:bg-red-950 group-hover:text-red-700 transition shrink-0">
             <i data-lucide="chevron-right" class="w-4 h-4"></i>
           </div>
         </div>
@@ -385,9 +384,9 @@
             <span
               class="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-[#8B1E1E]"></span>
-              Fitur Islami
+              <span data-i18n="features_title">Fitur Islami</span>
             </span>
-            <span class="text-[10px] text-stone-400 font-medium">Lengkap & Terpadu</span>
+            <span class="text-[10px] text-stone-400 font-medium" data-i18n="features_integrated">Lengkap & Terpadu</span>
           </div>
 
                     <div class="grid grid-cols-3 gap-2.5">
@@ -398,8 +397,8 @@
                 <img src="assets/3d/icon_prayer_time.png?v=3.5.0" alt="Praying Time" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
               <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Praying Time</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Jadwal & Adzan</p>
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full" data-i18n="menu_prayer">Waktu Sholat</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full" data-i18n="sub_prayer">Jadwal & Adzan</p>
               </div>
             </div>
 
@@ -409,8 +408,8 @@
                 <img src="assets/3d/real_quran.png?v=4.0.0" alt="Al-Qur'an" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
               <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Al-Qur'an</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">30 Juz & Audio</p>
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full" data-i18n="menu_quran">Al-Qur'an</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full" data-i18n="sub_quran">30 Juz & Audio</p>
               </div>
             </div>
 
@@ -420,8 +419,8 @@
                 <img src="assets/3d/real_hadith.png?v=4.0.0" alt="Hadits" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
               <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Hadits</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Shahih & Syarah</p>
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full" data-i18n="menu_hadith">Hadits</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full" data-i18n="sub_hadith">Shahih & Syarah</p>
               </div>
             </div>
 
@@ -431,8 +430,8 @@
                 <img src="assets/3d/real_doa.png?v=4.0.0" alt="Doa Harian" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
               <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Doa Harian</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Doa & Zikir</p>
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full" data-i18n="menu_doa">Doa Harian</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full" data-i18n="sub_doa">Doa & Zikir</p>
               </div>
             </div>
 
@@ -442,8 +441,8 @@
                 <img src="assets/3d/real_yasin.png?v=4.2.0" alt="Yasin & Tahlil" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
               <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Yasin & Tahlil</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Teks & Panduan</p>
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full" data-i18n="menu_yasin">Yasin & Tahlil</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full" data-i18n="sub_yasin">Teks & Panduan</p>
               </div>
             </div>
 
@@ -453,8 +452,8 @@
                 <img src="assets/3d/real_masjid.png?v=4.2.0" alt="Direktori Masjid" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
               <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Masjid</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Peta & Fasilitas</p>
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full" data-i18n="menu_masjid">Masjid</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full" data-i18n="sub_masjid">Peta & Fasilitas</p>
               </div>
             </div>
 
@@ -464,8 +463,8 @@
                 <img src="assets/3d/real_makam.png?v=4.0.0" alt="Makam Ulama" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
               <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Makam Ulama</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Ziarah Wali</p>
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full" data-i18n="menu_makam">Makam Ulama</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full" data-i18n="sub_makam">Ziarah Wali</p>
               </div>
             </div>
 
@@ -475,8 +474,8 @@
                 <img src="assets/3d/real_ustadz.png?v=4.0.0" alt="Cari Ustadz" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
               <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Cari Ustadz</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Khotib & Kajian</p>
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full" data-i18n="menu_ustadz">Cari Ustadz</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full" data-i18n="sub_ustadz">Khotib & Kajian</p>
               </div>
             </div>
 
@@ -486,8 +485,8 @@
                 <img src="assets/3d/real_jenazah.png?v=4.0.0" alt="Tanggap Jenazah" class="w-full h-full object-contain filter drop-shadow-md">
               </div>
               <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
-                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">Tanggap Jenazah</h4>
-                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">Ambulan 24 Jam</p>
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full" data-i18n="menu_jenazah">Tanggap Jenazah</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full" data-i18n="sub_jenazah">Ambulan 24 Jam</p>
               </div>
             </div>
 
@@ -1446,7 +1445,7 @@
             <span class="w-2.5 h-2.5 rounded-full bg-[#8B1E1E]"></span>
             Fitur & Layanan Lainnya
           </h3>
-          <p class="text-xs text-stone-500 dark:text-stone-400">Eksplorasi ragam fitur ibadah dan kemaslahatan umat</p>
+          <p class="text-xs text-stone-500 dark:text-stone-400" data-i18n="more_drawer_sub">Eksplorasi ragam fitur ibadah dan kemaslahatan umat</p>
         </div>
         <button onclick="closeMoreFeaturesDrawer()"
           class="w-8 h-8 rounded-full bg-stone-200/80 dark:bg-slate-800 flex items-center justify-center text-stone-600 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-slate-700 transition">
