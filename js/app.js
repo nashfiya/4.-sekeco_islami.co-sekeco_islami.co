@@ -28,7 +28,9 @@ const AppState = {
   isOnline: navigator.onLine,
   deferredInstallPrompt: null,
   readerFontSize: 15,
-  bookmarks: []
+  bookmarks: [],
+  dailyPlanCategory: 'all',
+  dailyPlanKeyword: ''
 };
 
 // Handler Khusus Fitur Direktori Islami.co
@@ -277,6 +279,8 @@ function applyLanguage(lang) {
   // 6. Daily Verse & Today's Du'a render
   if (typeof renderDailyVerse === 'function') renderDailyVerse();
   if (typeof renderTodaysDua === 'function') renderTodaysDua();
+  if (typeof renderHomeDailyReportCard === 'function') renderHomeDailyReportCard();
+  if (typeof renderDailyPlans === 'function') renderDailyPlans();
 
   // 7. Re-render dynamic components
   if (typeof renderQuranList === 'function') renderQuranList();
@@ -405,8 +409,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 5. Terapkan bahasa, render semua fitur, jam & countdown
+  initDailyPlans();
   applyLanguage(AppState.currentLang);
   renderAllFeatures();
+  renderHomeDailyReportCard();
   startRealPrayerCountdown();
   startDigitalClock();
 
@@ -547,39 +553,6 @@ function switchLanguage(lang) {
   AppState.currentLang = lang;
   localStorage.setItem('islami_preferred_lang', lang);
   applyLanguage(lang);
-}
-
-function applyLanguage(lang) {
-  ['id', 'en', 'ms'].forEach(l => {
-    const btn = document.getElementById(`btn-lang-${l}`);
-    if (btn) {
-      if (l === lang) {
-        btn.className = "px-2 py-0.5 rounded-full text-[10px] bg-white text-[#B91C1C] font-bold transition shadow-sm";
-      } else {
-        btn.className = "px-2 py-0.5 rounded-full text-[10px] text-white/80 hover:text-white transition";
-      }
-    }
-  });
-
-  const dict = window.IslamiTranslations ? window.IslamiTranslations[lang] : null;
-  if (!dict) return;
-
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (dict[key]) {
-      el.textContent = dict[key];
-    }
-  });
-
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (dict[key]) {
-      el.setAttribute('placeholder', dict[key]);
-    }
-  });
-
-  updateSettingLangUI(lang);
-  renderAllFeatures();
 }
 
 // ------------------------------------------------------------------------------
@@ -738,6 +711,12 @@ function switchTab(targetTab, pushHistory = true) {
     }
   }
 
+  if (targetTab === 'doa') {
+    if (typeof renderDailyPlans === 'function') {
+      renderDailyPlans();
+    }
+  }
+
   if (window.lucide) lucide.createIcons();
 
   const mainContent = document.getElementById('appMain');
@@ -846,7 +825,7 @@ function handleHomeSearch(query) {
     { title: "Praying Time (Jadwal Sholat)", desc: "Jadwal 5 waktu sholat & pengingat adzan", category: "Layanan", icon: "clock", action: "switchTab('calendar')" },
     { title: "Al-Qur'an 30 Juz", desc: "Baca mushaf lengkap & audio murottal", category: "Ibadah", icon: "book-open", action: "switchTab('quran')" },
     { title: "Hadits Nabawi", desc: "Kumpulan hadits shahih Bukhari, Muslim & Syarah", category: "Literasi", icon: "book-marked", action: "switchTab('hadith')" },
-    { title: "Doa Harian & Zikir", desc: "Kumpulan doa harian mustajab & zikir nabawi", category: "Ibadah", icon: "sparkles", action: "switchTab('doa')" },
+    { title: "Doa Harian & Zikir", desc: "Kumpulan doa harian mustajab & zikir nabawi", category: "Ibadah", icon: "heart-handshake", action: "switchTab('doa')" },
     { title: "Yasin & Tahlil", desc: "Teks bacaan surat Yasin, tahlil lengkap & doa arwah", category: "Ibadah", icon: "scroll", action: "switchTab('yasin')" },
     { title: "Direktori Masjid", desc: "Peta masjid terdekat, ramah & bersejarah", category: "Layanan", icon: "landmark", action: "openMasjidDirectory()" },
     { title: "Makam Ulama & Wali", desc: "Peta ziarah makam wali & habaib Nusantara", category: "Ziarah", icon: "map-pin", action: "openMakamDirectory()" },
@@ -1529,55 +1508,364 @@ function filterHadith() {
   renderHadith(val);
 }
 
-// 6h. Render Doa Harian
-function renderDoa(filter = '') {
-  const container = document.getElementById('doaList');
-  if (!container || !window.IslamiMockData) return;
+// ==============================================================================
+// 6h. DOA & AMALAN SEHARIAN (DAILY PLAN & DAILY REPORT ENGINE)
+// ==============================================================================
 
-  const currentLang = AppState.currentLang;
-  const list = window.IslamiMockData.prayers || [];
-  const search = filter.toLowerCase().trim();
+function initDailyPlans() {
+  const existing = localStorage.getItem('islami_daily_plans');
+  if (!existing || existing === '[]') {
+    const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
+    localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
+    return defaults;
+  }
+  try {
+    return JSON.parse(existing);
+  } catch (e) {
+    const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
+    localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
+    return defaults;
+  }
+}
 
-  const filtered = list.filter(d => {
-    const title = d.title.toLowerCase();
-    const meaning = (d.translations[currentLang] || '').toLowerCase();
-    return title.includes(search) || meaning.includes(search);
+function getDailyPlans() {
+  const existing = localStorage.getItem('islami_daily_plans');
+  if (!existing) return initDailyPlans();
+  try {
+    const parsed = JSON.parse(existing);
+    if (!Array.isArray(parsed) || parsed.length === 0) return initDailyPlans();
+    return parsed;
+  } catch (e) {
+    return initDailyPlans();
+  }
+}
+
+function saveDailyPlans(plans) {
+  localStorage.setItem('islami_daily_plans', JSON.stringify(plans));
+}
+
+function toggleDailyPlan(id) {
+  const plans = getDailyPlans();
+  const target = plans.find(p => p.id === id);
+  if (target) {
+    target.completed = !target.completed;
+    saveDailyPlans(plans);
+    renderDailyPlans();
+    renderHomeDailyReportCard();
+  }
+}
+
+function renderHomeDailyReportCard() {
+  const plans = getDailyPlans();
+  const total = plans.length;
+  const completed = plans.filter(p => p.completed).length;
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const lang = AppState.currentLang || 'id';
+
+  const badgeEl = document.getElementById('homeDailyReportPercentBadge');
+  if (badgeEl) badgeEl.textContent = `${percent}%`;
+
+  const barEl = document.getElementById('homeDailyReportProgressBar');
+  if (barEl) barEl.style.width = `${percent}%`;
+
+  const textEl = document.getElementById('homeDailyReportText');
+  if (textEl) {
+    if (lang === 'en') {
+      textEl.textContent = `${completed} of ${total} Routines Completed • ${percent}%`;
+    } else if (lang === 'ms') {
+      textEl.textContent = `${completed} daripada ${total} Amalan Terlaksana • ${percent}%`;
+    } else {
+      textEl.textContent = `${completed} dari ${total} Amalan Terlaksana • ${percent}%`;
+    }
+  }
+
+  // Active routine snippet preview
+  const activePlan = plans.find(p => !p.completed) || plans[0];
+  const titleEl = document.getElementById('homeDailyActiveTitle');
+  const duaEl = document.getElementById('homeDailyActiveDua');
+  if (activePlan) {
+    const title = typeof activePlan.title === 'object' ? (activePlan.title[lang] || activePlan.title.id) : activePlan.title;
+    const snippet = activePlan.latin || (typeof activePlan.translation === 'object' ? (activePlan.translation[lang] || activePlan.translation.id) : activePlan.translation) || activePlan.time;
+    if (titleEl) titleEl.textContent = title;
+    if (duaEl) duaEl.textContent = snippet;
+  }
+}
+
+function renderDailyPlans() {
+  const container = document.getElementById('dailyPlansListContainer');
+  if (!container) return;
+
+  const plans = getDailyPlans();
+  const total = plans.length;
+  const completed = plans.filter(p => p.completed).length;
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const lang = AppState.currentLang || 'id';
+
+  // Update Daily Report Header Card
+  const badgeEl = document.getElementById('viewDoaPercentBadge');
+  if (badgeEl) badgeEl.textContent = `${percent}%`;
+
+  const statsEl = document.getElementById('viewDoaReportStats');
+  if (statsEl) {
+    if (lang === 'en') {
+      statsEl.textContent = `${completed} of ${total} Routines Completed • ${percent}%`;
+    } else if (lang === 'ms') {
+      statsEl.textContent = `${completed} daripada ${total} Amalan Terlaksana • ${percent}%`;
+    } else {
+      statsEl.textContent = `${completed} dari ${total} Amalan Terlaksana • ${percent}%`;
+    }
+  }
+
+  const progressBar = document.getElementById('viewDoaProgressBar');
+  if (progressBar) progressBar.style.width = `${percent}%`;
+
+  const catNames = {
+    wake: { id: "Bangun Tidur", en: "Waking Up", ms: "Bangun Tidur" },
+    morning: { id: "Pagi & Aktivitas", en: "Morning & Activities", ms: "Pagi & Aktiviti" },
+    worship: { id: "Ibadah & Makan", en: "Worship & Meals", ms: "Ibadah & Makanan" },
+    sleep: { id: "Sebelum Tidur", en: "Before Sleep", ms: "Sebelum Tidur" }
+  };
+  const catColors = {
+    wake: 'bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900',
+    morning: 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900',
+    worship: 'bg-rose-50 dark:bg-rose-950/70 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-900',
+    sleep: 'bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-900'
+  };
+
+  const activeCategory = AppState.dailyPlanCategory || 'all';
+  const keyword = (AppState.dailyPlanKeyword || '').toLowerCase().trim();
+
+  const filtered = plans.filter(p => {
+    const matchesCat = activeCategory === 'all' || p.category === activeCategory;
+    if (!matchesCat) return false;
+    if (!keyword) return true;
+
+    const t = typeof p.title === 'object' ? `${p.title.id} ${p.title.en} ${p.title.ms}`.toLowerCase() : (p.title || '').toLowerCase();
+    const tr = typeof p.translation === 'object' ? `${p.translation.id} ${p.translation.en} ${p.translation.ms}`.toLowerCase() : (p.translation || '').toLowerCase();
+    const l = (p.latin || '').toLowerCase();
+    return t.includes(keyword) || tr.includes(keyword) || l.includes(keyword);
   });
 
-  container.innerHTML = filtered.map(item => `
-    <div class="card-islami p-3.5 space-y-2">
-      <div class="flex items-center justify-between">
-        <h4 class="font-bold text-xs text-slate-900 dark:text-white">${item.title}</h4>
-        <span class="text-[10px] bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 px-2 py-0.5 rounded-full border border-red-200 dark:border-red-900 font-medium">
-          ${item.categoryName}
-        </span>
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-8 card-islami p-6 bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-2xl">
+        <p class="text-xs text-stone-500 dark:text-stone-400">${lang === 'en' ? 'No routines found for this category or search.' : (lang === 'ms' ? 'Tiada amalan dijumpai untuk kategori ini.' : 'Belum ada rencana amalan di kategori ini.')}</p>
+        <button onclick="openAddDailyPlanModal()" class="mt-3 px-3.5 py-1.5 rounded-full bg-[#8B1E1E] text-white text-xs font-bold inline-flex items-center gap-1 shadow-xs">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i> ${lang === 'en' ? 'Add Routine' : (lang === 'ms' ? 'Tambah Amalan' : 'Tambah Rencana')}
+        </button>
       </div>
+    `;
+    if (window.lucide) lucide.createIcons();
+    return;
+  }
 
-      <p class="text-right font-arabic text-xl text-slate-900 dark:text-slate-100 leading-relaxed pt-1">
-        ${item.arabic}
-      </p>
+  container.innerHTML = filtered.map(plan => {
+    const localizedTitle = typeof plan.title === 'object' ? (plan.title[lang] || plan.title.id) : plan.title;
+    const localizedTranslation = typeof plan.translation === 'object' ? (plan.translation[lang] || plan.translation.id) : plan.translation;
+    const catLabel = catNames[plan.category] ? (catNames[plan.category][lang] || catNames[plan.category].id) : plan.category;
+    const badgeColor = catColors[plan.category] || 'bg-stone-50 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border-stone-200 dark:border-stone-700';
+    const hasDua = Boolean(plan.arabic || plan.latin || localizedTranslation);
 
-      <p class="text-[11px] text-red-800 dark:text-red-400 italic">
-        ${item.latin}
-      </p>
+    return `
+      <div class="card-islami p-3.5 space-y-2.5 transition border ${plan.completed ? 'border-emerald-300/80 dark:border-emerald-800/60 bg-emerald-50/20 dark:bg-emerald-950/20' : 'border-stone-200/80 dark:border-stone-800 bg-white dark:bg-stone-900'}">
+        <div class="flex items-start justify-between gap-2.5">
+          <div class="flex items-start gap-2.5 min-w-0 flex-1">
+            <button onclick="toggleDailyPlan('${plan.id}')" aria-label="Tandai selesai" class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 mt-0.5 border transition cursor-pointer ${plan.completed ? 'bg-emerald-600 border-emerald-600 text-white shadow-xs' : 'border-stone-300 dark:border-stone-600 hover:border-[#8B1E1E] bg-stone-50 dark:bg-stone-800 text-transparent'}">
+              <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3] ${plan.completed ? 'opacity-100' : 'opacity-0'}"></i>
+            </button>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                <span class="text-[9.5px] font-bold px-2 py-0.5 rounded-full border ${badgeColor}">
+                  ${catLabel}
+                </span>
+                <span class="text-[9.5px] font-medium text-stone-500 dark:text-stone-400 bg-stone-100 dark:bg-stone-800 px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <i data-lucide="clock" class="w-2.5 h-2.5"></i> ${plan.time}
+                </span>
+              </div>
+              <h4 class="text-xs font-bold ${plan.completed ? 'line-through text-stone-400 dark:text-stone-500' : 'text-stone-900 dark:text-white'} leading-tight">
+                ${localizedTitle}
+              </h4>
+            </div>
+          </div>
 
-      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-        <strong class="text-red-700 dark:text-red-400">Artinya:</strong> ${item.translations[currentLang] || item.translations.id}
-      </p>
+          <div class="flex items-center gap-0.5 shrink-0">
+            <button onclick="openEditDailyPlanModal('${plan.id}')" class="w-7 h-7 rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800 flex items-center justify-center transition" title="Edit Rencana">
+              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+            </button>
+            <button onclick="deleteDailyPlan('${plan.id}')" class="w-7 h-7 rounded-lg text-stone-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 flex items-center justify-center transition" title="Hapus Rencana">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
 
-      <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 p-2 rounded-xl text-[10px] text-amber-900 dark:text-amber-300 flex items-start gap-1.5">
-        <i data-lucide="sparkles" class="w-3 h-3 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5"></i>
-        <span><strong>Fadhilah:</strong> ${item.fadhilah}</span>
+        ${hasDua ? `
+          <div class="pt-2 border-t border-stone-100 dark:border-stone-800/80">
+            <button onclick="toggleDailyDuaDetails('${plan.id}')" class="w-full flex items-center justify-between text-[11px] font-semibold text-[#8B1E1E] dark:text-amber-400 hover:opacity-80 transition py-0.5">
+              <span class="flex items-center gap-1.5">
+                <i data-lucide="book-open" class="w-3 h-3"></i>
+                <span>${lang === 'en' ? 'Related Prayer & Dhikr' : (lang === 'ms' ? 'Doa Berkaitan & Zikir' : 'Teks Doa & Zikir')}</span>
+              </span>
+              <i data-lucide="chevron-down" id="duaChevron-${plan.id}" class="w-3.5 h-3.5 transition-transform duration-200"></i>
+            </button>
+            
+            <div id="duaDetails-${plan.id}" class="hidden mt-2 space-y-2 p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/60 dark:border-stone-700/60">
+              ${plan.arabic ? `<p class="font-arabic text-base text-right leading-relaxed text-stone-900 dark:text-stone-100 pt-1">${plan.arabic}</p>` : ''}
+              ${plan.latin ? `<p class="text-[10.5px] italic text-[#8B1E1E] dark:text-amber-400 leading-snug">${plan.latin}</p>` : ''}
+              ${localizedTranslation ? `<p class="text-[11px] text-stone-600 dark:text-stone-300 leading-snug"><strong class="text-[#8B1E1E] dark:text-amber-400">${lang === 'en' ? 'Translation:' : (lang === 'ms' ? 'Terjemahan:' : 'Artinya:')}</strong> ${localizedTranslation}</p>` : ''}
+            </div>
+          </div>
+        ` : ''}
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
   if (window.lucide) lucide.createIcons();
 }
 
-function filterDoa() {
-  const val = document.getElementById('doaSearchInput').value;
-  renderDoa(val);
+function renderDoa(filter = '') {
+  renderDailyPlans();
+}
+
+function filterDailyPlansByCategory(category) {
+  AppState.dailyPlanCategory = category;
+  ['all', 'wake', 'morning', 'worship', 'sleep'].forEach(c => {
+    const btn = document.getElementById(`btnFilterCat-${c}`);
+    if (btn) {
+      if (c === category) {
+        btn.className = "px-3 py-1.5 rounded-full text-xs font-bold bg-[#8B1E1E] text-white transition shadow-2xs shrink-0";
+      } else {
+        btn.className = "px-3 py-1.5 rounded-full text-xs font-bold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition shrink-0";
+      }
+    }
+  });
+  renderDailyPlans();
+}
+
+function filterDailyPlansByKeyword(keyword) {
+  AppState.dailyPlanKeyword = keyword || '';
+  renderDailyPlans();
+}
+
+function toggleDailyDuaDetails(id) {
+  const details = document.getElementById(`duaDetails-${id}`);
+  const chevron = document.getElementById(`duaChevron-${id}`);
+  if (!details) return;
+  const isHidden = details.classList.contains('hidden');
+  if (isHidden) {
+    details.classList.remove('hidden');
+    if (chevron) chevron.classList.add('rotate-180');
+  } else {
+    details.classList.add('hidden');
+    if (chevron) chevron.classList.remove('rotate-180');
+  }
+}
+
+function openAddDailyPlanModal() {
+  const modal = document.getElementById('modalDailyPlanForm');
+  if (!modal) return;
+  document.getElementById('inputPlanId').value = '';
+  document.getElementById('inputPlanTitle').value = '';
+  document.getElementById('inputPlanCategory').value = 'wake';
+  document.getElementById('inputPlanTime').value = '05:00 WIB';
+  document.getElementById('inputPlanArabic').value = '';
+  document.getElementById('inputPlanTranslation').value = '';
+
+  const titleEl = document.getElementById('dailyPlanModalTitle');
+  const dict = window.IslamiTranslations ? (window.IslamiTranslations[AppState.currentLang || 'id'] || window.IslamiTranslations['id']) : null;
+  if (titleEl && dict && dict.modal_plan_title) {
+    titleEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span><span>${dict.modal_plan_title}</span>`;
+  }
+  modal.classList.remove('hidden');
+}
+
+function openEditDailyPlanModal(id) {
+  const plans = getDailyPlans();
+  const plan = plans.find(p => p.id === id);
+  if (!plan) return;
+
+  const modal = document.getElementById('modalDailyPlanForm');
+  if (!modal) return;
+
+  const lang = AppState.currentLang || 'id';
+  document.getElementById('inputPlanId').value = plan.id;
+  document.getElementById('inputPlanTitle').value = typeof plan.title === 'object' ? (plan.title[lang] || plan.title.id) : plan.title;
+  document.getElementById('inputPlanCategory').value = plan.category;
+  document.getElementById('inputPlanTime').value = plan.time;
+  document.getElementById('inputPlanArabic').value = plan.arabic || '';
+  document.getElementById('inputPlanTranslation').value = typeof plan.translation === 'object' ? (plan.translation[lang] || plan.translation.id) : (plan.translation || '');
+
+  const titleEl = document.getElementById('dailyPlanModalTitle');
+  const dict = window.IslamiTranslations ? (window.IslamiTranslations[AppState.currentLang || 'id'] || window.IslamiTranslations['id']) : null;
+  if (titleEl && dict && dict.modal_plan_edit_title) {
+    titleEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span><span>${dict.modal_plan_edit_title}</span>`;
+  }
+  modal.classList.remove('hidden');
+}
+
+function closeDailyPlanModal() {
+  const modal = document.getElementById('modalDailyPlanForm');
+  if (modal) modal.classList.add('hidden');
+}
+
+function saveDailyPlan() {
+  const title = document.getElementById('inputPlanTitle').value.trim();
+  if (!title) {
+    showToast(AppState.currentLang === 'en' ? 'Please enter activity name' : 'Mohon masukkan nama kegiatan amalan');
+    return;
+  }
+
+  const id = document.getElementById('inputPlanId').value;
+  const category = document.getElementById('inputPlanCategory').value;
+  const time = document.getElementById('inputPlanTime').value.trim() || '05:00 WIB';
+  const arabic = document.getElementById('inputPlanArabic').value.trim();
+  const translation = document.getElementById('inputPlanTranslation').value.trim();
+
+  let plans = getDailyPlans();
+  if (id) {
+    const idx = plans.findIndex(p => p.id === id);
+    if (idx !== -1) {
+      const existing = plans[idx];
+      plans[idx] = {
+        ...existing,
+        title: typeof existing.title === 'object' ? { ...existing.title, [AppState.currentLang || 'id']: title } : title,
+        category,
+        time,
+        arabic,
+        translation: typeof existing.translation === 'object' ? { ...existing.translation, [AppState.currentLang || 'id']: translation } : translation
+      };
+    }
+  } else {
+    const newPlan = {
+      id: 'routine-' + Date.now(),
+      title: title,
+      category,
+      time,
+      arabic,
+      latin: '',
+      translation: translation,
+      completed: false
+    };
+    plans.push(newPlan);
+  }
+
+  saveDailyPlans(plans);
+  closeDailyPlanModal();
+  renderDailyPlans();
+  renderHomeDailyReportCard();
+  showToast(AppState.currentLang === 'en' ? 'Routine saved successfully!' : (AppState.currentLang === 'ms' ? 'Amalan berjaya disimpan!' : 'Rencana amalan berhasil disimpan!'));
+}
+
+function deleteDailyPlan(id) {
+  const lang = AppState.currentLang || 'id';
+  const msg = lang === 'en' ? 'Delete this routine?' : (lang === 'ms' ? 'Padam amalan ini?' : 'Hapus rencana amalan ini?');
+  if (!confirm(msg)) return;
+
+  let plans = getDailyPlans();
+  plans = plans.filter(p => p.id !== id);
+  saveDailyPlans(plans);
+  renderDailyPlans();
+  renderHomeDailyReportCard();
+  showToast(lang === 'en' ? 'Routine deleted' : (lang === 'ms' ? 'Amalan dipadam' : 'Rencana amalan dihapus'));
 }
 
 // 6i. Render Cari Ustadz
@@ -2219,8 +2507,8 @@ function renderCalendarTabContent() {
           </div>
           <p class="text-[10px] text-stone-500 dark:text-stone-400 mt-1 leading-snug">${f.desc}</p>
         </div>
-        <div class="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+        <div class="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-950/60 text-[#801818] dark:text-amber-400 flex items-center justify-center shrink-0">
+          <i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>
         </div>
       </div>
     `).join('');

@@ -73,7 +73,7 @@
       class="absolute inset-0 z-50 bg-[#FAF7F2] dark:bg-slate-950 flex flex-col justify-between p-6 transition-all duration-500">
       <div class="flex-1 flex flex-col items-center justify-center text-center mt-6">
         <!-- Logo Emblem -->
-        <div class="w-24 h-24 rounded-3xl bg-[#B91C1C] p-4 shadow-xl mb-5 flex items-center justify-center">
+        <div class="w-24 h-24 rounded-3xl bg-[#801818] p-4 shadow-xl mb-5 flex items-center justify-center">
           <img src="assets/logo.png?v=2.4.5" alt="Islami.co" class="w-full h-auto object-contain">
         </div>
 
@@ -345,37 +345,53 @@
           </div>
         </div>
 
-        <!-- ==================== TODAY'S DU'A CARD (SESUAI GAMBAR) ==================== -->
+        <!-- ==================== DAILY REPORT & AMALAN SEHARIAN CARD ==================== -->
         <div onclick="switchTab('doa')"
-          class="card-islami p-3.5 flex items-center justify-between gap-3 cursor-pointer hover:border-red-600 transition group bg-white dark:bg-white/[0.04] dark:border-white/10 dark:backdrop-blur-md">
-          <div class="flex items-center gap-3 flex-1 min-w-0">
-            <!-- Circular Praying Hands Icon Sesuai Gambar -->
-            <div
-              class="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#7F1D1D] to-[#991B1B] text-white flex items-center justify-center shrink-0 shadow-md group-hover:scale-105 transition">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FDE047" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0" />
-                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2" />
-                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
-                <path
-                  d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15" />
-              </svg>
+          class="card-islami p-3.5 space-y-2.5 cursor-pointer hover:border-[#8B1E1E] transition group bg-white dark:bg-white/[0.04] dark:border-white/10 dark:backdrop-blur-md shadow-xs">
+          
+          <!-- Top Row: Title, Badge & Arrow -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
+              <span class="text-xs font-black uppercase text-stone-900 dark:text-stone-100 tracking-wider" data-i18n="daily_routine_title">Doa & Amalan Seharian</span>
             </div>
-            <div class="flex-1 min-w-0 space-y-0.5">
-              <span class="text-[10px] font-black uppercase text-red-700 dark:text-red-400 tracking-wider" data-i18n="todays_dua_title">Doa Harian</span>
-              <p id="todaysDuaArabic" class="font-arabic text-sm text-stone-900 dark:text-stone-100 font-bold leading-normal truncate">
-                اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ
-              </p>
-              <p id="todaysDuaTranslation" class="text-[11px] text-stone-500 dark:text-stone-400 line-clamp-1">
-                "Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan di dunia dan akhirat."
-              </p>
+            <div class="flex items-center gap-1.5">
+              <span id="homeDailyReportPercentBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-[#8B1E1E] dark:text-red-300">
+                67%
+              </span>
+              <div class="w-6 h-6 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 group-hover:text-[#8B1E1E] transition">
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </div>
             </div>
           </div>
-          <!-- Right Arrow Button Sesuai Gambar -->
-          <div
-            class="w-8 h-8 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 group-hover:bg-red-50 dark:group-hover:bg-red-950 group-hover:text-red-700 transition shrink-0">
-            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+
+          <!-- Progress Bar -->
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-[10.5px]">
+              <span id="homeDailyReportText" class="font-bold text-stone-700 dark:text-stone-300">
+                4 dari 6 Amalan Terlaksana • 67%
+              </span>
+              <span class="text-[10px] text-stone-400 font-medium" data-i18n="daily_routine_report_sub">Bangun Tidur s.d. Tidur</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-stone-100 dark:bg-stone-800 overflow-hidden">
+              <div id="homeDailyReportProgressBar" class="h-full rounded-full bg-gradient-to-r from-[#8B1E1E] to-amber-500 transition-all duration-500" style="width: 67%;"></div>
+            </div>
           </div>
+
+          <!-- Preview Active Routine Snippet -->
+          <div id="homeDailyActiveSnippet" class="pt-1.5 border-t border-stone-100 dark:border-stone-800/80 flex items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
+                <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+              </div>
+              <div class="min-w-0">
+                <p id="homeDailyActiveTitle" class="text-xs font-bold text-stone-800 dark:text-stone-200 truncate">Dzikir Petang & Doa Keselamatan</p>
+                <p id="homeDailyActiveDua" class="text-[10px] text-stone-400 truncate">Allahumma inni as'alukal 'afwa wal 'afiyata...</p>
+              </div>
+            </div>
+            <span class="text-[10.5px] font-bold text-[#8B1E1E] dark:text-amber-400 shrink-0" data-i18n="btn_check">Buka & Catat</span>
+          </div>
+
         </div>
 
         <!-- ==================== FITUR ISLAMI.CO (UNIFIED 3-COLUMN GRID & EXTENSIBLE LAINNYA) ==================== -->
@@ -535,7 +551,7 @@
           <div>
             <h2
               class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
               Pilihan Redaksi Islami.co
             </h2>
             <p class="text-[11px] text-stone-500">Kajian & literasi Islam ramah yang mencerahkan</p>
@@ -546,7 +562,7 @@
         <!-- Filter Kategori Chips -->
         <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 text-xs">
           <button onclick="filterArticleCategory('Semua')"
-            class="art-filter-pill px-3 py-1 rounded-full font-bold bg-[#B91C1C] text-white whitespace-nowrap shadow-sm">
+            class="art-filter-pill px-3 py-1 rounded-full font-bold bg-[#801818] text-white whitespace-nowrap shadow-sm">
             Semua
           </button>
           <button onclick="filterArticleCategory('Populer')"
@@ -816,7 +832,7 @@
           <div>
             <h2
               class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
               Pengaturan Aplikasi
             </h2>
             <p class="text-[11px] text-stone-500">Sesuaikan kenyamanan membaca & preferensi ibadah</p>
@@ -840,7 +856,7 @@
                 <input type="checkbox" id="settingAdzanSound" onchange="toggleSettingAdzan()" checked
                   class="sr-only peer">
                 <div
-                  class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#B91C1C]">
+                  class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#801818]">
                 </div>
               </label>
             </div>
@@ -853,7 +869,7 @@
                 <input type="checkbox" id="settingPrePrayerAlert" onchange="toggleSettingPreAlert()" checked
                   class="sr-only peer">
                 <div
-                  class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#B91C1C]">
+                  class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#801818]">
                 </div>
               </label>
             </div>
@@ -907,7 +923,7 @@
         <!-- 4. Tentang Islami.co -->
         <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-2 text-xs">
           <div class="flex items-center gap-2 mb-2">
-            <div class="h-7 px-2 py-0.5 rounded-lg bg-[#B91C1C] flex items-center justify-center">
+            <div class="h-7 px-2 py-0.5 rounded-lg bg-[#801818] flex items-center justify-center">
               <img src="assets/logo.png?v=2.4.5" alt="Islami.co" class="h-4 w-auto object-contain">
             </div>
             <div>
@@ -934,7 +950,7 @@
           <div>
             <h2
               class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
               Hadits Nabawi
             </h2>
             <p class="text-[11px] text-stone-500">Kumpulan hadits shahih & perawi mu'tabar</p>
@@ -955,7 +971,7 @@
           <div>
             <h2
               class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
               Tanya Jawab Syariah
             </h2>
             <p class="text-[11px] text-stone-500">Konsultasi fiqih santun & fatwa kontemporer</p>
@@ -970,7 +986,7 @@
           <div>
             <h2
               class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
               Naskah Khutbah Jumat
             </h2>
             <p class="text-[11px] text-stone-500">Khutbah tematik sejuk, aktual & mencerahkan</p>
@@ -980,24 +996,78 @@
       </section>
 
       <!-- ==================== VIEW: DOA HARIAN ==================== -->
-      <section id="view-doa" class="hidden space-y-3">
-        <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
+      <section id="view-doa" class="hidden space-y-4 pb-28">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-slate-800">
           <div>
-            <h2
-              class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
-              Doa Harian & Zikir
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
+              <span data-i18n="view_doa_title">Doa & Amalan Seharian</span>
             </h2>
-            <p class="text-[11px] text-stone-500">Doa perlindungan, rezeki & penyejuk hati</p>
+            <p class="text-[11px] text-stone-500 dark:text-stone-400" data-i18n="view_doa_sub">Rangkaian amalan nabawi dari bangun tidur hingga tidur kembali</p>
+          </div>
+          <button onclick="openAddDailyPlanModal()" class="px-2.5 py-1 rounded-full bg-[#8B1E1E] text-white hover:bg-[#6E1212] transition shadow-xs text-xs font-bold flex items-center gap-1">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            <span data-i18n="btn_add_plan">+ Tambah Rencana</span>
+          </button>
+        </div>
+
+        <!-- Daily Report Progress Card -->
+        <div class="card-islami p-4 bg-gradient-to-br from-[#8B1E1E] via-[#9B2222] to-[#6E1212] text-white rounded-2xl shadow-md space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span class="text-[11px] font-bold text-amber-200 uppercase tracking-wider" data-i18n="daily_report_badge">Daily Report Hari Ini</span>
+            </div>
+            <span id="viewDoaPercentBadge" class="text-xs font-black px-2.5 py-0.5 rounded-full bg-white/20 text-white font-mono">
+              67%
+            </span>
+          </div>
+
+          <div class="space-y-1">
+            <h3 id="viewDoaReportStats" class="text-lg font-black tracking-tight text-white">4 dari 6 Amalan Terlaksana • 67%</h3>
+            <p class="text-[11px] text-red-200" data-i18n="daily_report_quote">"Amalan yang paling dicintai Allah adalah yang istiqamah meskipun sedikit."</p>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="w-full h-2.5 rounded-full bg-black/25 overflow-hidden p-0.5">
+            <div id="viewDoaProgressBar" class="h-full rounded-full bg-gradient-to-r from-amber-400 to-yellow-200 transition-all duration-500" style="width: 67%;"></div>
           </div>
         </div>
+
+        <!-- Filter Kategori Horizontal Pills -->
+        <div class="overflow-x-auto no-scrollbar flex items-center gap-1.5 py-1" id="doaCategoryFilters">
+          <button onclick="filterDailyPlansByCategory('all')" id="btnFilterCat-all" class="px-3 py-1.5 rounded-full text-xs font-bold bg-[#8B1E1E] text-white transition shadow-2xs shrink-0">
+            <span data-i18n="cat_all">Semua</span>
+          </button>
+          <button onclick="filterDailyPlansByCategory('wake')" id="btnFilterCat-wake" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition shrink-0">
+            <span data-i18n="cat_wake">Bangun Tidur</span>
+          </button>
+          <button onclick="filterDailyPlansByCategory('morning')" id="btnFilterCat-morning" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition shrink-0">
+            <span data-i18n="cat_morning">Pagi & Aktivitas</span>
+          </button>
+          <button onclick="filterDailyPlansByCategory('worship')" id="btnFilterCat-worship" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition shrink-0">
+            <span data-i18n="cat_worship">Ibadah & Makan</span>
+          </button>
+          <button onclick="filterDailyPlansByCategory('sleep')" id="btnFilterCat-sleep" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition shrink-0">
+            <span data-i18n="cat_sleep">Sebelum Tidur</span>
+          </button>
+        </div>
+
+        <!-- Kolom Pencarian Doa & Amalan -->
         <div class="relative">
           <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-          <input type="text" id="doaSearchInput" oninput="filterDoa()"
-            placeholder="Cari doa perlindungan, rezeki, keluarga..."
-            class="w-full pl-9 pr-3 py-2 bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 rounded-xl text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-red-600 shadow-sm">
+          <input type="text" id="doaSearchInput" oninput="filterDailyPlansByKeyword(this.value)"
+            placeholder="Cari amalan atau doa harian..." data-i18n-placeholder="search_routine_placeholder"
+            class="w-full pl-9 pr-3 py-2 bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-xl text-xs text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:border-[#8B1E1E] shadow-2xs">
         </div>
-        <div id="doaList" class="space-y-3"></div>
+
+        <!-- Interactive Checklist Container -->
+        <div id="dailyPlansListContainer" class="space-y-2.5">
+          <!-- Rendered dynamically by JS -->
+        </div>
+
       </section>
 
       <!-- ==================== VIEW: TASBIH DIGITAL ==================== -->
@@ -1021,7 +1091,7 @@
               Reset
             </button>
             <button onclick="incrementTasbih()"
-              class="px-8 py-3 rounded-2xl bg-[#B91C1C] hover:bg-red-800 text-white font-extrabold text-sm shadow-md tap-pulse transition">
+              class="px-8 py-3 rounded-2xl bg-[#801818] hover:bg-red-800 text-white font-extrabold text-sm shadow-md tap-pulse transition">
               Hitung Zikir (+1)
             </button>
           </div>
@@ -1058,7 +1128,7 @@
           <div>
             <h2
               class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#B91C1C]"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
               Cari Ustadz & Penceramah
             </h2>
             <p class="text-[11px] text-stone-500">Undang dai moderat untuk kajian, nikah & khutbah</p>
@@ -1096,7 +1166,7 @@
     <!-- ==================== 4. FLOATING AUDIO PLAYER ==================== -->
     <div id="floatingAudioPlayer" class="floating-audio-bar hidden p-2.5 flex items-center justify-between">
       <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-lg bg-[#B91C1C] text-white flex items-center justify-center animate-pulse">
+        <div class="w-8 h-8 rounded-lg bg-[#801818] text-white flex items-center justify-center animate-pulse">
           <i data-lucide="music" class="w-4 h-4"></i>
         </div>
         <div>
@@ -1107,7 +1177,7 @@
       </div>
       <div class="flex items-center gap-2">
         <button id="floatingPlayBtn" onclick="toggleFloatingAudio()"
-          class="w-8 h-8 rounded-full bg-[#B91C1C] text-white flex items-center justify-center shadow">
+          class="w-8 h-8 rounded-full bg-[#801818] text-white flex items-center justify-center shadow">
           <i data-lucide="pause" class="w-4 h-4"></i>
         </button>
         <button onclick="closeFloatingAudio()"
@@ -1158,7 +1228,7 @@
     <!-- ==================== 6. READER MODE MODAL ==================== -->
     <div id="readerModal" class="hidden fixed inset-0 z-50 bg-[#FAF7F2] dark:bg-slate-950 flex flex-col">
       <div
-        class="px-4 py-3 border-b border-stone-200 dark:border-slate-800 flex items-center justify-between bg-[#B91C1C] text-white">
+        class="px-4 py-3 border-b border-stone-200 dark:border-slate-800 flex items-center justify-between bg-[#801818] text-white">
         <button onclick="closeReaderMode()" class="flex items-center gap-1.5 text-xs font-bold hover:text-red-100">
           <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali
         </button>
@@ -1228,7 +1298,7 @@
               Batal
             </button>
             <button type="submit"
-              class="flex-1 py-2.5 rounded-xl bg-[#B91C1C] hover:bg-red-800 text-white font-extrabold text-xs shadow-md transition">
+              class="flex-1 py-2.5 rounded-xl bg-[#801818] hover:bg-red-800 text-white font-extrabold text-xs shadow-md transition">
               Kirim Permintaan
             </button>
           </div>
@@ -1529,6 +1599,63 @@
         </button>
         <button onclick="saveUserAgenda()" class="flex-1 py-2 rounded-xl bg-[#8B1E1E] text-white text-xs font-bold hover:bg-[#6E1212] transition shadow-xs">
           Simpan Agenda
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ==================== MODAL TAMBAH & EDIT RENCANA AMALAN ==================== -->
+  <div id="modalDailyPlanForm" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-stone-900 rounded-3xl max-w-sm w-full p-5 border border-stone-200 dark:border-stone-800 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between pb-2 border-b border-stone-100 dark:border-stone-800">
+        <h3 id="dailyPlanModalTitle" class="text-sm font-extrabold text-stone-900 dark:text-white flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
+          <span data-i18n="modal_plan_title">Tambah Rencana Amalan</span>
+        </h3>
+        <button onclick="closeDailyPlanModal()" class="w-7 h-7 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-white flex items-center justify-center">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="inputPlanId">
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1" data-i18n="label_plan_name">Nama Kegiatan Positif</label>
+          <input type="text" id="inputPlanTitle" placeholder="Contoh: Shalat Dhuha 4 Rakaat, Sedekah Subuh, dll." class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1" data-i18n="label_plan_category">Kategori</label>
+            <select id="inputPlanCategory" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]">
+              <option value="wake">Bangun Tidur</option>
+              <option value="morning">Pagi & Aktivitas</option>
+              <option value="worship">Ibadah & Makan</option>
+              <option value="sleep">Sebelum Tidur</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1" data-i18n="label_plan_time">Waktu / Jam</label>
+            <input type="text" id="inputPlanTime" placeholder="05:00 WIB" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]">
+          </div>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1" data-i18n="label_plan_arabic">Teks Doa (Arab - Opsional)</label>
+          <input type="text" id="inputPlanArabic" dir="rtl" placeholder="اللهم..." class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8B1E1E] font-arabic text-right">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1" data-i18n="label_plan_translation">Arti / Terjemahan (Opsional)</label>
+          <textarea id="inputPlanTranslation" rows="2" placeholder="Ya Allah..." class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-2">
+        <button onclick="closeDailyPlanModal()" class="flex-1 py-2 rounded-xl border border-stone-200 dark:border-stone-700 text-xs font-bold text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition" data-i18n="btn_cancel">
+          Batal
+        </button>
+        <button onclick="saveDailyPlan()" class="flex-1 py-2 rounded-xl bg-[#8B1E1E] text-white text-xs font-bold hover:bg-[#6E1212] transition shadow-xs" data-i18n="btn_save_plan">
+          Simpan Rencana
         </button>
       </div>
     </div>

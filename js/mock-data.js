@@ -710,6 +710,120 @@ const IslamiMockData = {
   // ----------------------------------------------------------------------------
   // 16. DATA HARI BESAR ISLAM & NASIONAL (CALENDAR EVENTS)
   // ----------------------------------------------------------------------------
+  
+  // ----------------------------------------------------------------------------
+  // 17. PRESET DEFAULT AMALAN NABAWI SEHARIAN (DAILY ROUTINES PRESET)
+  // ----------------------------------------------------------------------------
+  defaultDailyRoutines: [
+    {
+      id: "routine-1",
+      title: {
+        id: "Bangun Tidur & Doa Syukur",
+        en: "Waking Up & Gratitude Prayer",
+        ms: "Bangun Tidur & Doa Syukur"
+      },
+      category: "wake",
+      time: "04:30 WIB",
+      arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
+      latin: "Alhamdulillahilladzi ahyana ba'da ma amatana wa ilaihin nusyur",
+      translation: {
+        id: "Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami dan kepada-Nya kami kembali.",
+        en: "All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection.",
+        ms: "Segala puji bagi Allah yang menghidupkan kami selepas mematikan kami dan kepada-Nya tempat kembali."
+      },
+      completed: true
+    },
+    {
+      id: "routine-2",
+      title: {
+        id: "Dzikir Pagi Pembuka Rezeki",
+        en: "Morning Dhikr & Sustenance Prayer",
+        ms: "Zikir Pagi Pembuka Rezeki"
+      },
+      category: "morning",
+      time: "06:00 WIB",
+      arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ لَا إِلَهَ إِلَّا اللَّهُ",
+      latin: "Ashbahna wa ashbahal mulku lillahi walhamdulillah la ilaha illallah",
+      translation: {
+        id: "Kami berpagi hari dan kerajaan milik Allah, segala puji bagi Allah, tiada sesembahan selain Allah.",
+        en: "We have entered the morning and the kingdom belongs to Allah, all praise is for Allah, there is no deity but Allah.",
+        ms: "Kami berpagi hari dan kerajaan kepunyaan Allah, segala puji bagi Allah, tiada tuhan melainkan Allah."
+      },
+      completed: true
+    },
+    {
+      id: "routine-3",
+      title: {
+        id: "Memulai Bekerja / Belajar & Shalat Dhuha",
+        en: "Starting Work / Study & Duha Prayer",
+        ms: "Memulakan Kerja / Belajar & Solat Dhuha"
+      },
+      category: "morning",
+      time: "08:30 WIB",
+      arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
+      latin: "Bismillahi tawakkaltu 'alallahi la hawla wa la quwwata illa billah",
+      translation: {
+        id: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah.",
+        en: "In the name of Allah, I place my trust in Allah, there is no might nor power except by Allah.",
+        ms: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan upaya kecuali dengan pertolongan Allah."
+      },
+      completed: true
+    },
+    {
+      id: "routine-4",
+      title: {
+        id: "Makan Siang & Syukur Rezeki Halal",
+        en: "Lunch & Gratitude for Halal Provision",
+        ms: "Makan Tengah Hari & Syukur Rezeki Halal"
+      },
+      category: "worship",
+      time: "12:30 WIB",
+      arabic: "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ",
+      latin: "Allahumma barik lana fima razaqtana wa qina 'adzaban nar",
+      translation: {
+        id: "Ya Allah, berkahilah rezeki yang telah Engkau berikan kepada kami dan peliharalah kami dari siksa neraka.",
+        en: "O Allah, bless for us that which You have provided us and protect us from the punishment of the Fire.",
+        ms: "Ya Allah, berkatilah rezeki yang telah Engkau kurniakan kepada kami dan peliharalah kami dari azab neraka."
+      },
+      completed: true
+    },
+    {
+      id: "routine-5",
+      title: {
+        id: "Dzikir Petang & Doa Keselamatan",
+        en: "Evening Dhikr & Safety Prayer",
+        ms: "Zikir Petang & Doa Keselamatan"
+      },
+      category: "worship",
+      time: "17:45 WIB",
+      arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ",
+      latin: "Allahumma inni as'alukal 'afwa wal 'afiyata fid dunya wal akhirah",
+      translation: {
+        id: "Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan di dunia dan akhirat.",
+        en: "O Allah, I ask You for forgiveness and well-being in this world and the Hereafter.",
+        ms: "Ya Allah, sesungguhnya aku memohon kepada-Mu keampunan dan kesejahteraan di dunia dan di akhirat."
+      },
+      completed: false
+    },
+    {
+      id: "routine-6",
+      title: {
+        id: "Muhasabah & Doa Sebelum Tidur",
+        en: "Night Reflection & Bedtime Prayer",
+        ms: "Muhasabah & Doa Sebelum Tidur"
+      },
+      category: "sleep",
+      time: "21:30 WIB",
+      arabic: "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي وَبِكَ أَرْفَعُهُ فَإِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا",
+      latin: "Bismika Rabbi wadha'tu janbi wa bika arfa'uhu fa in amsakta nafsi farhamha",
+      translation: {
+        id: "Dengan nama-Mu wahai Tuhanku, aku meletakkan lambungku dan dengan nama-Mu aku mengangkatnya. Jika Engkau menahan jiwaku maka ampunilah ia.",
+        en: "In Your name, my Lord, I lay down my side and in Your name I raise it. If You take my soul, have mercy upon it.",
+        ms: "Dengan nama-Mu wahai Tuhanku, aku meletakkan lambungku dan dengan nama-Mu aku mengangkatnya. Jika Engkau mengambil jiwaku maka ampunilah ia."
+      },
+      completed: false
+    }
+  ],
   calendarEvents: [
     {
       date: "2026-11-10",
