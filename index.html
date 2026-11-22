@@ -1026,6 +1026,9 @@
           <button onclick="filterDailyPlansByCategory('all')" id="btnFilterCat-all" class="px-3 py-1.5 rounded-full text-xs font-bold bg-[#8B1E1E] text-white transition shadow-2xs shrink-0 whitespace-nowrap">
             <span data-i18n="cat_all">Semua</span>
           </button>
+          <button onclick="filterDailyPlansByCategory('sholat')" id="btnFilterCat-sholat" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition shrink-0 whitespace-nowrap">
+            <span data-i18n="cat_sholat">Sholat & Niat</span>
+          </button>
           <button onclick="filterDailyPlansByCategory('subuh')" id="btnFilterCat-subuh" class="px-3 py-1.5 rounded-full text-xs font-bold bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700 transition shrink-0 whitespace-nowrap">
             <span data-i18n="cat_subuh">Bangun & Subuh</span>
           </button>
@@ -1614,6 +1617,7 @@
           <div>
             <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1" data-i18n="label_plan_category">Kategori</label>
             <select id="inputPlanCategory" class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#8B1E1E]">
+              <option value="sholat">Sholat & Niat</option>
               <option value="subuh">Bangun & Subuh</option>
               <option value="dhuha">Dhuha & Pagi</option>
               <option value="amal">Amal & Jariyah</option>

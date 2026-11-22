@@ -1514,15 +1514,15 @@ function applyLanguage(lang) {
 function initDailyPlans() {
   const version = localStorage.getItem('islami_daily_plans_version');
   const existing = localStorage.getItem('islami_daily_plans');
-  if (!existing || existing === '[]' || version !== 'v3') {
+  if (!existing || existing === '[]' || version !== 'v4') {
     const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
     localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
-    localStorage.setItem('islami_daily_plans_version', 'v3');
+    localStorage.setItem('islami_daily_plans_version', 'v4');
     return defaults;
   }
   try {
     const parsed = JSON.parse(existing);
-    if (!Array.isArray(parsed) || parsed.length < 8) {
+    if (!Array.isArray(parsed) || parsed.length < 14) {
       const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
       localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
       localStorage.setItem('islami_daily_plans_version', 'v3');
@@ -1629,12 +1629,14 @@ function renderDailyPlans() {
   if (progressBar) progressBar.style.width = `${percent}%`;
 
   const catNames = {
+    sholat: { id: "Sholat & Niat", en: "Prayers & Intentions", ms: "Solat & Niat" },
     subuh: { id: "Bangun & Subuh", en: "Wake & Fajr", ms: "Bangun & Subuh" },
     dhuha: { id: "Dhuha & Pagi", en: "Duha & Morning", ms: "Dhuha & Pagi" },
     amal: { id: "Amal & Jariyah", en: "Charity & Jariyah", ms: "Amal & Jariah" },
     malam: { id: "Malam & Tidur", en: "Night & Sleep", ms: "Malam & Tidur" }
   };
   const catColors = {
+    sholat: 'bg-purple-50 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-900',
     subuh: 'bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900',
     dhuha: 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900',
     amal: 'bg-rose-50 dark:bg-rose-950/70 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-900',
@@ -1712,15 +1714,41 @@ function renderDailyPlans() {
             <button onclick="toggleDailyDuaDetails('${plan.id}')" class="w-full flex items-center justify-between text-[11px] font-semibold text-[#8B1E1E] dark:text-amber-400 hover:opacity-80 transition py-0.5">
               <span class="flex items-center gap-1.5">
                 <i data-lucide="book-open" class="w-3 h-3"></i>
-                <span>${lang === 'en' ? 'Related Prayer & Dhikr' : (lang === 'ms' ? 'Doa Berkaitan & Zikir' : 'Teks Doa & Zikir')}</span>
+                <span>${plan.category === 'sholat' || plan.niat ? (lang === 'en' ? 'Prayer Intention & After-Prayer Dhikr' : (lang === 'ms' ? 'Lafaz Niat & Zikir Selepas Solat' : 'Lafal Niat & Dzikir Ba\'da Sholat')) : (lang === 'en' ? 'Related Prayer & Dhikr' : (lang === 'ms' ? 'Doa Berkaitan & Zikir' : 'Teks Doa & Zikir'))}</span>
               </span>
               <i data-lucide="chevron-down" id="duaChevron-${plan.id}" class="w-3.5 h-3.5 transition-transform duration-200"></i>
             </button>
             
-            <div id="duaDetails-${plan.id}" class="hidden mt-2 space-y-2 p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/60 dark:border-stone-700/60">
-              ${plan.arabic ? `<p class="font-arabic text-base text-right leading-relaxed text-stone-900 dark:text-stone-100 pt-1">${plan.arabic}</p>` : ''}
-              ${plan.latin ? `<p class="text-[10.5px] italic text-[#8B1E1E] dark:text-amber-400 leading-snug">${plan.latin}</p>` : ''}
-              ${localizedTranslation ? `<p class="text-[11px] text-stone-600 dark:text-stone-300 leading-snug"><strong class="text-[#8B1E1E] dark:text-amber-400">${lang === 'en' ? 'Translation:' : (lang === 'ms' ? 'Terjemahan:' : 'Artinya:')}</strong> ${localizedTranslation}</p>` : ''}
+            <div id="duaDetails-${plan.id}" class="hidden mt-2 space-y-2.5 p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/60 dark:border-stone-700/60">
+              ${plan.niat ? `
+                <!-- 1. Lafal Niat Sholat -->
+                <div class="space-y-1 pb-2 border-b border-stone-200/60 dark:border-stone-700/60">
+                  <span class="text-[9.5px] font-bold px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 inline-block">
+                    ${lang === 'en' ? '1. Prayer Intention (Niyyah)' : (lang === 'ms' ? '1. Lafaz Niat Solat' : '1. Lafal Niat Sholat')}
+                  </span>
+                  <p class="font-arabic text-base text-right leading-relaxed text-stone-900 dark:text-stone-100 pt-0.5">${plan.niat.arabic}</p>
+                  <p class="text-[10.5px] italic text-[#8B1E1E] dark:text-amber-400 leading-snug">${plan.niat.latin}</p>
+                  <p class="text-[11px] text-stone-600 dark:text-stone-300 leading-snug"><strong class="text-[#8B1E1E] dark:text-amber-400">${lang === 'en' ? 'Meaning:' : (lang === 'ms' ? 'Maksud:' : 'Artinya:')}</strong> "${plan.niat.meaning}"</p>
+                </div>
+              ` : ''}
+
+              ${plan.dzikir ? `
+                <!-- 2. Doa & Dzikir Setelah Sholat -->
+                <div class="space-y-1 pt-0.5">
+                  <span class="text-[9.5px] font-bold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 inline-block">
+                    ${lang === 'en' ? '2. After-Prayer Dhikr & Supplication' : (lang === 'ms' ? '2. Zikir & Doa Selepas Solat' : '2. Bacaan Doa & Dzikir Setelah Sholat')}
+                  </span>
+                  <p class="font-arabic text-base text-right leading-relaxed text-stone-900 dark:text-stone-100 pt-0.5">${plan.dzikir.arabic}</p>
+                  <p class="text-[10.5px] italic text-[#8B1E1E] dark:text-amber-400 leading-snug">${plan.dzikir.latin}</p>
+                  <p class="text-[11px] text-stone-600 dark:text-stone-300 leading-snug"><strong class="text-[#8B1E1E] dark:text-amber-400">${lang === 'en' ? 'Meaning:' : (lang === 'ms' ? 'Maksud:' : 'Artinya:')}</strong> "${plan.dzikir.meaning}"</p>
+                </div>
+              ` : ''}
+
+              ${!plan.niat && !plan.dzikir ? `
+                ${plan.arabic ? `<p class="font-arabic text-base text-right leading-relaxed text-stone-900 dark:text-stone-100 pt-1">${plan.arabic}</p>` : ''}
+                ${plan.latin ? `<p class="text-[10.5px] italic text-[#8B1E1E] dark:text-amber-400 leading-snug">${plan.latin}</p>` : ''}
+                ${localizedTranslation ? `<p class="text-[11px] text-stone-600 dark:text-stone-300 leading-snug"><strong class="text-[#8B1E1E] dark:text-amber-400">${lang === 'en' ? 'Translation:' : (lang === 'ms' ? 'Terjemahan:' : 'Artinya:')}</strong> ${localizedTranslation}</p>` : ''}
+              ` : ''}
             </div>
           </div>
         ` : ''}
@@ -1737,7 +1765,7 @@ function renderDoa(filter = '') {
 
 function filterDailyPlansByCategory(category) {
   AppState.dailyPlanCategory = category;
-  ['all', 'subuh', 'dhuha', 'amal', 'malam'].forEach(c => {
+  ['all', 'sholat', 'subuh', 'dhuha', 'amal', 'malam'].forEach(c => {
     const btn = document.getElementById(`btnFilterCat-${c}`);
     if (btn) {
       if (c === category) {
@@ -2117,29 +2145,409 @@ function deleteDailyPlan(id) {
   // ------------------------------------------------------------------------------
   // 12. RENDER KALENDER HIJRIAH & JADWAL SHOLAT
   // ------------------------------------------------------------------------------
+  // ==============================================================================
+  // 12. NUSANTARA CALENDAR ENGINE (MASEHI + ARAB HIJRIAH + PASARAN JAWA + INDIKATOR)
+  // ==============================================================================
+
+  AppState.calYear = 2026;
+  AppState.calMonth = 10; // November (0-indexed: 10 = November)
+  AppState.calSelectedDate = new Date(2026, 10, 22); // Default: Ahad Pon, 22 November 2026
+  AppState.calActiveTab = 'hari-besar';
+
+  const PASARAN_JAWA = ['Legi', 'Pahing', 'Pon', 'Wage', 'Kliwon'];
+  const ARABIC_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+
+  function toArabicDigits(num) {
+    return String(num).split('').map(d => ARABIC_DIGITS[parseInt(d, 10)] || d).join('');
+  }
+
+  function getPasaranJawa(date) {
+    const utc = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0);
+    const epoch = Date.UTC(1970, 0, 1, 12, 0, 0); // 1 Jan 1970 is Kamis Wage (Wage = index 3)
+    const diffDays = Math.round((utc - epoch) / 86400000);
+    const idx = ((diffDays + 3) % 5 + 5) % 5;
+    return PASARAN_JAWA[idx];
+  }
+
+  function getHijriDetails(date) {
+    // Exact mapping for 2026-11-22 = 12 Jumadal Akhirah 1448
+    const utc = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0);
+    const refUtc = Date.UTC(2026, 10, 22, 12, 0, 0);
+    const diffDays = Math.round((utc - refUtc) / 86400000);
+
+    let hDay = 12 + diffDays;
+    let hMonth = "Jumadal Akhirah";
+    let hYear = 1448;
+
+    if (hDay <= 0) {
+      hDay += 30;
+      hMonth = "Jumadal Ula";
+    } else if (hDay > 29) {
+      hDay -= 29;
+      hMonth = "Rajab";
+    }
+
+    return { day: hDay, month: hMonth, year: hYear, arabicDay: toArabicDigits(hDay) };
+  }
+
+  function navigateCalendarMonth(delta) {
+    AppState.calMonth += delta;
+    if (AppState.calMonth > 11) {
+      AppState.calMonth = 0;
+      AppState.calYear++;
+    } else if (AppState.calMonth < 0) {
+      AppState.calMonth = 11;
+      AppState.calYear--;
+    }
+    renderCalendar();
+  }
+
+  function selectCalendarDate(year, month, day) {
+    AppState.calSelectedDate = new Date(year, month, day);
+    renderCalendar();
+  }
+
+  function switchCalendarTab(tab) {
+    AppState.calActiveTab = tab;
+    ['hari-besar', 'puasa', 'agenda'].forEach(t => {
+      const btn = document.getElementById(`calTabBtn-${t}`);
+      if (btn) {
+        if (t === tab) {
+          btn.className = "pb-2 px-2 border-b-2 border-[#8B1E1E] text-[#8B1E1E] dark:text-amber-400 font-extrabold transition";
+        } else {
+          btn.className = "pb-2 px-2 border-b-2 border-transparent text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-200 transition";
+        }
+      }
+    });
+    renderCalendarTabContent();
+  }
+
+  function renderCalendarTabContent() {
+    const container = document.getElementById('calendarTabContent');
+    if (!container) return;
+
+    const tab = AppState.calActiveTab || 'hari-besar';
+    const lang = AppState.currentLang || 'id';
+
+    if (tab === 'hari-besar') {
+      const events = [
+        {
+          date: "10 Nov 2026",
+          hijri: "30 Jumadal Ula 1448 H",
+          title: "Hari Pahlawan & Peringatan Resolusi Jihad",
+          desc: "Mengenang perjuangan santri dan ulama dalam mempertahankan kedaulatan bangsa di Surabaya.",
+          badge: "Peringatan Nasional & Ulama"
+        },
+        {
+          date: "11 Nov 2026",
+          hijri: "1 Jumadal Akhirah 1448 H",
+          title: "Awal Bulan Jumadal Akhirah 1448 H",
+          desc: "Bulan ke-6 dalam penanggalan Hijriah, momentum memperkuat amalan harian.",
+          badge: "Awal Bulan Hijriah"
+        },
+        {
+          date: "15 Jan 2027",
+          hijri: "27 Rajab 1448 H",
+          title: "Isra Mi'raj Nabi Muhammad SAW",
+          desc: "Perjalanan agung Rasulullah SAW menjemput perintah sholat lima waktu.",
+          badge: "Hari Besar Islam"
+        },
+        {
+          date: "09 Feb 2027",
+          hijri: "1 Ramadhan 1448 H",
+          title: "Awal Puasa Ramadhan 1448 H",
+          desc: "Bulan suci penuh berkah, rahmat, dan ampunan bagi seluruh kaum beriman.",
+          badge: "Puasa Wajib"
+        }
+      ];
+
+      container.innerHTML = events.map(ev => `
+        <div class="p-3 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200/60 dark:border-stone-700/60 flex items-start gap-3">
+          <div class="w-12 h-12 rounded-xl bg-red-100 dark:bg-red-950/60 text-[#8B1E1E] dark:text-red-300 flex flex-col items-center justify-center font-bold shrink-0 text-center">
+            <span class="text-[9px] uppercase leading-none font-medium text-stone-400">${ev.date.split(' ')[1]}</span>
+            <span class="text-sm font-black leading-none mt-0.5">${ev.date.split(' ')[0]}</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <span class="text-[8.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300">${ev.badge}</span>
+              <span class="text-[9.5px] text-stone-400 font-mono">${ev.hijri}</span>
+            </div>
+            <h4 class="text-xs font-bold text-stone-900 dark:text-white leading-tight">${ev.title}</h4>
+            <p class="text-[10px] text-stone-500 dark:text-stone-400 mt-1 leading-snug">${ev.desc}</p>
+          </div>
+        </div>
+      `).join('');
+
+    } else if (tab === 'puasa') {
+      const fasts = [
+        {
+          title: "Puasa Sunnah Senin & Kamis",
+          schedule: "Setiap hari Senin & Kamis (2, 5, 9, 12, 16, 19, 23, 26, 30 Nov 2026)",
+          fadhilah: "Hari diangkatnya amalan manusia kepada Allah SWT dan Rasulullah SAW senang saat berpuasa.",
+          badge: "Sunnah Mingguan"
+        },
+        {
+          title: "Puasa Ayyamul Bidh (13, 14, 15 Hijriah)",
+          schedule: "23, 24, 25 November 2026 (13, 14, 15 Jumadal Akhirah 1448 H)",
+          fadhilah: "Pahalanya seperti berpuasa sepanjang tahun jika rutin dikerjakan setiap pertengahan bulan.",
+          badge: "Sunnah Bulanan"
+        },
+        {
+          title: "Puasa Daud",
+          schedule: "Sehari berpuasa, sehari berbuka secara istiqamah",
+          fadhilah: "Puasa yang paling dicintai Allah sebagaimana dicontohkan oleh Nabi Daud AS.",
+          badge: "Sunnah Utama"
+        }
+      ];
+
+      container.innerHTML = fasts.map(f => `
+        <div class="p-3 rounded-2xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/60 flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 flex items-center justify-center font-bold text-xs shrink-0">
+            <i data-lucide="moon" class="w-4 h-4"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-1.5 mb-0.5">
+              <span class="text-[8.5px] font-bold px-2 py-0.5 rounded-full bg-amber-200/70 dark:bg-amber-900 text-amber-900 dark:text-amber-200">${f.badge}</span>
+            </div>
+            <h4 class="text-xs font-bold text-stone-900 dark:text-white leading-tight">${f.title}</h4>
+            <p class="text-[10px] text-amber-900/80 dark:text-amber-300/80 font-medium mt-0.5">${f.schedule}</p>
+            <p class="text-[10px] text-stone-500 dark:text-stone-400 mt-1 leading-snug"><strong>Fadhilah:</strong> ${f.fadhilah}</p>
+          </div>
+        </div>
+      `).join('');
+
+    } else if (tab === 'agenda') {
+      let agendas = [];
+      try {
+        agendas = JSON.parse(localStorage.getItem('islami_user_agendas') || '[]');
+      } catch (e) {
+        agendas = [];
+      }
+
+      if (agendas.length === 0) {
+        // Starter sample agendas
+        agendas = [
+          {
+            id: "agenda-1",
+            title: "Pengajian Kitab Ihya' Ulumiddin bersama Ustadz",
+            date: "2026-11-22",
+            notes: "Pukul 19.30 WIB di Masjid Agung Al-Ikhlas"
+          },
+          {
+            id: "agenda-2",
+            title: "Khataman Al-Qur'an & Doa Bersama Keluarga",
+            date: "2026-11-27",
+            notes: "Ba'da Sholat Ashar berjamaah"
+          }
+        ];
+        localStorage.setItem('islami_user_agendas', JSON.stringify(agendas));
+      }
+
+      container.innerHTML = agendas.map(ag => `
+        <div class="p-3 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200/60 dark:border-stone-700/60 flex items-start justify-between gap-3">
+          <div class="flex items-start gap-2.5 min-w-0 flex-1">
+            <div class="w-9 h-9 rounded-xl bg-[#8B1E1E] text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+              <i data-lucide="calendar" class="w-4 h-4"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+              <h4 class="text-xs font-bold text-stone-900 dark:text-white leading-tight">${ag.title}</h4>
+              <p class="text-[10px] text-[#8B1E1E] dark:text-amber-400 font-semibold mt-0.5">${ag.date}</p>
+              ${ag.notes ? `<p class="text-[10px] text-stone-500 dark:text-stone-400 mt-0.5">${ag.notes}</p>` : ''}
+            </div>
+          </div>
+          <button onclick="deleteUserAgenda('${ag.id}')" class="p-1.5 text-stone-400 hover:text-red-600 dark:hover:text-red-400 transition" title="Hapus Agenda">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function openAddAgendaModal() {
+    const modal = document.getElementById('modalAddAgenda');
+    if (!modal) return;
+    const dateInput = document.getElementById('inputAgendaDate');
+    if (dateInput) {
+      const sel = AppState.calSelectedDate || new Date();
+      const y = sel.getFullYear();
+      const m = String(sel.getMonth() + 1).padStart(2, '0');
+      const d = String(sel.getDate()).padStart(2, '0');
+      dateInput.value = `${y}-${m}-${d}`;
+    }
+    modal.classList.remove('hidden');
+  }
+
+  function closeAddAgendaModal() {
+    const modal = document.getElementById('modalAddAgenda');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function saveUserAgenda() {
+    const title = document.getElementById('inputAgendaTitle').value.trim();
+    const date = document.getElementById('inputAgendaDate').value;
+    const notes = document.getElementById('inputAgendaNotes').value.trim();
+
+    if (!title) {
+      showToast('Mohon masukkan judul agenda');
+      return;
+    }
+
+    let agendas = [];
+    try {
+      agendas = JSON.parse(localStorage.getItem('islami_user_agendas') || '[]');
+    } catch (e) {
+      agendas = [];
+    }
+
+    agendas.push({
+      id: 'agenda-' + Date.now(),
+      title,
+      date: date || '2026-11-22',
+      notes
+    });
+
+    localStorage.setItem('islami_user_agendas', JSON.stringify(agendas));
+    closeAddAgendaModal();
+    document.getElementById('inputAgendaTitle').value = '';
+    document.getElementById('inputAgendaNotes').value = '';
+    switchCalendarTab('agenda');
+    showToast('Agenda berhasil ditambahkan!');
+  }
+
+  function deleteUserAgenda(id) {
+    if (!confirm('Hapus agenda ini?')) return;
+    let agendas = [];
+    try {
+      agendas = JSON.parse(localStorage.getItem('islami_user_agendas') || '[]');
+    } catch (e) {
+      agendas = [];
+    }
+    agendas = agendas.filter(a => a.id !== id);
+    localStorage.setItem('islami_user_agendas', JSON.stringify(agendas));
+    renderCalendarTabContent();
+    showToast('Agenda dihapus');
+  }
+
   function renderCalendar() {
     const daysContainer = document.getElementById('calendarDaysGrid');
-    const prayerCards = document.getElementById('calendarPrayerCards');
     if (!daysContainer) return;
 
-    // Render 30 hari Jumadil Awal (Hari ini tgl 23)
-    const currentDay = 23;
-    let daysHtml = '';
-    // Offset hari awal (misal Rabu = 3 cell kosong)
-    for (let empty = 0; empty < 3; empty++) {
-      daysHtml += `<div class="p-1.5 text-slate-300 dark:text-slate-700"></div>`;
-    }
-    for (let d = 1; d <= 30; d++) {
-      const isToday = d === currentDay;
-      daysHtml += `
-      <div class="p-1.5 rounded-lg font-bold text-center transition ${isToday ? 'bg-[#B91C1C] text-white shadow-sm scale-105' : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'}">
-        <span>${d}</span>
-      </div>
-    `;
-    }
-    daysContainer.innerHTML = daysHtml;
+    const year = AppState.calYear || 2026;
+    const month = AppState.calMonth !== undefined ? AppState.calMonth : 10;
+    const selectedDate = AppState.calSelectedDate || new Date(2026, 10, 22);
 
-    // Render 5 waktu sholat harian di kalender
+    const monthNames = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+
+    // 1. Header Month & Year
+    const headerTitle = document.getElementById('calHeaderMonthYear');
+    if (headerTitle) {
+      headerTitle.textContent = `${monthNames[month]} ${year}`;
+    }
+
+    const headerHijri = document.getElementById('calHeaderHijriSpan');
+    if (headerHijri) {
+      if (year === 2026 && month === 10) {
+        headerHijri.textContent = "Jumadal Ula - Jumadal Akhirah 1448 H";
+      } else {
+        const startHijri = getHijriDetails(new Date(year, month, 1));
+        const endHijri = getHijriDetails(new Date(year, month, 28));
+        headerHijri.textContent = `${startHijri.month} - ${endHijri.month} ${endHijri.year} H`;
+      }
+    }
+
+    // 2. Banner Tanggal Terpilih
+    const bannerTitle = document.getElementById('calSelectedDateTitle');
+    const bannerSub = document.getElementById('calSelectedDateSub');
+    if (bannerTitle && bannerSub && selectedDate) {
+      const dayNames = ['Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const dayName = dayNames[selectedDate.getDay()];
+      const pasaran = getPasaranJawa(selectedDate);
+      const hijri = getHijriDetails(selectedDate);
+
+      bannerTitle.textContent = `${dayName} ${pasaran}, ${selectedDate.getDate()} ${monthNames[selectedDate.getMonth()]} ${selectedDate.getFullYear()}`;
+      bannerSub.textContent = `${hijri.day} ${hijri.month} ${hijri.year} H`;
+    }
+
+    // 3. Grid 7 Kolom
+    const firstDayIndex = new Date(year, month, 1).getDay(); // 0 = Ahad
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let gridHtml = '';
+
+    // Empty cells before first day
+    for (let e = 0; e < firstDayIndex; e++) {
+      gridHtml += `<div class="p-1 min-h-[52px] rounded-xl opacity-20"></div>`;
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const thisDate = new Date(year, month, day);
+      const dayOfWeek = thisDate.getDay();
+      const pasaran = getPasaranJawa(thisDate);
+      const hijri = getHijriDetails(thisDate);
+
+      const isSunday = dayOfWeek === 0;
+      const isSelected = selectedDate && selectedDate.getFullYear() === year && selectedDate.getMonth() === month && selectedDate.getDate() === day;
+      const isToday = new Date().toDateString() === thisDate.toDateString();
+
+      // Indikator Titik
+      const isMondayThursdayFast = dayOfWeek === 1 || dayOfWeek === 4;
+      const isAyyamulBidh = hijri.day === 13 || hijri.day === 14 || hijri.day === 15;
+      const hasFastingDot = isMondayThursdayFast || isAyyamulBidh;
+
+      const isHolidayOrEvent = (year === 2026 && month === 10 && (day === 10 || day === 11)) || isSunday;
+      const hasEventDot = (year === 2026 && month === 10 && day === 10) || isAyyamulBidh;
+
+      // Styling kotak tanggal
+      let cellClass = "p-1 min-h-[54px] rounded-xl transition cursor-pointer flex flex-col items-center justify-between relative group ";
+      if (isSelected) {
+        cellClass += "bg-[#801818]/15 dark:bg-[#801818]/30 border-2 border-[#801818] shadow-xs ";
+      } else {
+        cellClass += "border border-stone-200/50 dark:border-stone-800/80 hover:bg-stone-100/80 dark:hover:bg-stone-800/60 bg-white/70 dark:bg-stone-900/60 ";
+      }
+
+      // Angka Masehi Color: Merah jika Ahad/Libur
+      let masehiColor = (isSunday || (month === 10 && day === 10)) ? "text-red-600 dark:text-red-400 font-black" : "text-stone-900 dark:text-white font-extrabold";
+      if (isSelected) masehiColor = "text-[#801818] dark:text-amber-400 font-black";
+
+      gridHtml += `
+        <div onclick="selectCalendarDate(${year}, ${month}, ${day})" class="${cellClass}">
+          <!-- Top Row: Angka Arab Hijriah di Kiri Atas -->
+          <div class="w-full flex items-center justify-start px-0.5">
+            <span class="text-[9.5px] font-arabic font-bold text-stone-400 dark:text-stone-500 leading-none">
+              ${hijri.arabicDay}
+            </span>
+          </div>
+
+          <!-- Middle: Angka Tanggal Masehi Utama Tebal -->
+          <span class="text-sm ${masehiColor} leading-none my-0.5">
+            ${day}
+          </span>
+
+          <!-- Bottom: Pasaran Jawa (Legi, Pahing, Pon, Wage, Kliwon) -->
+          <span class="text-[8.5px] font-semibold text-stone-500 dark:text-stone-400 leading-none">
+            ${pasaran}
+          </span>
+
+          <!-- Titik Indikator (Dot Indicator): Kuning = Puasa Sunnah, Biru = Hari Besar -->
+          <div class="flex items-center justify-center gap-0.5 h-1.5 mt-0.5">
+            ${hasFastingDot ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-2xs"></span>' : ''}
+            ${hasEventDot ? '<span class="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-2xs"></span>' : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    daysContainer.innerHTML = gridHtml;
+
+    // 4. Update Tab Content & Prayer Cards
+    renderCalendarTabContent();
+
+    const prayerCards = document.getElementById('calendarPrayerCards');
     if (prayerCards) {
       const prayers = [
         { name: 'Subuh', time: '04:14', icon: 'sunrise' },
@@ -2150,11 +2558,11 @@ function deleteDailyPlan(id) {
       ];
 
       prayerCards.innerHTML = prayers.map(p => `
-      <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-800">
-        <span class="text-[9px] font-bold text-slate-400 block">${p.name}</span>
-        <span class="text-xs font-black text-slate-900 dark:text-white font-mono mt-0.5 block">${p.time}</span>
-      </div>
-    `).join('');
+        <div class="p-2 rounded-xl bg-stone-50 dark:bg-stone-800/80 border border-stone-200/50 dark:border-stone-700/50 text-center">
+          <span class="text-[9px] font-bold text-stone-400 block">${p.name}</span>
+          <span class="text-xs font-black text-stone-900 dark:text-white font-mono mt-0.5 block">${p.time}</span>
+        </div>
+      `).join('');
     }
 
     if (window.lucide) lucide.createIcons();

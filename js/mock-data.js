@@ -714,9 +714,37 @@ const IslamiMockData = {
   // ----------------------------------------------------------------------------
   // 17. PRESET DEFAULT AMALAN NABAWI SEHARIAN (DAILY ROUTINES PRESET)
   // ----------------------------------------------------------------------------
-    defaultDailyRoutines: [
+      defaultDailyRoutines: [
     {
-      id: "routine-1",
+      id: "routine-tahajud",
+      title: {
+        id: "Sholat Tahajud & Witir",
+        en: "Tahajjud & Witr Night Prayer",
+        ms: "Solat Tahajud & Witir"
+      },
+      category: "sholat",
+      time: "03:15 WIB",
+      arabic: "أُصَلِّي سُنَّةَ التَّهَجُّدِ رَكْعَتَيْنِ لِلَّهِ تَعَالَى",
+      latin: "Ushalli sunnatat tahajjudi rak'ataini lillahi ta'ala",
+      translation: {
+        id: "Aku berniat sholat sunnah Tahajud dua rakaat karena Allah Ta'ala.",
+        en: "I intend to pray two rak'ahs of Tahajjud sunnah prayer for Allah the Almighty.",
+        ms: "Sahaja aku solat sunat Tahajud dua rakaat kerana Allah Ta'ala."
+      },
+      niat: {
+        arabic: "أُصَلِّي سُنَّةَ التَّهَجُّدِ رَكْعَتَيْنِ لِلَّهِ تَعَالَى",
+        latin: "Ushalli sunnatat tahajjudi rak'ataini lillahi ta'ala",
+        meaning: "Aku berniat sholat sunnah Tahajud dua rakaat karena Allah Ta'ala."
+      },
+      dzikir: {
+        arabic: "اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ نُورُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ، وَلَكَ الْحَمْدُ أَنْتَ قَيِّمُ السَّمَاوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ • سُبْحَانَ الْمَلِكِ الْقُدُّوسِ (٣×)",
+        latin: "Allahumma lakal hamdu anta nurus samawati wal ardhi wa man fihinna, wa lakal hamdu anta qayyimus samawati wal ardhi wa man fihinna. Subhanal malikil quddus (3x)",
+        meaning: "Ya Allah, bagi-Mu segala puji, Engkau cahaya langit dan bumi serta seisinya. Maha Suci Raja Yang Maha Kudus (3x)."
+      },
+      completed: true
+    },
+    {
+      id: "routine-bangun",
       title: {
         id: "Doa Bangun Tidur & Mensyukuri Hidup",
         en: "Waking Up & Gratitude Prayer",
@@ -734,25 +762,35 @@ const IslamiMockData = {
       completed: true
     },
     {
-      id: "routine-2",
+      id: "routine-subuh",
       title: {
-        id: "Sholat Qobliyah Subuh & Subuh Berjamaah",
-        en: "Qobliyah Fajr & Congregational Prayer",
-        ms: "Solat Qobliyah Subuh & Subuh Berjemaah"
+        id: "Sholat Subuh Berjamaah & Qobliyah",
+        en: "Fajr Congregational Prayer & Sunnah",
+        ms: "Solat Subuh Berjemaah & Qobliyah"
       },
-      category: "subuh",
-      time: "04:50 WIB",
-      arabic: "رَكْعَتَا الْفَجْرِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا • اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا",
-      latin: "Rak'atal fajri khoirun minad dunya wa ma fiha. Allahumma inni as'aluka 'ilman nafi'an wa rizqan thayyiban wa 'amalan mutaqabbala",
+      category: "sholat",
+      time: "04:45 WIB",
+      arabic: "أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+      latin: "Ushalli fardhash shubhi rak'ataini mustaqbilal qiblati adaan lillahi ta'ala",
       translation: {
-        id: "Dua rakaat fajar lebih baik dari dunia seisinya. 'Ya Allah, aku memohon ilmu yang bermanfaat, rezeki yang baik, dan amalan yang diterima.'",
-        en: "Two rak'ahs before Fajr are better than the world and all in it. 'O Allah, I ask You for beneficial knowledge, good provision, and accepted deeds.'",
-        ms: "Dua rakaat fajar lebih baik dari dunia seisinya. 'Ya Allah, aku memohon ilmu yang bermanfaat, rezeki yang baik, dan amalan yang diterima.'"
+        id: "Aku berniat sholat fardhu Subuh dua rakaat menghadap kiblat karena Allah Ta'ala.",
+        en: "I intend to pray the two rak'ahs of obligatory Fajr prayer facing the Qiblah for Allah.",
+        ms: "Sahaja aku solat fardhu Subuh dua rakaat menghadap kiblat tunai kerana Allah Ta'ala."
+      },
+      niat: {
+        arabic: "أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+        latin: "Ushalli fardhash shubhi rak'ataini mustaqbilal qiblati adaan lillahi ta'ala",
+        meaning: "Aku berniat sholat fardhu Subuh dua rakaat menghadap kiblat karena Allah Ta'ala."
+      },
+      dzikir: {
+        arabic: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ (٣×) • اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ • سُبْحَانَ اللَّهِ (٣٣×) • الْحَمْدُ لِلَّهِ (٣٣×) • اللَّهُ أَكْبَرُ (٣٣×) • اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا",
+        latin: "Astaghfirullahal 'adzim (3x). Allahumma antas salam wa minkas salam tabarakta ya dzal jalali wal ikram. Subhanallah (33x), Alhamdulillah (33x), Allahu Akbar (33x). Allahumma inni as'aluka 'ilman nafi'an wa rizqan thayyiban wa 'amalan mutaqabbala",
+        meaning: "Istighfar 3x, Doa Keselamatan, Tasbih 33x, Tahmid 33x, Takbir 33x, dan Doa Ilmu, Rezeki & Amal Maqbul."
       },
       completed: true
     },
     {
-      id: "routine-3",
+      id: "routine-dzikir-pagi",
       title: {
         id: "Dzikir Pagi Pembuka Berkah",
         en: "Morning Dhikr for Blessings",
@@ -770,43 +808,7 @@ const IslamiMockData = {
       completed: true
     },
     {
-      id: "routine-4",
-      title: {
-        id: "Sholat Dhuha & Doa Pembuka Rezeki",
-        en: "Duha Prayer & Sustenance Dhikr",
-        ms: "Solat Dhuha & Doa Pembuka Rezeki"
-      },
-      category: "dhuha",
-      time: "07:30 WIB",
-      arabic: "اللَّهُمَّ إِنَّ الضُّحَاءَ ضُحَاؤُكَ وَالْبَهَاءَ بَهَاؤُكَ وَالْجَمَالَ جَمَالُكَ، اللَّهُمَّ إِنْ كَانَ رِزْقِي فِي السَّمَاءِ فَأَنْزِلْهُ وَإِنْ كَانَ فِي الأَرْضِ فَأَخْرِجْهُ",
-      latin: "Allahumma innadh dhuha'a dhuha'uka wal baha'a baha'uka wal jamala jamaluka, Allahumma in kana rizqi fis sama'i fa anzilhu wa in kana fil ardhi fa akhrijhu",
-      translation: {
-        id: "Ya Allah, sesungguhnya waktu dhuha adalah waktu dhuha-Mu, keindahan adalah keindahan-Mu. Jika rezekiku di langit turunkanlah, jika di bumi keluarkanlah.",
-        en: "O Allah, the forenoon is Your forenoon and beauty is Your beauty. If my provision is in the heaven, send it down, and if in the earth, bring it forth.",
-        ms: "Ya Allah, sesungguhnya waktu dhuha adalah dhuha-Mu dan keindahan adalah keindahan-Mu. Jika rezekiku di langit turunkanlah, jika di bumi keluarkanlah."
-      },
-      completed: true
-    },
-    {
-      id: "routine-5",
-      title: {
-        id: "Doa Memulai Aktivitas / Bekerja",
-        en: "Prayer for Starting Work & Tasks",
-        ms: "Doa Memulakan Aktiviti / Bekerja"
-      },
-      category: "dhuha",
-      time: "08:30 WIB",
-      arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ • اللَّهُمَّ بَارِكْ لِي فِي وَقْتِي وَسَعْيِي",
-      latin: "Bismillahi tawakkaltu 'alallah la hawla wa la quwwata illa billah. Allahumma barik li fi waqti wa sa'yi",
-      translation: {
-        id: "Dengan menyebut nama Allah, aku bertawakkal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah. Ya Allah berkahilah ikhtiar dan waktuku.",
-        en: "In the name of Allah, I rely upon Allah; no power nor strength except with Allah. O Allah bless my time and effort.",
-        ms: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan melainkan dengan Allah. Ya Allah berkati ikhtiar dan waktuku."
-      },
-      completed: false
-    },
-    {
-      id: "routine-6",
+      id: "routine-sedekah",
       title: {
         id: "Sedekah Subuh / Infaq Jariyah Harian",
         en: "Morning Charity & Ongoing Infaq",
@@ -824,7 +826,53 @@ const IslamiMockData = {
       completed: true
     },
     {
-      id: "routine-7",
+      id: "routine-dhuha",
+      title: {
+        id: "Sholat Dhuha & Doa Pembuka Rezeki",
+        en: "Duha Prayer & Sustenance Dhikr",
+        ms: "Solat Dhuha & Doa Pembuka Rezeki"
+      },
+      category: "sholat",
+      time: "07:30 WIB",
+      arabic: "أُصَلِّي سُنَّةَ الضُّحَى رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+      latin: "Ushalli sunnatadh dhuha rak'ataini mustaqbilal qiblati adaan lillahi ta'ala",
+      translation: {
+        id: "Aku berniat sholat sunnah Dhuha dua rakaat menghadap kiblat karena Allah Ta'ala.",
+        en: "I intend to pray two rak'ahs of Duha sunnah prayer facing Qiblah for Allah.",
+        ms: "Sahaja aku solat sunat Dhuha dua rakaat menghadap kiblat tunai kerana Allah Ta'ala."
+      },
+      niat: {
+        arabic: "أُصَلِّي سُنَّةَ الضُّحَى رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+        latin: "Ushalli sunnatadh dhuha rak'ataini mustaqbilal qiblati adaan lillahi ta'ala",
+        meaning: "Aku berniat sholat sunnah Dhuha dua rakaat menghadap kiblat karena Allah Ta'ala."
+      },
+      dzikir: {
+        arabic: "اللَّهُمَّ إِنَّ الضُّحَاءَ ضُحَاؤُكَ وَالْبَهَاءَ بَهَاؤُكَ وَالْجَمَالَ جَمَالُكَ، اللَّهُمَّ إِنْ كَانَ رِزْقِي فِي السَّمَاءِ فَأَنْزِلْهُ وَإِنْ كَانَ فِي الأَرْضِ فَأَخْرِجْهُ",
+        latin: "Allahumma innadh dhuha'a dhuha'uka wal baha'a baha'uka wal jamala jamaluka, Allahumma in kana rizqi fis sama'i fa anzilhu wa in kana fil ardhi fa akhrijhu",
+        meaning: "Ya Allah, sesungguhnya waktu dhuha adalah dhuha-Mu, keindahan adalah keindahan-Mu. Jika rezekiku di langit turunkanlah, jika di bumi keluarkanlah."
+      },
+      completed: true
+    },
+    {
+      id: "routine-kerja",
+      title: {
+        id: "Doa Memulai Aktivitas / Bekerja",
+        en: "Prayer for Starting Work & Tasks",
+        ms: "Doa Memulakan Aktiviti / Bekerja"
+      },
+      category: "dhuha",
+      time: "08:30 WIB",
+      arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ • اللَّهُمَّ بَارِكْ لِي فِي وَقْتِي وَسَعْيِي",
+      latin: "Bismillahi tawakkaltu 'alallah la hawla wa la quwwata illa billah. Allahumma barik li fi waqti wa sa'yi",
+      translation: {
+        id: "Dengan menyebut nama Allah, aku bertawakkal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah. Ya Allah berkahilah ikhtiar dan waktuku.",
+        en: "In the name of Allah, I rely upon Allah; no power nor strength except with Allah. O Allah bless my time and effort.",
+        ms: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan melainkan dengan Allah. Ya Allah berkati ikhtiar dan waktuku."
+      },
+      completed: true
+    },
+    {
+      id: "routine-lisan",
       title: {
         id: "Menjaga Lisan & Membantu Sesama",
         en: "Guarding Speech & Helping Others",
@@ -839,10 +887,38 @@ const IslamiMockData = {
         en: "Whoever believes in Allah and the Last Day, let him speak good or remain silent. O Allah guide me to the best of morals.",
         ms: "Barangsiapa beriman kepada Allah dan hari akhirat, hendaklah berkata baik atau diam. Ya Allah tunjukkanlah daku akhlak terbaik."
       },
-      completed: false
+      completed: true
     },
     {
-      id: "routine-8",
+      id: "routine-dzuhur",
+      title: {
+        id: "Sholat Dzuhur Berjamaah",
+        en: "Zuhr Congregational Prayer",
+        ms: "Solat Zohor Berjemaah"
+      },
+      category: "sholat",
+      time: "11:55 WIB",
+      arabic: "أُصَلِّي فَرْضَ الظُّهْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+      latin: "Ushalli fardhazh zhuhri arba'a raka'atin mustaqbilal qiblati adaan lillahi ta'ala",
+      translation: {
+        id: "Aku berniat sholat fardhu Dzuhur empat rakaat menghadap kiblat karena Allah Ta'ala.",
+        en: "I intend to pray four rak'ahs of obligatory Zuhr prayer facing Qiblah for Allah.",
+        ms: "Sahaja aku solat fardhu Zohor empat rakaat menghadap kiblat tunai kerana Allah Ta'ala."
+      },
+      niat: {
+        arabic: "أُصَلِّي فَرْضَ الظُّهْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+        latin: "Ushalli fardhazh zhuhri arba'a raka'atin mustaqbilal qiblati adaan lillahi ta'ala",
+        meaning: "Aku berniat sholat fardhu Dzuhur empat rakaat menghadap kiblat karena Allah Ta'ala."
+      },
+      dzikir: {
+        arabic: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ (٣×) • لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ • سُبْحَانَ اللَّهِ (٣٣×) • الْحَمْدُ لِلَّهِ (٣٣×) • اللَّهُ أَكْبَرُ (٣٣×) • اللَّهُمَّ لَا مَانِعَ لِمَا أَعْطَيْتَ",
+        latin: "Astaghfirullahal 'adzim (3x). La ilaha illallahu wahdahu la syarika lah. Subhanallah (33x), Alhamdulillah (33x), Allahu Akbar (33x). Allahumma la mani'a lima a'thaita",
+        meaning: "Istighfar 3x, Tahlil, Tasbih 33x, Tahmid 33x, Takbir 33x, dan Doa Pasrah atas karunia Allah."
+      },
+      completed: true
+    },
+    {
+      id: "routine-makan",
       title: {
         id: "Doa Sebelum & Sesudah Makan",
         en: "Prayer Before & After Meals",
@@ -860,14 +936,98 @@ const IslamiMockData = {
       completed: true
     },
     {
-      id: "routine-9",
+      id: "routine-ashar",
+      title: {
+        id: "Sholat Ashar Berjamaah",
+        en: "Asr Congregational Prayer",
+        ms: "Solat Asar Berjemaah"
+      },
+      category: "sholat",
+      time: "15:15 WIB",
+      arabic: "أُصَلِّي فَرْضَ الْعَصْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+      latin: "Ushalli fardhal 'ashri arba'a raka'atin mustaqbilal qiblati adaan lillahi ta'ala",
+      translation: {
+        id: "Aku berniat sholat fardhu Ashar empat rakaat menghadap kiblat karena Allah Ta'ala.",
+        en: "I intend to pray four rak'ahs of obligatory Asr prayer facing Qiblah for Allah.",
+        ms: "Sahaja aku solat fardhu Asar empat rakaat menghadap kiblat tunai kerana Allah Ta'ala."
+      },
+      niat: {
+        arabic: "أُصَلِّي فَرْضَ الْعَصْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+        latin: "Ushalli fardhal 'ashri arba'a raka'atin mustaqbilal qiblati adaan lillahi ta'ala",
+        meaning: "Aku berniat sholat fardhu Ashar empat rakaat menghadap kiblat karena Allah Ta'ala."
+      },
+      dzikir: {
+        arabic: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ الَّذِي لَا إِلَهَ إِلَّا هُوَ الْحَيَّ الْقَيُّومَ وَأَتُوبُ إِلَيْهِ (٣×) • سُبْحَانَ اللَّهِ (٣٣×) • الْحَمْدُ لِلَّهِ (٣٣×) • اللَّهُ أَكْبَرُ (٣٣×) • اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ",
+        latin: "Astaghfirullahal 'adzim alladzi la ilaha illa huwal hayyul qayyum wa atubu ilaih (3x). Subhanallah (33x), Alhamdulillah (33x), Allahu Akbar (33x). Allahumma a'inni 'ala dzikrika wa syukrika wa husni 'ibadatik",
+        meaning: "Istighfar Taubat 3x, Tasbih 33x, Tahmid 33x, Takbir 33x, dan Doa memohon pertolongan ibadah terbaik."
+      },
+      completed: false
+    },
+    {
+      id: "routine-maghrib",
+      title: {
+        id: "Sholat Maghrib & Doa Keselamatan",
+        en: "Maghrib Prayer & Safety Dua",
+        ms: "Solat Maghrib & Doa Keselamatan"
+      },
+      category: "sholat",
+      time: "18:00 WIB",
+      arabic: "أُصَلِّي فَرْضَ الْمَغْرِبِ ثَلَاثَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+      latin: "Ushalli fardhal maghribi tsalatsa raka'atin mustaqbilal qiblati adaan lillahi ta'ala",
+      translation: {
+        id: "Aku berniat sholat fardhu Maghrib tiga rakaat menghadap kiblat karena Allah Ta'ala.",
+        en: "I intend to pray three rak'ahs of obligatory Maghrib prayer facing Qiblah for Allah.",
+        ms: "Sahaja aku solat fardhu Maghrib tiga rakaat menghadap kiblat tunai kerana Allah Ta'ala."
+      },
+      niat: {
+        arabic: "أُصَلِّي فَرْضَ الْمَغْرِبِ ثَلَاثَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+        latin: "Ushalli fardhal maghribi tsalatsa raka'atin mustaqbilal qiblati adaan lillahi ta'ala",
+        meaning: "Aku berniat sholat fardhu Maghrib tiga rakaat menghadap kiblat karena Allah Ta'ala."
+      },
+      dzikir: {
+        arabic: "اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ (٧×) • أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ (٣×) • سُبْحَانَ اللَّهِ (٣٣×) • الْحَمْدُ لِلَّهِ (٣٣×) • اللَّهُ أَكْبَرُ (٣٣×) • رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+        latin: "Allahumma ajirni minan nar (7x). Astaghfirullahal 'adzim (3x). Subhanallah (33x), Alhamdulillah (33x), Allahu Akbar (33x). Rabbana atina fid dunya hasanatan wa fil akhirati hasanatan wa qina 'adzaban nar",
+        meaning: "Doa Selamat dari Neraka (7x), Istighfar, Tasbih 33x, Tahmid 33x, Takbir 33x, dan Doa Sapu Jagad."
+      },
+      completed: false
+    },
+    {
+      id: "routine-isya",
+      title: {
+        id: "Sholat Isya & Ba'diyah",
+        en: "Isha Prayer & Ba'diyah Sunnah",
+        ms: "Solat Isyak & Ba'diyah"
+      },
+      category: "sholat",
+      time: "19:15 WIB",
+      arabic: "أُصَلِّي فَرْضَ الْعِشَاءِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+      latin: "Ushalli fardhal 'isya-i arba'a raka'atin mustaqbilal qiblati adaan lillahi ta'ala",
+      translation: {
+        id: "Aku berniat sholat fardhu Isya empat rakaat menghadap kiblat karena Allah Ta'ala.",
+        en: "I intend to pray four rak'ahs of obligatory Isha prayer facing Qiblah for Allah.",
+        ms: "Sahaja aku solat fardhu Isyak empat rakaat menghadap kiblat tunai kerana Allah Ta'ala."
+      },
+      niat: {
+        arabic: "أُصَلِّي فَرْضَ الْعِشَاءِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلَّهِ تَعَالَى",
+        latin: "Ushalli fardhal 'isya-i arba'a raka'atin mustaqbilal qiblati adaan lillahi ta'ala",
+        meaning: "Aku berniat sholat fardhu Isya empat rakaat menghadap kiblat karena Allah Ta'ala."
+      },
+      dzikir: {
+        arabic: "أَسْتَغْفِرُ اللَّهَ الْعَظِيمَ (٣×) • اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ • سُبْحَانَ اللَّهِ (٣٣×) • الْحَمْدُ لِلَّهِ (٣٣×) • اللَّهُ أَكْبَرُ (٣٣×) • اللَّهُمَّ حَاسِبْنِي حِسَابًا يَسِيرًا",
+        latin: "Astaghfirullahal 'adzim (3x). Allahumma antas salam wa minkas salam. Subhanallah (33x), Alhamdulillah (33x), Allahu Akbar (33x). Allahumma hasibni hisaban yasira",
+        meaning: "Istighfar, Doa Keselamatan, Tasbih 33x, Tahmid 33x, Takbir 33x, dan Doa Hisab yang Ringan."
+      },
+      completed: false
+    },
+    {
+      id: "routine-tilawah",
       title: {
         id: "Tilawah Al-Qur'an / Baca Surat Al-Mulk",
         en: "Quran Recitation / Surah Al-Mulk",
         ms: "Tilawah Al-Qur'an / Membaca Surah Al-Mulk"
       },
       category: "malam",
-      time: "19:30 WIB",
+      time: "19:45 WIB",
       arabic: "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ • اللَّهُمَّ ارْحَمْنَا بِالْقُرْآنِ وَاجْعَلْهُ لَنَا نُورًا وَهُدًى",
       latin: "Tabarakalladzi biyadihil mulku wa huwa 'ala kulli syai'in qadir. Allahummarhamna bil qur'an waj'alhu lana nuran wa huda",
       translation: {
@@ -878,7 +1038,7 @@ const IslamiMockData = {
       completed: false
     },
     {
-      id: "routine-10",
+      id: "routine-dzikir-petang",
       title: {
         id: "Dzikir Petang & Muhasabah Harian",
         en: "Evening Dhikr & Self-Reflection",
@@ -896,7 +1056,7 @@ const IslamiMockData = {
       completed: false
     },
     {
-      id: "routine-11",
+      id: "routine-tidur",
       title: {
         id: "Doa & Adab Sebelum Tidur",
         en: "Bedtime Prayer & Sunnah Ethics",
