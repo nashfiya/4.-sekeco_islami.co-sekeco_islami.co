@@ -254,10 +254,7 @@ function applyLanguage(lang) {
   if (homeSearchInput && dict.ask_question_placeholder) {
     homeSearchInput.placeholder = dict.ask_question_placeholder;
   }
-  const searchPlace = document.querySelector('#view-home .truncate');
-  if (searchPlace && dict.ask_question_placeholder) {
-    searchPlace.textContent = dict.ask_question_placeholder;
-  }
+  // Search input placeholder handled directly via [data-i18n-placeholder]
 
   // 4. Daily Verse Label
   const dvLabel = document.querySelector('#view-home .uppercase.tracking-wider');
@@ -1515,17 +1512,27 @@ function applyLanguage(lang) {
 // ==============================================================================
 
 function initDailyPlans() {
+  const version = localStorage.getItem('islami_daily_plans_version');
   const existing = localStorage.getItem('islami_daily_plans');
-  if (!existing || existing === '[]') {
+  if (!existing || existing === '[]' || version !== 'v3') {
     const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
     localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
+    localStorage.setItem('islami_daily_plans_version', 'v3');
     return defaults;
   }
   try {
-    return JSON.parse(existing);
+    const parsed = JSON.parse(existing);
+    if (!Array.isArray(parsed) || parsed.length < 8) {
+      const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
+      localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
+      localStorage.setItem('islami_daily_plans_version', 'v3');
+      return defaults;
+    }
+    return parsed;
   } catch (e) {
     const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
     localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
+    localStorage.setItem('islami_daily_plans_version', 'v3');
     return defaults;
   }
 }
@@ -1622,16 +1629,16 @@ function renderDailyPlans() {
   if (progressBar) progressBar.style.width = `${percent}%`;
 
   const catNames = {
-    wake: { id: "Bangun Tidur", en: "Waking Up", ms: "Bangun Tidur" },
-    morning: { id: "Pagi & Aktivitas", en: "Morning & Activities", ms: "Pagi & Aktiviti" },
-    worship: { id: "Ibadah & Makan", en: "Worship & Meals", ms: "Ibadah & Makanan" },
-    sleep: { id: "Sebelum Tidur", en: "Before Sleep", ms: "Sebelum Tidur" }
+    subuh: { id: "Bangun & Subuh", en: "Wake & Fajr", ms: "Bangun & Subuh" },
+    dhuha: { id: "Dhuha & Pagi", en: "Duha & Morning", ms: "Dhuha & Pagi" },
+    amal: { id: "Amal & Jariyah", en: "Charity & Jariyah", ms: "Amal & Jariah" },
+    malam: { id: "Malam & Tidur", en: "Night & Sleep", ms: "Malam & Tidur" }
   };
   const catColors = {
-    wake: 'bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900',
-    morning: 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900',
-    worship: 'bg-rose-50 dark:bg-rose-950/70 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-900',
-    sleep: 'bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-900'
+    subuh: 'bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-900',
+    dhuha: 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900',
+    amal: 'bg-rose-50 dark:bg-rose-950/70 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-900',
+    malam: 'bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-900'
   };
 
   const activeCategory = AppState.dailyPlanCategory || 'all';
@@ -1730,7 +1737,7 @@ function renderDoa(filter = '') {
 
 function filterDailyPlansByCategory(category) {
   AppState.dailyPlanCategory = category;
-  ['all', 'wake', 'morning', 'worship', 'sleep'].forEach(c => {
+  ['all', 'subuh', 'dhuha', 'amal', 'malam'].forEach(c => {
     const btn = document.getElementById(`btnFilterCat-${c}`);
     if (btn) {
       if (c === category) {
@@ -1767,7 +1774,7 @@ function openAddDailyPlanModal() {
   if (!modal) return;
   document.getElementById('inputPlanId').value = '';
   document.getElementById('inputPlanTitle').value = '';
-  document.getElementById('inputPlanCategory').value = 'wake';
+  document.getElementById('inputPlanCategory').value = 'subuh';
   document.getElementById('inputPlanTime').value = '05:00 WIB';
   document.getElementById('inputPlanArabic').value = '';
   document.getElementById('inputPlanTranslation').value = '';

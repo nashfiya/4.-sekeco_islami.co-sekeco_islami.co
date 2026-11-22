@@ -714,20 +714,20 @@ const IslamiMockData = {
   // ----------------------------------------------------------------------------
   // 17. PRESET DEFAULT AMALAN NABAWI SEHARIAN (DAILY ROUTINES PRESET)
   // ----------------------------------------------------------------------------
-  defaultDailyRoutines: [
+    defaultDailyRoutines: [
     {
       id: "routine-1",
       title: {
-        id: "Bangun Tidur & Doa Syukur",
+        id: "Doa Bangun Tidur & Mensyukuri Hidup",
         en: "Waking Up & Gratitude Prayer",
-        ms: "Bangun Tidur & Doa Syukur"
+        ms: "Doa Bangun Tidur & Mensyukuri Hidup"
       },
-      category: "wake",
+      category: "subuh",
       time: "04:30 WIB",
       arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
       latin: "Alhamdulillahilladzi ahyana ba'da ma amatana wa ilaihin nusyur",
       translation: {
-        id: "Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami dan kepada-Nya kami kembali.",
+        id: "Segala puji bagi Allah yang telah menghidupkan kami setelah mematikan kami dan kepada-Nya tempat kembali.",
         en: "All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection.",
         ms: "Segala puji bagi Allah yang menghidupkan kami selepas mematikan kami dan kepada-Nya tempat kembali."
       },
@@ -736,282 +736,182 @@ const IslamiMockData = {
     {
       id: "routine-2",
       title: {
-        id: "Dzikir Pagi Pembuka Rezeki",
-        en: "Morning Dhikr & Sustenance Prayer",
-        ms: "Zikir Pagi Pembuka Rezeki"
+        id: "Sholat Qobliyah Subuh & Subuh Berjamaah",
+        en: "Qobliyah Fajr & Congregational Prayer",
+        ms: "Solat Qobliyah Subuh & Subuh Berjemaah"
       },
-      category: "morning",
-      time: "06:00 WIB",
-      arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ وَالْحَمْدُ لِلَّهِ لَا إِلَهَ إِلَّا اللَّهُ",
-      latin: "Ashbahna wa ashbahal mulku lillahi walhamdulillah la ilaha illallah",
+      category: "subuh",
+      time: "04:50 WIB",
+      arabic: "رَكْعَتَا الْفَجْرِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا • اللَّهُمَّ إِنِّي أَسْأَلُكَ عِلْمًا نَافِعًا وَرِزْقًا طَيِّبًا وَعَمَلًا مُتَقَبَّلًا",
+      latin: "Rak'atal fajri khoirun minad dunya wa ma fiha. Allahumma inni as'aluka 'ilman nafi'an wa rizqan thayyiban wa 'amalan mutaqabbala",
       translation: {
-        id: "Kami berpagi hari dan kerajaan milik Allah, segala puji bagi Allah, tiada sesembahan selain Allah.",
-        en: "We have entered the morning and the kingdom belongs to Allah, all praise is for Allah, there is no deity but Allah.",
-        ms: "Kami berpagi hari dan kerajaan kepunyaan Allah, segala puji bagi Allah, tiada tuhan melainkan Allah."
+        id: "Dua rakaat fajar lebih baik dari dunia seisinya. 'Ya Allah, aku memohon ilmu yang bermanfaat, rezeki yang baik, dan amalan yang diterima.'",
+        en: "Two rak'ahs before Fajr are better than the world and all in it. 'O Allah, I ask You for beneficial knowledge, good provision, and accepted deeds.'",
+        ms: "Dua rakaat fajar lebih baik dari dunia seisinya. 'Ya Allah, aku memohon ilmu yang bermanfaat, rezeki yang baik, dan amalan yang diterima.'"
       },
       completed: true
     },
     {
       id: "routine-3",
       title: {
-        id: "Memulai Bekerja / Belajar & Shalat Dhuha",
-        en: "Starting Work / Study & Duha Prayer",
-        ms: "Memulakan Kerja / Belajar & Solat Dhuha"
+        id: "Dzikir Pagi Pembuka Berkah",
+        en: "Morning Dhikr for Blessings",
+        ms: "Zikir Pagi Pembuka Berkah"
       },
-      category: "morning",
-      time: "08:30 WIB",
-      arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",
-      latin: "Bismillahi tawakkaltu 'alallahi la hawla wa la quwwata illa billah",
+      category: "subuh",
+      time: "05:30 WIB",
+      arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ، لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",
+      latin: "Ashbahna wa ashbahal mulku lillah, walhamdulillah, la ilaha illallahu wahdahu la syarika lah, lahul mulku wa lahul hamdu wa huwa 'ala kulli syai'in qadir",
       translation: {
-        id: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah.",
-        en: "In the name of Allah, I place my trust in Allah, there is no might nor power except by Allah.",
-        ms: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan upaya kecuali dengan pertolongan Allah."
+        id: "Kami telah memasuki waktu pagi dan kerajaan milik Allah, segala puji bagi Allah, tiada sesembahan selain Allah Yang Maha Esa.",
+        en: "We have entered morning and dominion belongs to Allah, all praise to Allah, there is no god but Allah alone.",
+        ms: "Kami telah memasuki waktu pagi dan kerajaan milik Allah, segala puji bagi Allah, tiada tuhan melainkan Allah semata-mata."
       },
       completed: true
     },
     {
       id: "routine-4",
       title: {
-        id: "Makan Siang & Syukur Rezeki Halal",
-        en: "Lunch & Gratitude for Halal Provision",
-        ms: "Makan Tengah Hari & Syukur Rezeki Halal"
+        id: "Sholat Dhuha & Doa Pembuka Rezeki",
+        en: "Duha Prayer & Sustenance Dhikr",
+        ms: "Solat Dhuha & Doa Pembuka Rezeki"
       },
-      category: "worship",
-      time: "12:30 WIB",
-      arabic: "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ",
-      latin: "Allahumma barik lana fima razaqtana wa qina 'adzaban nar",
+      category: "dhuha",
+      time: "07:30 WIB",
+      arabic: "اللَّهُمَّ إِنَّ الضُّحَاءَ ضُحَاؤُكَ وَالْبَهَاءَ بَهَاؤُكَ وَالْجَمَالَ جَمَالُكَ، اللَّهُمَّ إِنْ كَانَ رِزْقِي فِي السَّمَاءِ فَأَنْزِلْهُ وَإِنْ كَانَ فِي الأَرْضِ فَأَخْرِجْهُ",
+      latin: "Allahumma innadh dhuha'a dhuha'uka wal baha'a baha'uka wal jamala jamaluka, Allahumma in kana rizqi fis sama'i fa anzilhu wa in kana fil ardhi fa akhrijhu",
       translation: {
-        id: "Ya Allah, berkahilah rezeki yang telah Engkau berikan kepada kami dan peliharalah kami dari siksa neraka.",
-        en: "O Allah, bless for us that which You have provided us and protect us from the punishment of the Fire.",
-        ms: "Ya Allah, berkatilah rezeki yang telah Engkau kurniakan kepada kami dan peliharalah kami dari azab neraka."
+        id: "Ya Allah, sesungguhnya waktu dhuha adalah waktu dhuha-Mu, keindahan adalah keindahan-Mu. Jika rezekiku di langit turunkanlah, jika di bumi keluarkanlah.",
+        en: "O Allah, the forenoon is Your forenoon and beauty is Your beauty. If my provision is in the heaven, send it down, and if in the earth, bring it forth.",
+        ms: "Ya Allah, sesungguhnya waktu dhuha adalah dhuha-Mu dan keindahan adalah keindahan-Mu. Jika rezekiku di langit turunkanlah, jika di bumi keluarkanlah."
       },
       completed: true
     },
     {
       id: "routine-5",
       title: {
-        id: "Dzikir Petang & Doa Keselamatan",
-        en: "Evening Dhikr & Safety Prayer",
-        ms: "Zikir Petang & Doa Keselamatan"
+        id: "Doa Memulai Aktivitas / Bekerja",
+        en: "Prayer for Starting Work & Tasks",
+        ms: "Doa Memulakan Aktiviti / Bekerja"
       },
-      category: "worship",
-      time: "17:45 WIB",
-      arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ",
-      latin: "Allahumma inni as'alukal 'afwa wal 'afiyata fid dunya wal akhirah",
+      category: "dhuha",
+      time: "08:30 WIB",
+      arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ • اللَّهُمَّ بَارِكْ لِي فِي وَقْتِي وَسَعْيِي",
+      latin: "Bismillahi tawakkaltu 'alallah la hawla wa la quwwata illa billah. Allahumma barik li fi waqti wa sa'yi",
       translation: {
-        id: "Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan di dunia dan akhirat.",
-        en: "O Allah, I ask You for forgiveness and well-being in this world and the Hereafter.",
-        ms: "Ya Allah, sesungguhnya aku memohon kepada-Mu keampunan dan kesejahteraan di dunia dan di akhirat."
+        id: "Dengan menyebut nama Allah, aku bertawakkal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah. Ya Allah berkahilah ikhtiar dan waktuku.",
+        en: "In the name of Allah, I rely upon Allah; no power nor strength except with Allah. O Allah bless my time and effort.",
+        ms: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan melainkan dengan Allah. Ya Allah berkati ikhtiar dan waktuku."
       },
       completed: false
     },
     {
       id: "routine-6",
       title: {
-        id: "Muhasabah & Doa Sebelum Tidur",
-        en: "Night Reflection & Bedtime Prayer",
-        ms: "Muhasabah & Doa Sebelum Tidur"
+        id: "Sedekah Subuh / Infaq Jariyah Harian",
+        en: "Morning Charity & Ongoing Infaq",
+        ms: "Sedekah Subuh / Infaq Jariah Harian"
       },
-      category: "sleep",
-      time: "21:30 WIB",
-      arabic: "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي وَبِكَ أَرْفَعُهُ فَإِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا",
-      latin: "Bismika Rabbi wadha'tu janbi wa bika arfa'uhu fa in amsakta nafsi farhamha",
+      category: "amal",
+      time: "06:00 WIB",
+      arabic: "اللَّهُمَّ أَعْطِ مُنْفِقًا خَلَفًا وَأَعْطِ مُمْسِكًا تَلَفًا • رَبَّنَا تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ",
+      latin: "Allahumma a'thi munfiqan khalafan wa a'thi mumsikan talafa. Rabbana taqabbal minna innaka antas sami'ul 'alim",
       translation: {
-        id: "Dengan nama-Mu wahai Tuhanku, aku meletakkan lambungku dan dengan nama-Mu aku mengangkatnya. Jika Engkau menahan jiwaku maka ampunilah ia.",
-        en: "In Your name, my Lord, I lay down my side and in Your name I raise it. If You take my soul, have mercy upon it.",
-        ms: "Dengan nama-Mu wahai Tuhanku, aku meletakkan lambungku dan dengan nama-Mu aku mengangkatnya. Jika Engkau mengambil jiwaku maka ampunilah ia."
+        id: "Ya Allah, berikanlah ganti bagi orang yang berinfak dan berikanlah kehancuran bagi orang yang bakhil. Ya Tuhan kami, terimalah amal kami.",
+        en: "O Allah, give recompense to the one who spends, and give destruction to the one who withholds. Our Lord, accept from us.",
+        ms: "Ya Allah, berikanlah ganti kepada yang berinfak dan kebinasaan kepada yang bakhil. Wahai Tuhan kami, terimalah daripada kami."
+      },
+      completed: true
+    },
+    {
+      id: "routine-7",
+      title: {
+        id: "Menjaga Lisan & Membantu Sesama",
+        en: "Guarding Speech & Helping Others",
+        ms: "Menjaga Lisan & Membantu Sesama"
+      },
+      category: "amal",
+      time: "11:30 WIB",
+      arabic: "مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ • اللَّهُمَّ اهْدِنِي لِأَحْسَنِ الْأَخْلَاقِ",
+      latin: "Man kana yu'minu billahi wal yaumil akhiri fal yaqul khoiran aw liyashmut. Allahummah dini li ahsanil akhlaq",
+      translation: {
+        id: "Barangsiapa beriman kepada Allah dan hari akhir, hendaklah berkata baik atau diam. Ya Allah tunjukilah aku akhlak yang paling mulia.",
+        en: "Whoever believes in Allah and the Last Day, let him speak good or remain silent. O Allah guide me to the best of morals.",
+        ms: "Barangsiapa beriman kepada Allah dan hari akhirat, hendaklah berkata baik atau diam. Ya Allah tunjukkanlah daku akhlak terbaik."
       },
       completed: false
-    }
-  ],
-  calendarEvents: [
-    {
-      date: "2026-11-10",
-      day: 10,
-      month: 10, // 0-indexed November
-      year: 2026,
-      title: {
-        id: "Hari Pahlawan",
-        en: "Heroes' Day",
-        ms: "Hari Pahlawan"
-      },
-      subtitle: {
-        id: "Selasa, 10 November 2026 / 30 Jumadal Ula 1448",
-        en: "Tuesday, 10 November 2026 / 30 Jumada al-Ula 1448",
-        ms: "Selasa, 10 November 2026 / 30 Jamadilawal 1448"
-      },
-      category: "Nasional",
-      isHoliday: true
     },
     {
-      date: "2026-11-10",
-      day: 10,
-      month: 10,
-      year: 2026,
+      id: "routine-8",
       title: {
-        id: "Ribuan warga NU gugur sebagai syuhada pada perang membela Tanah Air di Surabaya",
-        en: "Thousands of NU residents martyred defending the Homeland in Surabaya",
-        ms: "Ribuan warga NU gugur sebagai syuhada dalam perang mempertahankan Tanah Air di Surabaya"
+        id: "Doa Sebelum & Sesudah Makan",
+        en: "Prayer Before & After Meals",
+        ms: "Doa Sebelum & Selepas Makan"
       },
-      subtitle: {
-        id: "Sejarah Resolusi Jihad 1945 & Hari Pahlawan",
-        en: "History of Jihad Resolution 1945 & Heroes' Day",
-        ms: "Sejarah Resolusi Jihad 1945 & Hari Pahlawan"
-      },
-      category: "Sejarah",
-      isHoliday: false
-    },
-    {
-      date: "2026-11-28",
-      day: 28,
-      month: 10,
-      year: 2026,
-      title: {
-        id: "Hari Menanam Pohon Indonesia",
-        en: "Indonesian Tree Planting Day",
-        ms: "Hari Menanam Pokok Indonesia"
-      },
-      subtitle: {
-        id: "Sabtu, 28 November 2026 / 18 Jumadal Akhirah 1448",
-        en: "Saturday, 28 November 2026 / 18 Jumada al-Akhirah 1448",
-        ms: "Sabtu, 28 November 2026 / 18 Jamadilakhir 1448"
-      },
-      category: "Lingkungan",
-      isHoliday: false
-    },
-    {
-      date: "2026-12-25",
-      day: 25,
-      month: 11,
-      year: 2026,
-      title: {
-        id: "Hari Raya Natal",
-        en: "Christmas Day",
-        ms: "Hari Krismas"
-      },
-      subtitle: {
-        id: "Jumat, 25 Desember 2026 / 15 Rajab 1448",
-        en: "Friday, 25 December 2026 / 15 Rajab 1448",
-        ms: "Jumaat, 25 Disember 2026 / 15 Rejab 1448"
-      },
-      category: "Nasional",
-      isHoliday: true
-    },
-    {
-      date: "2027-01-01",
-      day: 1,
-      month: 0,
-      year: 2027,
-      title: {
-        id: "Tahun Baru Masehi 2027",
-        en: "New Year's Day 2027",
-        ms: "Tahun Baharu 2027"
-      },
-      subtitle: {
-        id: "Jumat, 1 Januari 2027 / 22 Rajab 1448",
-        en: "Friday, 1 January 2027 / 22 Rajab 1448",
-        ms: "Jumaat, 1 Januari 2027 / 22 Rejab 1448"
-      },
-      category: "Nasional",
-      isHoliday: true
-    },
-    {
-      date: "2027-01-05",
-      day: 5,
-      month: 0,
-      year: 2027,
-      title: {
-        id: "Isra Mi'raj Nabi Muhammad SAW (27 Rajab 1448 H)",
-        en: "Isra and Mi'raj of the Prophet (27 Rajab 1448 AH)",
-        ms: "Israk dan Mikraj Nabi Muhammad SAW (27 Rejab 1448 H)"
-      },
-      subtitle: {
-        id: "Selasa, 5 Januari 2027 / 27 Rajab 1448",
-        en: "Tuesday, 5 January 2027 / 27 Rajab 1448",
-        ms: "Selasa, 5 Januari 2027 / 27 Rejab 1448"
-      },
-      category: "Islam",
-      isHoliday: true
-    },
-    {
-      date: "2027-02-08",
-      day: 8,
-      month: 1,
-      year: 2027,
-      title: {
-        id: "Awal Puasa Ramadhan 1448 H (1 Ramadhan)",
-        en: "First Day of Ramadan 1448 AH",
-        ms: "Awal Ramadan 1448 H"
-      },
-      subtitle: {
-        id: "Senin, 8 Februari 2027 / 1 Ramadhan 1448",
-        en: "Monday, 8 February 2027 / 1 Ramadan 1448",
-        ms: "Isnin, 8 Februari 2027 / 1 Ramadan 1448"
-      },
-      category: "Islam",
-      isHoliday: true
-    },
-    {
-      date: "2027-03-10",
-      day: 10,
-      month: 2,
-      year: 2027,
-      title: {
-        id: "Hari Raya Idul Fitri 1448 H (1 Syawal)",
-        en: "Eid al-Fitr 1448 AH",
-        ms: "Hari Raya Aidilfitri 1448 H"
-      },
-      subtitle: {
-        id: "Rabu, 10 Maret 2027 / 1 Syawal 1448",
-        en: "Wednesday, 10 March 2027 / 1 Shawwal 1448",
-        ms: "Rabu, 10 Mac 2027 / 1 Syawal 1448"
-      },
-      category: "Islam",
-      isHoliday: true
-    }
-  ],
-  dailyDuas: [
-    {
-      id: 1,
-      arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْعَفْوَ وَالْعَافِيَةَ فِي الدُّنْيَا وَالآخِرَةِ",
-      title: {
-        id: "Doa Afiyah & Keselamatan",
-        en: "Du'a for Forgiveness & Well-being",
-        ms: "Doa Afiyah & Kesejahteraan"
-      },
+      category: "amal",
+      time: "12:30 WIB",
+      arabic: "اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ • الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ",
+      latin: "Allahumma barik lana fima razaqtana wa qina 'adzaban nar. Alhamdulillahilladzi ath'amana wa saqana wa ja'alana muslimin",
       translation: {
-        id: "\"Ya Allah, sesungguhnya aku memohon ampunan dan keselamatan di dunia dan akhirat.\"",
-        en: "\"O Allah, I ask You for forgiveness and well-being in this world and the Hereafter.\"",
-        ms: "\"Ya Allah, sesungguhnya aku memohon kepada-Mu keampunan dan kesejahteraan di dunia dan di akhirat.\""
-      }
+        id: "Ya Allah, berkahilah kami atas apa yang Engkau rezekikan dan peliharalah kami dari siksa neraka. Segala puji bagi Allah yang memberi kami makan dan minum.",
+        en: "O Allah, bless us in what You provided and save us from the Fire. Praise be to Allah who fed us and gave us drink.",
+        ms: "Ya Allah, berkati rezeki kami dan peliharalah kami dari azab neraka. Segala puji bagi Allah yang memberi kami makan dan minum."
+      },
+      completed: true
     },
     {
-      id: 2,
-      arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+      id: "routine-9",
       title: {
-        id: "Doa Sapujagad",
-        en: "Supplication for Good in Both Worlds",
-        ms: "Doa Sapujagat"
+        id: "Tilawah Al-Qur'an / Baca Surat Al-Mulk",
+        en: "Quran Recitation / Surah Al-Mulk",
+        ms: "Tilawah Al-Qur'an / Membaca Surah Al-Mulk"
       },
+      category: "malam",
+      time: "19:30 WIB",
+      arabic: "تَبَارَكَ الَّذِي بِيَدِهِ الْمُلْكُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ • اللَّهُمَّ ارْحَمْنَا بِالْقُرْآنِ وَاجْعَلْهُ لَنَا نُورًا وَهُدًى",
+      latin: "Tabarakalladzi biyadihil mulku wa huwa 'ala kulli syai'in qadir. Allahummarhamna bil qur'an waj'alhu lana nuran wa huda",
       translation: {
-        id: "\"Wahai Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat dan lindungilah kami dari siksa neraka.\"",
-        en: "\"Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire.\"",
-        ms: "\"Wahai Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari azab neraka.\""
-      }
+        id: "Maha Suci Allah yang di tangan-Nyalah segala kerajaan, dan Dia Maha Kuasa atas segala sesuatu. Ya Allah jadikan Al-Qur'an sebagai cahaya dan petunjuk kami.",
+        en: "Blessed is He in whose hand is dominion, and He is over all things competent. O Allah make the Quran a light and guidance for us.",
+        ms: "Maha Suci Allah yang di tangan-Nya kekuasaan. Ya Allah jadikanlah Al-Qur'an sebagai cahaya dan panduan buat kami."
+      },
+      completed: false
     },
     {
-      id: 3,
-      arabic: "اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ",
+      id: "routine-10",
       title: {
-        id: "Doa Istiqamah Ibadah",
-        en: "Supplication for Remembering & Worshiping Allah",
-        ms: "Doa Kelaziman Ibadah"
+        id: "Dzikir Petang & Muhasabah Harian",
+        en: "Evening Dhikr & Self-Reflection",
+        ms: "Zikir Petang & Muhasabah Harian"
       },
+      category: "malam",
+      time: "20:45 WIB",
+      arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ بِذَنْبِي فَاغْفِرْ لِي",
+      latin: "Allahumma anta rabbi la ilaha illa anta, khalaqtani wa ana 'abduka, wa ana 'ala 'ahdika wa wa'dika mastatha'tu, abu'u laka bini'matika 'alayya wa abu'u bidzanbi faghfir li",
       translation: {
-        id: "\"Ya Allah, tolonglah aku untuk senantiasa mengingat-Mu, bersyukur kepada-Mu, dan beribadah dengan baik kepada-Mu.\"",
-        en: "\"O Allah, help me remember You, thank You, and worship You in the best manner.\"",
-        ms: "\"Ya Allah, tolonglah aku untuk sentiasa mengingati-Mu, bersyukur kepada-Mu dan memperelokkan ibadah kepada-Mu.\""
-      }
+        id: "(Sayyidul Istighfar) Ya Allah, Engkau adalah Tuhanku, tiada tuhan selain Engkau. Aku mengakui nikmat-Mu dan dosaku, maka ampunilah aku.",
+        en: "O Allah, You are my Lord, there is no god but You. I acknowledge Your blessing upon me and acknowledge my sin, so forgive me.",
+        ms: "Ya Allah, Engkaulah Tuhanku tiada tuhan melainkan Engkau. Aku mengakui nikmat-Mu dan dosaku, maka ampunilah daku."
+      },
+      completed: false
+    },
+    {
+      id: "routine-11",
+      title: {
+        id: "Doa & Adab Sebelum Tidur",
+        en: "Bedtime Prayer & Sunnah Ethics",
+        ms: "Doa & Adab Sebelum Tidur"
+      },
+      category: "malam",
+      time: "21:30 WIB",
+      arabic: "بِاسْمِكَ رَبِّي وَضَعْتُ جَنْبِي وَبِكَ أَرْفَعُهُ، إِنْ أَمْسَكْتَ نَفْسِي فَارْحَمْهَا، وَإِنْ أَرْسَلْتَهَا فَاحْفَظْهَا بِمَا تَحْفَظُ بِهِ عِبَادَكَ الصَّالِحِينَ",
+      latin: "Bismika rabbi wadha'tu janbi wa bika arfa'uh, in amsakta nafsi farhamha, wa in arsaltaha fahfazhha bima tahfazhu bihi 'ibadakas shalihin",
+      translation: {
+        id: "Dengan nama-Mu wahai Tuhanku, aku meletakkan lambungku dan dengan nama-Mu aku mengangkatnya. Jika Engkau menahan jiwaku sayangilah, dan lindungilah ia.",
+        en: "In Your name my Lord, I lie down and rise. If You take my soul have mercy, and if You return it protect it.",
+        ms: "Dengan nama-Mu wahai Tuhanku, aku meletakkan rusukku dan mengangkatnya. Jika Engkau mengambil jiwaku sayangilah ia dan peliharalah ia."
+      },
+      completed: false
     }
   ]
 };
