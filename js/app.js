@@ -1011,6 +1011,7 @@ function applyLanguage(lang) {
     renderBookmarks();
     renderCalendar();
     renderSettings();
+    initUserProfile();
     initScrollToTop();
     renderVideos();
   }
@@ -2969,11 +2970,11 @@ function deleteDailyPlan(id) {
         ${v.arabic}
       </p>
 
-      <p class="text-xs text-[#8B1E1E] dark:text-red-400 font-medium italic">
+      <p class="text-xs text-[#8B1E1E] dark:text-red-400 font-medium italic quran-latin">
         ${v.latin}
       </p>
 
-      <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed pt-1 border-t border-stone-100 dark:border-stone-800">
+      <p class="text-xs text-stone-600 dark:text-stone-300 leading-relaxed pt-1 border-t border-stone-100 dark:border-stone-800 quran-translation">
         ${v.translation}
       </p>
     </div>
@@ -3672,5 +3673,253 @@ function deleteDailyPlan(id) {
     if (modal) {
       modal.innerHTML = '';
       modal.classList.add('hidden');
+    }
+  }
+
+
+  // ==============================================================================
+  // PROFIL, AKUN & PREFERENSI CONTROLLER
+  // ==============================================================================
+  
+  // 1. Akun Pengguna (Mock Login & Storage)
+  function initUserProfile() {
+    renderProfileAccountCard();
+    syncProfileReport();
+    applyQuranPreferences();
+    updateThemeButtonsUI();
+  }
+
+  function renderProfileAccountCard() {
+    const container = document.getElementById('profileAccountCardContainer');
+    if (!container) return;
+
+    let user = null;
+    try {
+      user = JSON.parse(localStorage.getItem('islami_user_profile') || 'null');
+    } catch(e) { user = null; }
+
+    if (user && user.name) {
+      // User Aktif Terlogin
+      container.innerHTML = `
+        <div class="p-4 rounded-2xl bg-gradient-to-br from-[#801818] via-[#941C1C] to-[#681313] text-white space-y-3 shadow-md relative overflow-hidden">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-12 h-12 rounded-2xl bg-amber-400 text-stone-950 font-black text-lg flex items-center justify-center shrink-0 shadow-xs border border-amber-300">
+                ${user.avatar || user.name.charAt(0)}
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <h3 class="text-sm font-black tracking-tight text-white truncate">${user.name}</h3>
+                  <span class="text-[8.5px] font-bold px-1.5 py-0.2 rounded-full bg-amber-400/30 text-amber-200 border border-amber-300/40">Member</span>
+                </div>
+                <p class="text-[10.5px] text-red-100 truncate mt-0.5">${user.email}</p>
+              </div>
+            </div>
+            <button onclick="logoutUser()" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-red-100 hover:text-white transition flex items-center gap-1 text-[10px] font-bold" title="Keluar">
+              <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+              <span>Keluar</span>
+            </button>
+          </div>
+          <div class="pt-2 border-t border-white/15 flex items-center justify-between text-[10px] text-red-100/90">
+            <span>Tersinkronisasi dengan Cloud</span>
+            <span class="font-mono text-amber-200 font-bold">● Aktif</span>
+          </div>
+        </div>
+      `;
+    } else {
+      // Ajakan Masuk / Belum Login
+      container.innerHTML = `
+        <div class="p-4 rounded-2xl bg-gradient-to-br from-[#801818] via-[#941C1C] to-[#681313] text-white space-y-3.5 shadow-md relative overflow-hidden">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center text-amber-300 shrink-0 border border-white/20 shadow-xs">
+              <i data-lucide="user" class="w-6 h-6"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+              <h3 class="text-sm font-black tracking-tight text-white">Masuk ke Akunmu</h3>
+              <p class="text-[10.5px] text-red-100/90 leading-tight mt-0.5">Simpan capaian ibadah, catatan tilawah & sinkronkan amalan harianmu.</p>
+            </div>
+          </div>
+          <div class="pt-1 flex items-center justify-between gap-2 border-t border-white/15">
+            <button onclick="openLoginModal()" class="w-full py-2.5 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition active:scale-95">
+              <i data-lucide="log-in" class="w-4 h-4"></i>
+              <span>Masuk / Daftar Akun</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function openLoginModal() {
+    const modal = document.getElementById('modalLogin');
+    if (modal) modal.classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function closeLoginModal() {
+    const modal = document.getElementById('modalLogin');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function submitUserLogin(method) {
+    const nameInput = document.getElementById('loginInputName');
+    const emailInput = document.getElementById('loginInputEmail');
+    const name = (nameInput && nameInput.value.trim()) || "Ahmad Santoso";
+    const email = (emailInput && emailInput.value.trim()) || "ahmad.santoso@islami.co";
+
+    const userProfile = {
+      name: name,
+      email: email,
+      avatar: name.charAt(0).toUpperCase(),
+      method: method,
+      dateJoined: new Date().toISOString()
+    };
+
+    localStorage.setItem('islami_user_profile', JSON.stringify(userProfile));
+    closeLoginModal();
+    renderProfileAccountCard();
+    showToast("Berhasil masuk! Selamat datang, " + name);
+  }
+
+  function logoutUser() {
+    localStorage.removeItem('islami_user_profile');
+    renderProfileAccountCard();
+    showToast("Anda telah keluar dari akun");
+  }
+
+  // 2. Sinkronisasi Daily Report di Halaman Profil
+  function syncProfileReport() {
+    const plans = getDailyPlans();
+    if (!plans || plans.length === 0) return;
+
+    const total = plans.length;
+    const completed = plans.filter(p => p.completed).length;
+    const percent = Math.round((completed / total) * 100);
+
+    const badge = document.getElementById('profileReportBadge');
+    const count = document.getElementById('profileReportCount');
+    const bar = document.getElementById('profileReportProgressBar');
+
+    if (badge) badge.textContent = percent + '%';
+    if (count) count.textContent = `${completed} dari ${total} Amalan Selesai`;
+    if (bar) bar.style.width = percent + '%';
+  }
+
+  // 3. Pengaturan Tema Real-Time (Cerah vs Gelap)
+  function setAppTheme(theme) {
+    setTheme(theme);
+    updateThemeButtonsUI();
+    showToast(theme === 'dark' ? "Mode Gelap diaktifkan" : "Mode Cerah diaktifkan");
+  }
+
+  function updateThemeButtonsUI() {
+    const currentTheme = AppState.theme || 'light';
+    const btnLight = document.getElementById('btnThemeLight');
+    const btnDark = document.getElementById('btnThemeDark');
+
+    if (btnLight && btnDark) {
+      if (currentTheme === 'light') {
+        btnLight.className = "p-2.5 rounded-xl border border-red-600 bg-red-50 text-stone-900 font-bold flex items-center justify-center gap-2 text-xs shadow-xs transition";
+        btnDark.className = "p-2.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-medium flex items-center justify-center gap-2 text-xs transition";
+      } else {
+        btnDark.className = "p-2.5 rounded-xl border border-red-500 bg-red-950/60 text-white font-bold flex items-center justify-center gap-2 text-xs shadow-xs transition";
+        btnLight.className = "p-2.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-medium flex items-center justify-center gap-2 text-xs transition";
+      }
+    }
+  }
+
+  // 4. Pengaturan Al-Qur'an & Preferensi Bacaan
+  function toggleQuranPref(type, isChecked) {
+    if (type === 'latin') {
+      localStorage.setItem('islami_show_latin', isChecked.toString());
+      if (isChecked) {
+        document.body.classList.remove('hide-latin');
+        showToast("Teks Latin Al-Qur'an ditampilkan");
+      } else {
+        document.body.classList.add('hide-latin');
+        showToast("Teks Latin Al-Qur'an disembunyikan");
+      }
+    } else if (type === 'translation') {
+      localStorage.setItem('islami_show_translation', isChecked.toString());
+      if (isChecked) {
+        document.body.classList.remove('hide-translation');
+        showToast("Terjemahan Al-Qur'an ditampilkan");
+      } else {
+        document.body.classList.add('hide-translation');
+        showToast("Terjemahan Al-Qur'an disembunyikan");
+      }
+    } else if (type === 'tajwid') {
+      localStorage.setItem('islami_show_tajwid', isChecked.toString());
+      if (isChecked) {
+        document.body.classList.add('show-tajwid');
+        showToast("Tampilan Bertajwid diaktifkan");
+      } else {
+        document.body.classList.remove('show-tajwid');
+        showToast("Tampilan Bertajwid dinonaktifkan");
+      }
+    }
+  }
+
+  function applyQuranPreferences() {
+    const showLatin = localStorage.getItem('islami_show_latin') !== 'false';
+    const showTrans = localStorage.getItem('islami_show_translation') !== 'false';
+    const showTajwid = localStorage.getItem('islami_show_tajwid') === 'true';
+    const fontSize = localStorage.getItem('islami_font_size') || 'standard';
+
+    // Checkbox toggles
+    const chkLatin = document.getElementById('toggleShowLatin');
+    const chkTrans = document.getElementById('toggleShowTranslation');
+    const chkTajwid = document.getElementById('toggleShowTajwid');
+
+    if (chkLatin) chkLatin.checked = showLatin;
+    if (chkTrans) chkTrans.checked = showTrans;
+    if (chkTajwid) chkTajwid.checked = showTajwid;
+
+    if (!showLatin) document.body.classList.add('hide-latin');
+    else document.body.classList.remove('hide-latin');
+
+    if (!showTrans) document.body.classList.add('hide-translation');
+    else document.body.classList.remove('hide-translation');
+
+    if (showTajwid) document.body.classList.add('show-tajwid');
+    else document.body.classList.remove('show-tajwid');
+
+    setReaderFontSize(fontSize, false);
+  }
+
+  function setReaderFontSize(size, notify = true) {
+    localStorage.setItem('islami_font_size', size);
+
+    const label = document.getElementById('currentReaderSizeLabel');
+    const btnSmall = document.getElementById('btnSizeSmall');
+    const btnStandard = document.getElementById('btnSizeStandard');
+    const btnLarge = document.getElementById('btnSizeLarge');
+
+    if (size === 'small') {
+      document.documentElement.style.setProperty('--arabic-font-size', '1.25rem');
+      document.documentElement.style.setProperty('--reading-font-size', '0.78rem');
+      if (label) label.textContent = 'Kecil (20px)';
+      if (btnSmall) btnSmall.className = "flex-1 py-1.5 rounded-xl border border-red-600 bg-red-50 dark:bg-red-950 font-bold text-xs text-[#801818] dark:text-red-300 transition shadow-2xs";
+      if (btnStandard) btnStandard.className = "flex-1 py-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 font-medium text-xs text-stone-700 dark:text-stone-300 transition";
+      if (btnLarge) btnLarge.className = "flex-1 py-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 font-medium text-xs text-stone-700 dark:text-stone-300 transition";
+      if (notify) showToast("Ukuran teks: Kecil");
+    } else if (size === 'large') {
+      document.documentElement.style.setProperty('--arabic-font-size', '1.95rem');
+      document.documentElement.style.setProperty('--reading-font-size', '1.05rem');
+      if (label) label.textContent = 'Besar (31px)';
+      if (btnLarge) btnLarge.className = "flex-1 py-1.5 rounded-xl border border-red-600 bg-red-50 dark:bg-red-950 font-bold text-xs text-[#801818] dark:text-red-300 transition shadow-2xs";
+      if (btnStandard) btnStandard.className = "flex-1 py-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 font-medium text-xs text-stone-700 dark:text-stone-300 transition";
+      if (btnSmall) btnSmall.className = "flex-1 py-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 font-medium text-xs text-stone-700 dark:text-stone-300 transition";
+      if (notify) showToast("Ukuran teks: Besar");
+    } else {
+      document.documentElement.style.setProperty('--arabic-font-size', '1.5rem');
+      document.documentElement.style.setProperty('--reading-font-size', '0.875rem');
+      if (label) label.textContent = 'Standar (24px)';
+      if (btnStandard) btnStandard.className = "flex-1 py-1.5 rounded-xl border border-red-600 bg-red-50 dark:bg-red-950 font-bold text-xs text-[#801818] dark:text-red-300 transition shadow-2xs";
+      if (btnSmall) btnSmall.className = "flex-1 py-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 font-medium text-xs text-stone-700 dark:text-stone-300 transition";
+      if (btnLarge) btnLarge.className = "flex-1 py-1.5 rounded-xl border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800 font-medium text-xs text-stone-700 dark:text-stone-300 transition";
+      if (notify) showToast("Ukuran teks: Standar");
     }
   }

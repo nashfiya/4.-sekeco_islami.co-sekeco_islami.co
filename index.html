@@ -173,14 +173,8 @@
         </p>
       </div>
 
-      <!-- Right: Clean Utility Actions (Mode Gelap/Terang) -->
-      <div class="flex items-center gap-1.5 shrink-0">
-        <button onclick="toggleTheme()"
-          class="w-8 h-8 rounded-full bg-stone-200/70 dark:bg-slate-800 hover:bg-stone-300 text-stone-700 dark:text-stone-300 flex items-center justify-center transition shadow-2xs"
-          aria-label="Mode Gelap/Terang" title="Mode Gelap / Terang">
-          <i data-lucide="moon" class="w-4 h-4"></i>
-        </button>
-      </div>
+      <!-- Right: Clean Spacer (Balanced Layout) -->
+      <div class="w-8 h-8 shrink-0"></div>
     </header>
 
     <!-- ==================== 3. KONTEN UTAMA MOBILE (SCROLLABLE) ==================== -->
@@ -823,25 +817,170 @@
 
       <!-- ==================== VIEW: PENGATURAN ==================== -->
       <section id="view-settings" class="hidden space-y-4 pb-32">
+        <!-- Header Profil Ringkas -->
         <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
           <div>
-            <h2
-              class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+            <h2 class="text-sm font-black text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
               <span class="w-2.5 h-2.5 rounded-full bg-[#801818]"></span>
-              Pengaturan Aplikasi
+              <span data-i18n="profile_page_title">PROFIL & PREFERENSI</span>
             </h2>
-            <p class="text-[11px] text-stone-500">Sesuaikan kenyamanan membaca & preferensi ibadah</p>
+            <p class="text-[11px] text-stone-500" data-i18n="profile_page_sub">Akun, laporan ibadah & pengaturan aplikasi</p>
           </div>
-          <span class="text-xs font-bold text-stone-400">v2.4.5</span>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-[#801818] dark:text-red-300 font-mono">v2.4.9</span>
         </div>
 
-        <!-- 1. Notifikasi Adzan -->
-        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-3">
+        <!-- 1. KARTU AKUN PENGGUNA ('Masuk ke Akunmu' / Akun Aktif) -->
+        <div id="profileAccountCardContainer">
+          <!-- Populated dynamically by renderProfileAccountCard() -->
+        </div>
+
+        <!-- 2. RINGKASAN PROGRESS DAILY REPORT HARI INI -->
+        <div class="card-islami p-3.5 bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-2xl space-y-2.5 shadow-xs cursor-pointer hover:border-[#801818] transition group" onclick="switchTab('doa')">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              <h4 class="text-xs font-black text-stone-900 dark:text-white uppercase tracking-wider">Laporan Ibadah Hari Ini</h4>
+            </div>
+            <span id="profileReportBadge" class="text-[10px] font-black px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-[#801818] dark:text-red-300 font-mono">
+              67%
+            </span>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between text-[10.5px]">
+              <span id="profileReportCount" class="font-bold text-stone-700 dark:text-stone-300">
+                4 dari 6 Amalan Selesai
+              </span>
+              <span class="text-[#801818] dark:text-amber-400 font-bold group-hover:underline flex items-center gap-0.5">
+                Buka Checklist Amalan ↗
+              </span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-stone-100 dark:bg-stone-800 overflow-hidden">
+              <div id="profileReportProgressBar" class="h-full rounded-full bg-gradient-to-r from-[#801818] to-amber-500 transition-all duration-500" style="width: 67%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. PENGATURAN TAMPILAN LAYAR & BAHASA -->
+        <div class="card-islami p-4 bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-2xl space-y-3.5 shadow-xs">
           <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-2">
-            <i data-lucide="bell" class="w-4 h-4 text-[#B91C1C]"></i>
+            <i data-lucide="palette" class="w-4 h-4 text-[#801818] dark:text-amber-400"></i>
+            Tampilan Layar & Bahasa
+          </h4>
+
+          <!-- Pilihan Tema: Mode Cerah vs Mode Gelap -->
+          <div class="space-y-1.5 pt-0.5">
+            <label class="block text-[11px] font-semibold text-stone-600 dark:text-stone-400">Mode Tema Aplikasi</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="setAppTheme('light')" id="btnThemeLight"
+                class="p-2.5 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold transition shadow-2xs">
+                <i data-lucide="sun" class="w-4 h-4 text-amber-500"></i>
+                <span>Mode Cerah</span>
+              </button>
+              <button onclick="setAppTheme('dark')" id="btnThemeDark"
+                class="p-2.5 rounded-xl border flex items-center justify-center gap-2 text-xs font-bold transition shadow-2xs">
+                <i data-lucide="moon" class="w-4 h-4 text-amber-300"></i>
+                <span>Mode Gelap</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Pilihan Bahasa -->
+          <div class="space-y-1.5 pt-1.5 border-t border-stone-100 dark:border-stone-800">
+            <label class="block text-[11px] font-semibold text-stone-600 dark:text-stone-400">Bahasa Pengantar (Language)</label>
+            <div class="grid grid-cols-3 gap-2">
+              <button onclick="switchLanguage('id')" id="settingLangId"
+                class="p-2 rounded-xl border text-center font-bold text-xs transition">
+                🇮🇩 Indonesia
+              </button>
+              <button onclick="switchLanguage('en')" id="settingLangEn"
+                class="p-2 rounded-xl border text-center font-bold text-xs transition">
+                🇬🇧 English
+              </button>
+              <button onclick="switchLanguage('ms')" id="settingLangMs"
+                class="p-2 rounded-xl border text-center font-bold text-xs transition">
+                🇲🇾 Melayu
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. PENGATURAN AL-QUR'AN & BACAAN -->
+        <div class="card-islami p-4 bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-2xl space-y-3.5 shadow-xs">
+          <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-2">
+            <i data-lucide="book-open" class="w-4 h-4 text-[#801818] dark:text-amber-400"></i>
+            Pengaturan Al-Qur'an & Bacaan
+          </h4>
+
+          <div class="space-y-3 text-xs pt-0.5">
+            <!-- Toggle 1: Teks Latin -->
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="font-semibold text-stone-800 dark:text-stone-200">Tampilkan Teks Latin (Transliterasi)</p>
+                <p class="text-[10px] text-stone-400">Tampilkan ejaan latin di bawah teks Arab ayat & doa</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggleShowLatin" onchange="toggleQuranPref('latin', this.checked)" checked class="sr-only peer">
+                <div class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#801818]"></div>
+              </label>
+            </div>
+
+            <!-- Toggle 2: Terjemahan / Arti -->
+            <div class="flex items-center justify-between pt-1.5 border-t border-stone-100 dark:border-stone-800">
+              <div>
+                <p class="font-semibold text-stone-800 dark:text-stone-200">Tampilkan Terjemahan / Arti</p>
+                <p class="text-[10px] text-stone-400">Tampilkan terjemahan ayat dalam bahasa pilihan</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggleShowTranslation" onchange="toggleQuranPref('translation', this.checked)" checked class="sr-only peer">
+                <div class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#801818]"></div>
+              </label>
+            </div>
+
+            <!-- Toggle 3: Warna Tajwid -->
+            <div class="flex items-center justify-between pt-1.5 border-t border-stone-100 dark:border-stone-800">
+              <div>
+                <p class="font-semibold text-stone-800 dark:text-stone-200">Tampilan Bertajwid (Warna Tajwid)</p>
+                <p class="text-[10px] text-stone-400">Pewarnaan hukum bacaan tajwid pada teks ayat</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="toggleShowTajwid" onchange="toggleQuranPref('tajwid', this.checked)" class="sr-only peer">
+                <div class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#801818]"></div>
+              </label>
+            </div>
+
+            <!-- Ukuran Teks Bacaan -->
+            <div class="pt-2 border-t border-stone-100 dark:border-stone-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-stone-800 dark:text-stone-200">Ukuran Teks Bacaan</span>
+                <span id="currentReaderSizeLabel" class="text-[10px] text-stone-400 font-mono">Standar</span>
+              </div>
+              <div class="flex items-center justify-between gap-2 pt-0.5">
+                <button onclick="setReaderFontSize('small')" id="btnSizeSmall"
+                  class="flex-1 py-1.5 rounded-xl border text-xs font-bold transition">
+                  Kecil (A-)
+                </button>
+                <button onclick="setReaderFontSize('standard')" id="btnSizeStandard"
+                  class="flex-1 py-1.5 rounded-xl border text-xs font-bold transition">
+                  Standar
+                </button>
+                <button onclick="setReaderFontSize('large')" id="btnSizeLarge"
+                  class="flex-1 py-1.5 rounded-xl border text-xs font-bold transition">
+                  Besar (A+)
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 5. PENGINGAT WAKTU SHOLAT (ADZAN) -->
+        <div class="card-islami p-4 bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-2xl space-y-3 shadow-xs">
+          <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-2">
+            <i data-lucide="bell" class="w-4 h-4 text-[#801818] dark:text-amber-400"></i>
             Pengingat Waktu Shalat (Adzan)
           </h4>
-          <div class="space-y-2.5 text-xs pt-1">
+          <div class="space-y-2.5 text-xs pt-0.5">
             <div class="flex items-center justify-between">
               <div>
                 <p class="font-semibold text-stone-800 dark:text-stone-200">Notifikasi Suara Adzan</p>
@@ -850,12 +989,10 @@
               <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" id="settingAdzanSound" onchange="toggleSettingAdzan()" checked
                   class="sr-only peer">
-                <div
-                  class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#801818]">
-                </div>
+                <div class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#801818]"></div>
               </label>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-stone-100 dark:border-slate-800">
+            <div class="flex items-center justify-between pt-1.5 border-t border-stone-100 dark:border-stone-800">
               <div>
                 <p class="font-semibold text-stone-800 dark:text-stone-200">Pengingat 10 Menit Sebelum Shalat</p>
                 <p class="text-[10px] text-stone-400">Peringatan awal untuk persiapan wudhu</p>
@@ -863,66 +1000,20 @@
               <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" id="settingPrePrayerAlert" onchange="toggleSettingPreAlert()" checked
                   class="sr-only peer">
-                <div
-                  class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#801818]">
-                </div>
+                <div class="w-9 h-5 bg-stone-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#801818]"></div>
               </label>
             </div>
           </div>
         </div>
 
-        <!-- 2. Pilihan Bahasa -->
-        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-3">
-          <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-2">
-            <i data-lucide="globe" class="w-4 h-4 text-[#B91C1C]"></i>
-            Bahasa Pengantar (Language)
-          </h4>
-          <div class="grid grid-cols-3 gap-2 pt-1">
-            <button onclick="switchLanguage('id')" id="settingLangId"
-              class="p-2.5 rounded-xl border border-red-600 bg-red-50 dark:bg-red-950 text-center font-bold text-xs text-[#B91C1C] dark:text-red-300 transition">
-              🇮🇩 Indonesia
-            </button>
-            <button onclick="switchLanguage('en')" id="settingLangEn"
-              class="p-2.5 rounded-xl border border-stone-200 dark:border-slate-800 bg-stone-50 dark:bg-slate-800/60 text-center font-medium text-xs text-stone-700 dark:text-stone-300 transition">
-              🇬🇧 English
-            </button>
-            <button onclick="switchLanguage('ms')" id="settingLangMs"
-              class="p-2.5 rounded-xl border border-stone-200 dark:border-slate-800 bg-stone-50 dark:bg-slate-800/60 text-center font-medium text-xs text-stone-700 dark:text-stone-300 transition">
-              🇲🇾 Melayu
-            </button>
-          </div>
-        </div>
-
-        <!-- 3. Ukuran Font Bacaan -->
-        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-3">
-          <h4 class="font-bold text-xs text-stone-900 dark:text-white flex items-center gap-2">
-            <i data-lucide="type" class="w-4 h-4 text-[#B91C1C]"></i>
-            Ukuran Teks Bacaan
-          </h4>
-          <div class="flex items-center justify-between gap-2 pt-1">
-            <button onclick="adjustReaderFontSize(-1)"
-              class="flex-1 py-2 rounded-xl bg-stone-100 dark:bg-slate-800 font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-stone-200">
-              Kecil (A-)
-            </button>
-            <button onclick="resetReaderFontSize()"
-              class="flex-1 py-2 rounded-xl bg-red-50 dark:bg-red-950 font-bold text-xs text-[#B91C1C] dark:text-red-400 border border-red-200 dark:border-red-900">
-              Standar
-            </button>
-            <button onclick="adjustReaderFontSize(1)"
-              class="flex-1 py-2 rounded-xl bg-stone-100 dark:bg-slate-800 font-bold text-xs text-stone-700 dark:text-stone-300 hover:bg-stone-200">
-              Besar (A+)
-            </button>
-          </div>
-        </div>
-
-        <!-- 4. Tentang Islami.co -->
-        <div class="card-islami p-4 bg-white dark:bg-slate-900 space-y-2 text-xs">
-          <div class="flex items-center gap-2 mb-2">
-            <div class="h-7 px-2 py-0.5 rounded-lg bg-[#801818] flex items-center justify-center">
-              <img src="assets/logo.png?v=2.4.5" alt="Islami.co" class="h-4 w-auto object-contain">
+        <!-- 6. TENTANG ISLAMI.CO -->
+        <div class="card-islami p-4 bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-2xl space-y-2 text-xs shadow-xs">
+          <div class="flex items-center gap-2.5 mb-1.5">
+            <div class="h-8 px-2 rounded-xl bg-[#801818] flex items-center justify-center shadow-xs">
+              <img src="assets/logo.png?v=2.4.9" alt="Islami.co" class="h-4.5 w-auto object-contain">
             </div>
             <div>
-              <p class="font-extrabold text-stone-900 dark:text-white">Islami.co</p>
+              <p class="font-black text-stone-900 dark:text-white">Islami.co</p>
               <p class="text-[10px] text-stone-400">Media Islam Ramah yang Mencerahkan</p>
             </div>
           </div>
@@ -931,10 +1022,9 @@
             mengedepankan pesan damai, keterbukaan, serta keramahan nilai-nilai Islam bagi seluruh alam (<span
               class="italic font-medium">Rahmatan Lil 'Alamin</span>).
           </p>
-          <div
-            class="pt-2 border-t border-stone-100 dark:border-slate-800 flex justify-between text-[10px] text-stone-400">
+          <div class="pt-2 border-t border-stone-100 dark:border-slate-800 flex justify-between text-[10px] text-stone-400">
             <span>© 2026 Islami.co</span>
-            <span>Versi Mobile 2.4.5</span>
+            <span>Versi Mobile 2.4.9</span>
           </div>
         </div>
       </section>
@@ -1224,11 +1314,11 @@
         <span class="text-[10px]" data-i18n="tab_calendar">Kalender</span>
       </button>
 
-      <!-- 5. Pengaturan -->
+      <!-- 5. Profil -->
       <button onclick="switchTab('settings')" id="tab-settings"
-        class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1" aria-label="Pengaturan">
-        <i data-lucide="settings" class="w-5 h-5"></i>
-        <span class="text-[10px]" data-i18n="tab_settings">Pengaturan</span>
+        class="nav-btn flex flex-col items-center gap-0.5 px-3 py-1" aria-label="Profil">
+        <i data-lucide="user" class="w-5 h-5"></i>
+        <span class="text-[10px]" data-i18n="tab_settings">Profil</span>
       </button>
     </nav>
 
@@ -1663,6 +1753,66 @@
         <button onclick="saveDailyPlan()" class="flex-1 py-2 rounded-xl bg-[#8B1E1E] text-white text-xs font-bold hover:bg-[#6E1212] transition shadow-xs" data-i18n="btn_save_plan">
           Simpan Rencana
         </button>
+      </div>
+    </div>
+  </div>
+
+  
+  <!-- ==================== MODAL LOGIN / MASUK AKUN ==================== -->
+  <div id="modalLogin" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-stone-900 rounded-3xl max-w-sm w-full p-5 border border-stone-200 dark:border-stone-800 space-y-4 shadow-2xl animate-fadeIn">
+      <div class="flex items-center justify-between pb-2 border-b border-stone-100 dark:border-stone-800">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-[#801818] flex items-center justify-center p-1.5 shadow-xs">
+            <img src="assets/logo.png?v=2.4.9" alt="Islami.co" class="w-full h-full object-contain">
+          </div>
+          <div>
+            <h3 class="text-sm font-extrabold text-stone-900 dark:text-white">Masuk ke Islami.co</h3>
+            <p class="text-[10px] text-stone-400">Simpan capaian & rencana ibadahmu</p>
+          </div>
+        </div>
+        <button onclick="closeLoginModal()" class="w-7 h-7 rounded-full bg-stone-100 dark:bg-stone-800 text-stone-400 hover:text-stone-700 dark:hover:text-white flex items-center justify-center">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 pt-1">
+        <div>
+          <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1">Nama Lengkap</label>
+          <input type="text" id="loginInputName" value="Ahmad Santoso" placeholder="Nama Anda"
+            class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#801818]">
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-stone-700 dark:text-stone-300 mb-1">Alamat Email</label>
+          <input type="email" id="loginInputEmail" value="ahmad.santoso@islami.co" placeholder="email@domain.com"
+            class="w-full px-3 py-2 text-xs rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#801818]">
+        </div>
+        
+        <button onclick="submitUserLogin('email')"
+          class="w-full py-2.5 rounded-xl bg-[#801818] hover:bg-[#6A1212] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition active:scale-95">
+          <i data-lucide="mail" class="w-4 h-4"></i>
+          <span>Lanjutkan dengan Email</span>
+        </button>
+
+        <div class="relative flex items-center justify-center my-2">
+          <span class="absolute inset-x-0 h-px bg-stone-200 dark:bg-stone-800"></span>
+          <span class="relative px-2 bg-white dark:bg-stone-900 text-[10px] text-stone-400 uppercase font-bold">atau</span>
+        </div>
+
+        <button onclick="submitUserLogin('google')"
+          class="w-full py-2.5 rounded-xl border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800 text-stone-800 dark:text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition active:scale-95">
+          <svg class="w-4 h-4" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.15z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.76-2.1-6.71-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.29 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.15 0 9.92 0 12s.45 3.85 1.24 5.42l4.05-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.05 3.15c.95-2.83 3.59-4.98 6.71-4.98z"/>
+          </svg>
+          <span>Masuk dengan Google</span>
+        </button>
+
+        <p class="text-[10px] text-center text-stone-400 pt-1">
+          Simulasi Akun: Data disimpan aman di perangkat Anda.
+        </p>
       </div>
     </div>
   </div>

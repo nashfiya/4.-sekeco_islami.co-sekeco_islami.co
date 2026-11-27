@@ -414,3 +414,44 @@ body {
   border-color: rgba(185, 28, 28, 0.4) !important;
   box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08) inset !important;
 }
+
+
+/* ==============================================================================
+   QURAN & READING GLOBAL PREFERENCES (LATIN, TRANSLATION, TAJWID & SIZING)
+   ============================================================================== */
+:root {
+  --arabic-font-size: 1.5rem; /* 24px */
+  --reading-font-size: 0.875rem; /* 14px */
+}
+
+.font-arabic, .quran-arabic {
+  font-size: var(--arabic-font-size) !important;
+}
+
+#readerBody, .article-content, .verse-text {
+  font-size: var(--reading-font-size) !important;
+}
+
+body.hide-latin .quran-latin,
+body.hide-latin .verse-latin,
+body.hide-latin .doa-latin,
+body.hide-latin .routine-latin {
+  display: none !important;
+}
+
+body.hide-translation .quran-translation,
+body.hide-translation .verse-translation,
+body.hide-translation .doa-translation,
+body.hide-translation .routine-translation {
+  display: none !important;
+}
+
+body.show-tajwid .font-arabic,
+body.show-tajwid .quran-arabic {
+  letter-spacing: 0.03em;
+  color: #1E293B;
+}
+.dark body.show-tajwid .font-arabic,
+.dark body.show-tajwid .quran-arabic {
+  color: #F8FAFC;
+}
