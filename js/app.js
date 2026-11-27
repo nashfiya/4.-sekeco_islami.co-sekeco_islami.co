@@ -790,6 +790,7 @@ function applyLanguage(lang) {
         if (input) {
           input.value = transcript;
           handleHomeSearch(transcript);
+          submitHomeSearch(transcript);
         }
       };
       recognition.onerror = () => {
@@ -799,6 +800,20 @@ function applyLanguage(lang) {
     } catch (e) {
       if (input) input.focus();
     }
+  }
+
+  
+  // Submit search query directly to official Islami.co portal
+  function submitHomeSearch(customQuery) {
+    const input = document.getElementById('homeSearchInput');
+    const q = (customQuery !== undefined ? customQuery : (input ? input.value : '')).trim();
+    if (!q) {
+      if (input) input.focus();
+      return;
+    }
+    // Open official portal search in new tab
+    const url = 'https://islami.co/?s=' + encodeURIComponent(q);
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 
   function handleHomeSearch(query) {
@@ -906,10 +921,27 @@ function applyLanguage(lang) {
       });
     }
 
+        // Add Portal Search Banner at the top of results
+    const portalDirectItem = `
+      <div onclick="submitHomeSearch('${q.replace(/'/g, "\\'")}'); clearHomeSearch()"
+        class="p-2.5 rounded-xl bg-gradient-to-r from-red-50 to-amber-50 dark:from-red-950/40 dark:to-amber-950/30 border border-red-200 dark:border-red-900/50 flex items-center justify-between gap-2.5 cursor-pointer transition hover:scale-[1.01] active:scale-95 group mb-1.5 shadow-2xs">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-8 h-8 rounded-lg bg-[#801818] text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+            <i data-lucide="globe" class="w-4 h-4"></i>
+          </div>
+          <div class="min-w-0">
+            <h4 class="text-xs font-black text-[#801818] dark:text-amber-300 truncate">Cari "${query}" di Portal Islami.co</h4>
+            <p class="text-[9.5px] text-stone-500 dark:text-stone-400 truncate">Buka ribuan artikel & kajian langsung di islami.co ↗</p>
+          </div>
+        </div>
+        <i data-lucide="external-link" class="w-4 h-4 text-[#801818] dark:text-amber-400 shrink-0"></i>
+      </div>
+    `;
+
     // Render hasil
     if (results.length === 0) {
-      resultsDropdown.innerHTML = `
-      <div class="py-6 px-4 text-center">
+      resultsDropdown.innerHTML = portalDirectItem + `
+      <div class="py-4 px-3 text-center">
         <i data-lucide="search-x" class="w-7 h-7 mx-auto mb-2 text-stone-400 opacity-60"></i>
         <p class="text-xs font-bold text-stone-700 dark:text-stone-300">Tidak ada hasil untuk "${query}"</p>
         <p class="text-[10.5px] text-stone-400 mt-1">Coba kata kunci: Al-Baqarah, ustadz, jenazah, zakat, doa, atau jadwal</p>
@@ -917,7 +949,7 @@ function applyLanguage(lang) {
     `;
     } else {
       const limited = results.slice(0, 8);
-      resultsDropdown.innerHTML = `
+      resultsDropdown.innerHTML = portalDirectItem + `
       <div class="pb-1 px-1 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between text-[10px] text-stone-400">
         <span>Ditemukan ${results.length} hasil</span>
         <button onclick="clearHomeSearch()" class="hover:text-red-700 font-bold">Tutup</button>
@@ -979,71 +1011,83 @@ function applyLanguage(lang) {
     renderBookmarks();
     renderCalendar();
     renderSettings();
+    initScrollToTop();
+    renderVideos();
   }
 
   // 6a. Render Artikel & Kolom Editorial Islami.co
-  function renderArticles() {
+    function renderArticles() {
     const container = document.getElementById('articlesList');
-    const homeArticles = document.getElementById('homeArticlesList');
-    if (!window.IslamiMockData || !window.IslamiMockData.articles) return;
+    if (!window.IslamiMockData || !window.IslamiMockData.articles || !container) return;
 
     const articles = window.IslamiMockData.articles;
 
-    const html = articles.map(art => `
-    <article class="card-islami p-3.5 space-y-2.5 cursor-pointer group hover:border-[#B91C1C] transition" onclick="openReaderMode('${art.id}')">
-      <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-        <span class="badge-editorial">${art.category}</span>
-        <div class="flex items-center gap-1 font-medium text-[10px]">
-          <span>${art.readTime}</span>
-          <span>•</span>
-          <span>${art.date}</span>
+    container.innerHTML = articles.map(art => `
+    <article class="card-islami p-3 space-y-2 cursor-pointer group hover:border-[#801818] transition bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-2xl shadow-xs" onclick="openReaderMode('${art.id}')">
+      
+      <div class="flex items-start gap-3">
+        <!-- Thumbnail Square Samping (w-24 h-24 rounded-xl shrink-0 object-cover) -->
+        <div class="w-24 h-24 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 shrink-0 border border-stone-200/60 dark:border-stone-700/60 shadow-2xs">
+          <img src="${art.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=300&q=80'}"
+            alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+        </div>
+
+        <!-- Info & Title -->
+        <div class="flex-1 min-w-0 space-y-1">
+          <div class="flex items-center justify-between text-[9.5px] text-stone-500 dark:text-stone-400">
+            <span class="px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-[#801818] dark:text-red-300 font-bold">${art.category}</span>
+            <span>${art.readTime}</span>
+          </div>
+
+          <h3 class="font-extrabold text-xs text-stone-900 dark:text-white leading-snug group-hover:text-[#801818] dark:group-hover:text-red-400 transition line-clamp-2">
+            ${art.title}
+          </h3>
+
+          <p class="text-[10px] text-stone-600 dark:text-stone-300 leading-tight line-clamp-2">
+            ${art.summary}
+          </p>
         </div>
       </div>
 
-      <h3 class="font-bold text-sm text-slate-900 dark:text-white leading-snug group-hover:text-[#B91C1C] dark:group-hover:text-red-400 transition">
-        ${art.title}
-      </h3>
-
-      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
-        ${art.summary}
-      </p>
-
-      <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
-        <div class="flex items-center gap-2">
-          <div class="w-6 h-6 rounded-full bg-[#B91C1C] text-white flex items-center justify-center font-bold text-[10px]">
-            ${art.author.charAt(0)}
+      <!-- Footer Bar: Penulis & Tautan Resmi Portal -->
+      <div class="pt-2 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <div class="w-5 h-5 rounded-full bg-[#801818] text-white flex items-center justify-center font-bold text-[9px] shrink-0">
+            ${(art.author || 'I').charAt(0)}
           </div>
-          <div>
-            <p class="font-bold text-slate-900 dark:text-slate-100 text-xs leading-none">${art.author}</p>
-            <p class="text-[10px] text-slate-400 mt-0.5">${art.authorRole}</p>
-          </div>
+          <p class="font-bold text-stone-800 dark:text-stone-200 text-[10px] truncate">${art.author}</p>
         </div>
 
-        <button onclick="event.stopPropagation(); toggleBookmark('article', '${art.id}', '${encodeURIComponent(art.title)}')"
-          class="p-1.5 rounded-lg text-slate-400 hover:text-[#B91C1C] dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-slate-800 transition" title="Simpan Artikel">
-          <i data-lucide="${isBookmarked('article', art.id) ? 'bookmark-check' : 'bookmark'}" class="w-4 h-4 ${isBookmarked('article', art.id) ? 'text-[#B91C1C] fill-[#B91C1C]' : ''}"></i>
-        </button>
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="${art.url || ('https://islami.co/?s=' + encodeURIComponent(art.title))}"
+            target="_blank" rel="noopener noreferrer"
+            onclick="event.stopPropagation()"
+            class="text-[9.5px] font-bold text-[#801818] dark:text-amber-400 hover:underline flex items-center gap-0.5">
+            Baca di Islami.co ↗
+          </a>
+          <button onclick="event.stopPropagation(); toggleBookmark('article', '${art.id}', '${encodeURIComponent(art.title)}')"
+            class="p-1 rounded-lg text-stone-400 hover:text-[#801818] dark:hover:text-red-400 transition" title="Simpan Artikel">
+            <i data-lucide="${isBookmarked('article', art.id) ? 'bookmark-check' : 'bookmark'}" class="w-3.5 h-3.5 ${isBookmarked('article', art.id) ? 'text-[#801818] fill-[#801818]' : ''}"></i>
+          </button>
+        </div>
       </div>
+
     </article>
-  `).join('');
-
-    if (container) container.innerHTML = html;
+    `).join('');
 
     if (window.lucide) lucide.createIcons();
   }
 
-  function filterArticleCategory(category) {
+    function filterArticleCategory(category) {
     const container = document.getElementById('articlesList');
     if (!window.IslamiMockData || !window.IslamiMockData.articles || !container) return;
 
     // Update pills UI
     document.querySelectorAll('.art-filter-pill').forEach(btn => {
       if (btn.textContent.trim() === category) {
-        btn.classList.add('bg-[#B91C1C]', 'text-white', 'shadow-sm', 'font-bold');
-        btn.classList.remove('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300', 'font-medium');
+        btn.className = "art-filter-pill px-3 py-1 rounded-full font-bold bg-[#801818] text-white whitespace-nowrap shadow-xs";
       } else {
-        btn.classList.remove('bg-[#B91C1C]', 'text-white', 'shadow-sm', 'font-bold');
-        btn.classList.add('bg-slate-100', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-300', 'font-medium');
+        btn.className = "art-filter-pill px-3 py-1 rounded-full font-medium bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-red-50 hover:text-red-700 whitespace-nowrap";
       }
     });
 
@@ -1054,7 +1098,7 @@ function applyLanguage(lang) {
 
     if (filtered.length === 0) {
       container.innerHTML = `
-      <div class="card-islami p-6 text-center text-slate-400 text-xs">
+      <div class="card-islami p-6 text-center text-stone-400 text-xs">
         Belum ada artikel dalam kategori "${category}".
       </div>
     `;
@@ -1062,42 +1106,47 @@ function applyLanguage(lang) {
     }
 
     container.innerHTML = filtered.map(art => `
-    <article class="card-islami p-3.5 space-y-2.5 cursor-pointer group hover:border-[#B91C1C] transition" onclick="openReaderMode('${art.id}')">
-      <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-        <span class="badge-editorial">${art.category}</span>
-        <div class="flex items-center gap-1 font-medium text-[10px]">
-          <span>${art.readTime}</span>
-          <span>•</span>
-          <span>${art.date}</span>
+    <article class="card-islami p-3 space-y-2 cursor-pointer group hover:border-[#801818] transition bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-2xl shadow-xs" onclick="openReaderMode('${art.id}')">
+      <div class="flex items-start gap-3">
+        <div class="w-24 h-24 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 shrink-0 border border-stone-200/60 dark:border-stone-700/60 shadow-2xs">
+          <img src="${art.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=300&q=80'}"
+            alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+        </div>
+        <div class="flex-1 min-w-0 space-y-1">
+          <div class="flex items-center justify-between text-[9.5px] text-stone-500 dark:text-stone-400">
+            <span class="px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-950 text-[#801818] dark:text-red-300 font-bold">${art.category}</span>
+            <span>${art.readTime}</span>
+          </div>
+          <h3 class="font-extrabold text-xs text-stone-900 dark:text-white leading-snug group-hover:text-[#801818] dark:group-hover:text-red-400 transition line-clamp-2">
+            ${art.title}
+          </h3>
+          <p class="text-[10px] text-stone-600 dark:text-stone-300 leading-tight line-clamp-2">
+            ${art.summary}
+          </p>
         </div>
       </div>
-
-      <h3 class="font-bold text-sm text-slate-900 dark:text-white leading-snug group-hover:text-[#B91C1C] dark:group-hover:text-red-400 transition">
-        ${art.title}
-      </h3>
-
-      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2">
-        ${art.summary}
-      </p>
-
-      <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
-        <div class="flex items-center gap-2">
-          <div class="w-6 h-6 rounded-full bg-[#B91C1C] text-white flex items-center justify-center font-bold text-[10px]">
-            ${art.author.charAt(0)}
+      <div class="pt-2 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <div class="w-5 h-5 rounded-full bg-[#801818] text-white flex items-center justify-center font-bold text-[9px] shrink-0">
+            ${(art.author || 'I').charAt(0)}
           </div>
-          <div>
-            <p class="font-bold text-slate-900 dark:text-slate-100 text-xs leading-none">${art.author}</p>
-            <p class="text-[10px] text-slate-400 mt-0.5">${art.authorRole}</p>
-          </div>
+          <p class="font-bold text-stone-800 dark:text-stone-200 text-[10px] truncate">${art.author}</p>
         </div>
-
-        <button onclick="event.stopPropagation(); toggleBookmark('article', '${art.id}', '${encodeURIComponent(art.title)}')"
-          class="p-1.5 rounded-lg text-slate-400 hover:text-[#B91C1C] dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-slate-800 transition" title="Simpan Artikel">
-          <i data-lucide="${isBookmarked('article', art.id) ? 'bookmark-check' : 'bookmark'}" class="w-4 h-4 ${isBookmarked('article', art.id) ? 'text-[#B91C1C] fill-[#B91C1C]' : ''}"></i>
-        </button>
+        <div class="flex items-center gap-2 shrink-0">
+          <a href="${art.url || ('https://islami.co/?s=' + encodeURIComponent(art.title))}"
+            target="_blank" rel="noopener noreferrer"
+            onclick="event.stopPropagation()"
+            class="text-[9.5px] font-bold text-[#801818] dark:text-amber-400 hover:underline flex items-center gap-0.5">
+            Baca di Islami.co ↗
+          </a>
+          <button onclick="event.stopPropagation(); toggleBookmark('article', '${art.id}', '${encodeURIComponent(art.title)}')"
+            class="p-1 rounded-lg text-stone-400 hover:text-[#801818] dark:hover:text-red-400 transition" title="Simpan Artikel">
+            <i data-lucide="${isBookmarked('article', art.id) ? 'bookmark-check' : 'bookmark'}" class="w-3.5 h-3.5 ${isBookmarked('article', art.id) ? 'text-[#801818] fill-[#801818]' : ''}"></i>
+          </button>
+        </div>
       </div>
     </article>
-  `).join('');
+    `).join('');
 
     if (window.lucide) lucide.createIcons();
   }
@@ -1517,7 +1566,7 @@ function initDailyPlans() {
   if (!existing || existing === '[]' || version !== 'v4') {
     const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
     localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
-    localStorage.setItem('islami_daily_plans_version', 'v4');
+    localStorage.setItem('islami_daily_plans_version', 'v5');
     return defaults;
   }
   try {
@@ -1525,14 +1574,14 @@ function initDailyPlans() {
     if (!Array.isArray(parsed) || parsed.length < 14) {
       const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
       localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
-      localStorage.setItem('islami_daily_plans_version', 'v3');
+      localStorage.setItem('islami_daily_plans_version', 'v5');
       return defaults;
     }
     return parsed;
   } catch (e) {
     const defaults = (window.IslamiMockData && window.IslamiMockData.defaultDailyRoutines) ? window.IslamiMockData.defaultDailyRoutines : [];
     localStorage.setItem('islami_daily_plans', JSON.stringify(defaults));
-    localStorage.setItem('islami_daily_plans_version', 'v3');
+    localStorage.setItem('islami_daily_plans_version', 'v5');
     return defaults;
   }
 }
@@ -3130,62 +3179,106 @@ function deleteDailyPlan(id) {
     document.body.classList.remove('overflow-hidden');
   }
 
-  function renderMoreFeaturesDrawer() {
+    function renderMoreFeaturesDrawer() {
     const container = document.getElementById('moreFeaturesContent');
-    if (!container || !window.IslamiExtraMenus) return;
+    if (!container) return;
 
-    const currentLang = AppState.currentLang || 'id';
+    // 8 Extensible 3D Cards in 3-column layout matching home grid
+    const extraFeatures = [
+      {
+        id: "feat-jenazah",
+        title: "Tanggap Jenazah",
+        subtitle: "Ambulan 24 Jam",
+        icon: "assets/3d/real_jenazah.png?v=4.0.0",
+        colorClass: "card-warm-maroon",
+        action: "switchTab('funeral'); closeMoreFeaturesDrawer()"
+      },
+      {
+        id: "feat-zakat",
+        title: "Zakat & Infaq",
+        subtitle: "Kalkulator Maal",
+        icon: "assets/3d/icon_ramadan.png?v=4.0.0",
+        colorClass: "card-warm-cream",
+        action: "openZakatFeature(); closeMoreFeaturesDrawer()"
+      },
+      {
+        id: "feat-kalender",
+        title: "Kalender Hijriah",
+        subtitle: "Masehi & Jawa",
+        icon: "assets/3d/icon_namaz.png?v=4.0.0",
+        colorClass: "card-warm-amber",
+        action: "switchTab('calendar'); closeMoreFeaturesDrawer()"
+      },
+      {
+        id: "feat-maulid",
+        title: "Maulid & Sholawat",
+        subtitle: "Diba' & Burdah",
+        icon: "assets/3d/real_yasin.png?v=4.0.0",
+        colorClass: "card-warm-ivory",
+        action: "openMaulidFeature(); closeMoreFeaturesDrawer()"
+      },
+      {
+        id: "feat-tasbih",
+        title: "Tasbih Digital",
+        subtitle: "Counter Dzikir",
+        icon: "assets/3d/real_doa.png?v=4.0.0",
+        colorClass: "card-warm-cream",
+        action: "openTasbihFeature(); closeMoreFeaturesDrawer()"
+      },
+      {
+        id: "feat-waris",
+        title: "Kalkulator Waris",
+        subtitle: "Faraidh Syariah",
+        icon: "assets/3d/real_ustadz.png?v=4.0.0",
+        colorClass: "card-warm-amber",
+        action: "openWarisFeature(); closeMoreFeaturesDrawer()"
+      },
+      {
+        id: "feat-ustadz",
+        title: "Tanya Ustadz",
+        subtitle: "Konsultasi Fatwa",
+        icon: "assets/3d/real_ustadz.png?v=4.0.0",
+        colorClass: "card-warm-ivory",
+        action: "switchTab('services'); closeMoreFeaturesDrawer()"
+      },
+      {
+        id: "feat-umrah",
+        title: "Panduan Ibadah",
+        subtitle: "Haji & Umrah",
+        icon: "assets/3d/real_kiblat.png?v=4.0.0",
+        colorClass: "card-warm-cream",
+        action: "openUmrahFeature(); closeMoreFeaturesDrawer()"
+      }
+    ];
 
-    const html = window.IslamiExtraMenus.map(section => {
-      const secTitle = section.category[currentLang] || section.category['id'];
-      const secBadge = section.badge[currentLang] || section.badge['id'];
-      const secDesc = section.description[currentLang] || section.description['id'];
-
-      const itemsHtml = section.items.map(item => {
-        const itemTitle = item.title[currentLang] || item.title['id'];
-        const itemSub = item.subtitle[currentLang] || item.subtitle['id'];
-        const itemBadge = item.badgeText[currentLang] || item.badgeText['id'];
-
-        return `
-        <div onclick="${item.action}" class="clay-card ${item.colorClass} p-2.5 flex items-center justify-between gap-3 cursor-pointer group hover:scale-[1.01] active:scale-[0.99] transition-all border border-amber-200/40 dark:border-stone-800 shadow-xs">
-          <div class="flex items-center gap-3 flex-1 min-w-0">
-            <!-- 3D Luxury Icon Container -->
-            <div class="w-12 h-12 rounded-2xl bg-white/95 dark:bg-stone-800/95 shadow-xs flex items-center justify-center p-1.5 shrink-0 group-hover:scale-108 transition-transform border border-amber-200/50 dark:border-stone-700">
-              <img src="${item.icon3d}" alt="${itemTitle}" class="w-full h-full object-contain filter drop-shadow-xs">
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="flex items-center gap-1.5">
-                <h4 class="text-xs font-bold text-stone-900 dark:text-white leading-tight truncate">${itemTitle}</h4>
-                <span class="text-[8.5px] font-bold px-1.5 py-0.5 rounded-full ${item.badgeColor} shrink-0 shadow-2xs">${itemBadge}</span>
-              </div>
-              <p class="text-[9.5px] text-stone-500 dark:text-stone-400 leading-tight mt-0.5 line-clamp-1">${itemSub}</p>
-            </div>
-          </div>
-          <div class="w-6 h-6 rounded-full bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-400 group-hover:text-[#8B1E1E] dark:group-hover:text-amber-400 transition shrink-0">
-            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
-          </div>
-        </div>
-      `;
-      }).join('');
-
-      return `
-      <div class="space-y-2">
+    container.innerHTML = `
+      <div class="space-y-3">
         <div class="flex items-center justify-between px-1">
-          <div class="flex items-center gap-2">
-            <span class="w-1.5 h-4 rounded-full bg-[#8B1E1E]"></span>
-            <h4 class="text-xs font-extrabold text-stone-800 dark:text-stone-200 uppercase tracking-wider">${secTitle}</h4>
-          </div>
-          <span class="text-[9px] font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-full border border-amber-200/60 dark:border-amber-900/60">${secBadge}</span>
+          <span class="text-xs font-extrabold text-stone-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-[#801818]"></span>
+            Menu Layanan Islami Terpadu
+          </span>
+          <span class="text-[10px] text-stone-400 font-medium">8 Fitur Utama</span>
         </div>
-        <p class="text-[10px] text-stone-500 dark:text-stone-400 px-1 -mt-1">${secDesc}</p>
-        <div class="space-y-2">
-          ${itemsHtml}
+
+        <div class="grid grid-cols-3 gap-2.5">
+          ${extraFeatures.map(item => `
+            <div onclick="${item.action}"
+              class="clay-card ${item.colorClass} flex flex-col items-center justify-between text-center p-3.5 min-h-[124px] group cursor-pointer hover:scale-[1.02] active:scale-95 transition-all shadow-xs border border-amber-200/40 dark:border-stone-800">
+              <div class="w-12 h-12 flex items-center justify-center mb-1.5 shrink-0 group-hover:scale-108 transition-transform duration-200">
+                <img src="${item.icon}" alt="${item.title}" class="w-full h-full object-contain filter drop-shadow-md">
+              </div>
+              <div class="space-y-0.5 w-full flex flex-col items-center justify-center">
+                <h4 class="text-xs font-black text-stone-900 dark:text-white leading-tight truncate w-full">${item.title}</h4>
+                <p class="text-[9px] text-stone-500 dark:text-stone-400 leading-tight truncate w-full">${item.subtitle}</p>
+              </div>
+            </div>
+          `).join('')}
         </div>
       </div>
     `;
-    }).join('');
 
-    container.innerHTML = html;
+    if (window.lucide) lucide.createIcons();
   }
 
   function openOnboardingScreen() {
@@ -3421,4 +3514,163 @@ function deleteDailyPlan(id) {
   function openTanyaUstadzFeature() {
     closeMoreFeaturesDrawer();
     switchTab('services');
+  }
+
+
+  // ==============================================================================
+  // SCROLL TO TOP CONTROLLER
+  // ==============================================================================
+  function initScrollToTop() {
+    const appMain = document.getElementById('appMain');
+    const btn = document.getElementById('btnScrollToTop');
+    if (!appMain || !btn) return;
+
+    appMain.addEventListener('scroll', () => {
+      if (appMain.scrollTop > 180) {
+        btn.classList.remove('opacity-0', 'pointer-events-none');
+        btn.classList.add('opacity-100', 'pointer-events-auto');
+      } else {
+        btn.classList.add('opacity-0', 'pointer-events-none');
+        btn.classList.remove('opacity-100', 'pointer-events-auto');
+      }
+    });
+  }
+
+  function scrollToTop() {
+    const appMain = document.getElementById('appMain');
+    if (appMain) {
+      appMain.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+
+  // ==============================================================================
+  // ARTIKEL & VIDEO KAJIAN CONTROLLER
+  // ==============================================================================
+  function switchArticleSubTab(tab) {
+    const btnArticles = document.getElementById('subtabArticlesBtn');
+    const btnVideos = document.getElementById('subtabVideosBtn');
+    const contentArticles = document.getElementById('articlesSubTabContent');
+    const contentVideos = document.getElementById('videosSubTabContent');
+
+    if (tab === 'articles') {
+      if (btnArticles) {
+        btnArticles.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-[#801818] text-white shadow-xs";
+      }
+      if (btnVideos) {
+        btnVideos.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-semibold text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition flex items-center justify-center gap-1.5";
+      }
+      if (contentArticles) contentArticles.classList.remove('hidden');
+      if (contentVideos) contentVideos.classList.add('hidden');
+    } else {
+      if (btnArticles) {
+        btnArticles.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-semibold text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition flex items-center justify-center gap-1.5";
+      }
+      if (btnVideos) {
+        btnVideos.className = "flex-1 py-1.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 bg-[#801818] text-white shadow-xs";
+      }
+      if (contentArticles) contentArticles.classList.add('hidden');
+      if (contentVideos) contentVideos.classList.remove('hidden');
+      renderVideos();
+    }
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function renderVideos() {
+    const container = document.getElementById('videosList');
+    if (!container || !window.IslamiMockData || !window.IslamiMockData.kajianVideos) return;
+
+    const list = window.IslamiMockData.kajianVideos;
+    container.innerHTML = list.map(v => `
+      <div class="card-islami p-3 bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 rounded-2xl space-y-2.5 shadow-xs hover:border-[#801818] transition group">
+        <!-- Thumbnail with Play Button -->
+        <div class="relative w-full h-44 rounded-xl overflow-hidden bg-stone-950 flex items-center justify-center cursor-pointer"
+          onclick="openVideoModal('${v.videoId}', '${encodeURIComponent(v.title)}')">
+          <img src="${v.thumbnail}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-85">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+          
+          <!-- Red Play Circle -->
+          <div class="absolute w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+            <i data-lucide="play" class="w-5 h-5 fill-current ml-0.5"></i>
+          </div>
+          
+          <!-- Duration Badge -->
+          <span class="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/80 text-white font-mono text-[10px] font-bold">
+            ${v.duration}
+          </span>
+
+          <!-- Channel Badge -->
+          <span class="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-red-900/80 text-red-100 text-[10px] font-bold">
+            ${v.channel}
+          </span>
+        </div>
+
+        <!-- Meta & Title -->
+        <div class="space-y-1">
+          <h4 class="font-extrabold text-xs text-stone-900 dark:text-white leading-snug group-hover:text-[#801818] dark:group-hover:text-amber-300 transition line-clamp-2">
+            ${v.title}
+          </h4>
+          <p class="text-[11px] text-stone-600 dark:text-stone-300 font-semibold flex items-center gap-1.5">
+            <i data-lucide="user" class="w-3.5 h-3.5 text-[#801818] dark:text-amber-400"></i>
+            ${v.speaker}
+          </p>
+          <p class="text-[10px] text-stone-500 dark:text-stone-400 line-clamp-2">
+            ${v.summary}
+          </p>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="pt-2 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+          <button onclick="openVideoModal('${v.videoId}', '${encodeURIComponent(v.title)}')"
+            class="px-3 py-1 rounded-full bg-[#801818] hover:bg-[#991B1B] text-white text-[10.5px] font-bold flex items-center gap-1 shadow-xs">
+            <i data-lucide="play-circle" class="w-3.5 h-3.5"></i> Tonton Sekarang
+          </button>
+          <a href="https://www.youtube.com/watch?v=${v.videoId}" target="_blank" rel="noopener noreferrer"
+            class="text-[10px] font-bold text-stone-500 hover:text-red-700 dark:hover:text-red-300 flex items-center gap-1">
+            Buka di YouTube ↗
+          </a>
+        </div>
+      </div>
+    `).join('');
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function openVideoModal(videoId, encodedTitle) {
+    const title = decodeURIComponent(encodedTitle || '');
+    let modal = document.getElementById('modalVideoPlayer');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'modalVideoPlayer';
+      modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm';
+      document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+      <div class="bg-stone-900 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-stone-800">
+        <div class="p-3 border-b border-stone-800 flex items-center justify-between">
+          <h3 class="text-xs font-bold text-white truncate max-w-[85%]">${title}</h3>
+          <button onclick="closeVideoModal()" class="w-7 h-7 rounded-full bg-stone-800 text-stone-300 hover:text-white flex items-center justify-center">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+        <div class="aspect-video w-full bg-black">
+          <iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1"
+            title="${title}" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function closeVideoModal() {
+    const modal = document.getElementById('modalVideoPlayer');
+    if (modal) {
+      modal.innerHTML = '';
+      modal.classList.add('hidden');
+    }
   }

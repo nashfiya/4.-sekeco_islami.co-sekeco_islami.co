@@ -569,7 +569,7 @@ const IslamiMockData = {
   // ----------------------------------------------------------------------------
   // 11. ARTIKEL EDITORIAL & KOLOM ISLAMI.CO (RICH FEATURE)
   // ----------------------------------------------------------------------------
-  articles: [
+    articles: [
     {
       id: "art-1",
       title: "Islam Ramah: Ikhtiar Merawat Persaudaraan di Ruang Digital",
@@ -577,13 +577,15 @@ const IslamiMockData = {
       authorRole: "Pendiri Islami.co",
       date: "12 Nov 2026",
       readTime: "4 min baca",
-      category: "Kolom Utama",
+      category: "Kolom",
       tag: "Islam Ramah",
+      imageUrl: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=500&q=80",
+      url: "https://islami.co/islam-ramah-merawat-kebinekaan/",
       summary: "Mengapa penting menghadirkan narasi keislaman yang menyejukkan, inklusif, dan berpijak pada kebudayaan luhur Nusantara di era banjir informasi.",
       content: `
         <p class="mb-3">Islam sejak awal kehadirannya di Nusantara dibawa dengan penuh kearifan, santun, dan menghargai keragaman tradisi lokal. Para pendahulu kita tidak membakar jembatan kebudayaan, melainkan meneranginya dengan nilai-nilai tauhid dan kemanusiaan.</p>
         <p class="mb-3">Di era ruang digital saat ini, tantangan terbesar kita adalah polarisasi dan kemarahan yang kerap dibungkus atas nama agama. <strong>Islami.co</strong> hadir sebagai ikhtiar sadar untuk mengarusutamakan nilai-nilai <em>wasathiyah</em> (moderasi), bukan dengan membalas kemarahan, tetapi dengan menyajikan teladan, kajian ilmiah yang mendalam, dan bahasa yang merangkul.</p>
-        <blockquote class="p-3 my-3 bg-emerald-50 border-l-4 border-emerald-600 rounded-r-xl italic text-emerald-900 font-serif">
+        <blockquote class="p-3 my-3 bg-red-50 dark:bg-red-950/40 border-l-4 border-[#801818] rounded-r-xl italic text-red-900 dark:text-red-200 font-serif">
           "Agama diturunkan untuk membimbing manusia menuju keselamatan dan kebahagiaan, bukan untuk memecah belah dan menyemai kebencian."
         </blockquote>
         <p>Mari terus menyalakan lentera literasi yang ramah di setiap sudut ruang siber kita.</p>
@@ -598,6 +600,8 @@ const IslamiMockData = {
       readTime: "5 min baca",
       category: "Keislaman",
       tag: "Tafsir Sosial",
+      imageUrl: "https://images.unsplash.com/photo-1584286595398-a59f21d313f5?auto=format&fit=crop&w=500&q=80",
+      url: "https://islami.co/wasathiyah-islam-jalan-tengah/",
       summary: "Memahami konsep moderasi beragama bukan berarti berkompromi dalam akidah, melainkan bersikap adil dan proporsional dalam menyikapi perbedaan.",
       content: `
         <p class="mb-3">Banyak yang salah kaprah mengartikan moderasi beragama sebagai sikap ragu-ragu atau mencampuradukkan ajaran. Padahal, makna <em>ummatan wasathan</em> (QS. Al-Baqarah: 143) adalah umat pilihan yang berada di posisi tengah yang adil, seimbang, dan menjadi saksi kebenaran bagi seluruh umat manusia.</p>
@@ -613,14 +617,49 @@ const IslamiMockData = {
       readTime: "6 min baca",
       category: "Tafsir",
       tag: "Kajian Qur'an",
+      imageUrl: "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=500&q=80",
+      url: "https://islami.co/tafsir-rahmatan-lil-alamin/",
       summary: "Menelaah firman Allah QS. Al-Anbiya: 107 tentang misi utama kenabian Muhammad SAW sebagai rahmat bagi segenap semesta alam.",
       content: `
         <p class="mb-3">Firman Allah SWT: <em>"Dan tiadalah Kami mengutus kamu, melainkan untuk (menjadi) rahmat bagi semesta alam"</em> (QS. Al-Anbiya: 107). Kata <em>'alamin</em> mencakup seluruh ciptaan: manusia, hewan, tumbuhan, dan lingkungan hidup.</p>
         <p class="mb-3">Ibnu Katsir menjelaskan bahwa rahmat ini berlaku umum bagi orang-orang mukmin di dunia dan akhirat, serta bagi orang-orang non-muslim dalam bentuk perlindungan dan penangguhan siksa duniawi. Ini menegaskan bahwa nilai universal Islam adalah kedamaian dan kesejahteraan.</p>
       `
+    },
+    {
+      id: "art-4",
+      title: "Hukum Shalat di Kendaraan dan Menghormati Waktu Shalat",
+      author: "Lembaga Bahtsul Masail",
+      authorRole: "Rubrik Tanya Jawab Fiqih",
+      date: "09 Nov 2026",
+      readTime: "4 min baca",
+      category: "Tanya Jawab",
+      tag: "Fiqih Praktis",
+      imageUrl: "https://images.unsplash.com/photo-1590076215667-875d4ef2d7ee?auto=format&fit=crop&w=500&q=80",
+      url: "https://islami.co/shalat-di-kendaraan-dan-fiqih-safar/",
+      summary: "Panduan lengkap fiqih safar ketika waktu shalat tiba saat menempuh perjalanan darat, laut, atau penerbangan jarak jauh.",
+      content: `
+        <p class="mb-3">Islam memberikan keringanan (rukhshah) bagi musafir dalam menjalankan shalat fardhu, baik berupa jamak, qashar, maupun shalat li hurmatil waqti di atas kendaraan bila tidak memungkinkan turun.</p>
+        <p class="mb-3">Ulama mazhab Syafi'i menegaskan bahwa seorang musafir yang kesulitan berdiri atau menghadap kiblat tetap dianjurkan shalat semampunya, lalu mengulanginya jika rukun-rukun utama belum terpenuhi sempurna saat tiba di tujuan.</p>
+      `
+    },
+    {
+      id: "art-5",
+      title: "Jejak Ulama Nusantara Menyebarkan Islam Damai Tanpa Pedang",
+      author: "Zainul Milal Bizawie",
+      authorRole: "Sejarawan Islam Nusantara",
+      date: "08 Nov 2026",
+      readTime: "7 min baca",
+      category: "Khazanah",
+      tag: "Sejarah Peradaban",
+      imageUrl: "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=500&q=80",
+      url: "https://islami.co/jejak-wali-songo-islam-nusantara/",
+      summary: "Bagaimana strategi kebudayaan Walisongo berhasil mengislamkan kepulauan Nusantara dengan seni, dialog, dan keteladanan akhlak mulia.",
+      content: `
+        <p class="mb-3">Penyebaran Islam di Nusantara adalah salah satu peristiwa paling damai dan menakjubkan dalam sejarah peradaban dunia. Tidak ada penaklukan militer; yang ada adalah akulturasi yang indah antara nilai tauhid dengan kearifan lokal seperti tembang, wayang, dan tradisi kenduri.</p>
+        <p class="mb-3">Pendekatan ini melahirkan peradaban Islam yang kokoh, berkarakter tasamuh (toleran), tawazun (seimbang), dan senantiasa menjadi benteng kerukunan bangsa hingga saat ini.</p>
+      `
     }
   ],
-
   // ----------------------------------------------------------------------------
   // 12. TANYA JAWAB SYARIAH & KONSULTASI AGAMA (RICH FEATURE)
   // ----------------------------------------------------------------------------
@@ -712,6 +751,53 @@ const IslamiMockData = {
   // ----------------------------------------------------------------------------
   
   // ----------------------------------------------------------------------------
+  
+  // ----------------------------------------------------------------------------
+  // KAJIAN VIDEO YOUTUBE ISLAMI.CO & ULAMA NUSANTARA
+  // ----------------------------------------------------------------------------
+  kajianVideos: [
+    {
+      id: "vid-1",
+      title: "Islam Ramah: Merajut Keberagaman dan Kemanusiaan",
+      speaker: "Prof. Dr. KH. Quraish Shihab",
+      channel: "Islami.co Official",
+      videoId: "oF_B6p9m924",
+      duration: "18:24",
+      summary: "Kajian mendalam tentang konsep persaudaraan sejati dalam Islam dan tafsir kemanusiaan universal.",
+      thumbnail: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      id: "vid-2",
+      title: "Memahami Hikmah dan Kearifan Fiqih Keseharian",
+      speaker: "KH. Ahmad Bahauddin Nursalim (Gus Baha)",
+      channel: "Santri Gayeng & Islami.co",
+      videoId: "c5s7Z9s51pA",
+      duration: "24:15",
+      summary: "Penjelasan fiqih yang santai, mendalam dan penuh kearifan khas tradisi pesantren Nusantara.",
+      thumbnail: "https://images.unsplash.com/photo-1584286595398-a59f21d313f5?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      id: "vid-3",
+      title: "Tafsir Maqashid Syariah di Era Modern & Digital",
+      speaker: "Prof. Dr. Nadirsyah Hosen",
+      channel: "Islami TV",
+      videoId: "kL6nL6h294M",
+      duration: "15:40",
+      summary: "Menelaah tujuan luhur syariat Islam dalam merespons perkembangan peradaban teknologi informasi.",
+      thumbnail: "https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+      id: "vid-4",
+      title: "Kisah Para Ulama & Tradisi Keilmuan Pesantren",
+      speaker: "KH. Zulfa Mustofa",
+      channel: "Islami.co Official",
+      videoId: "8VbQ_kG7m2w",
+      duration: "21:05",
+      summary: "Napak tilas sanad keilmuan dan perjuangan dakwah para wali dan kiai di tanah air.",
+      thumbnail: "https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=600&q=80"
+    }
+  ],
+
   // 17. PRESET DEFAULT AMALAN NABAWI SEHARIAN (DAILY ROUTINES PRESET)
   // ----------------------------------------------------------------------------
       defaultDailyRoutines: [
@@ -850,6 +936,24 @@ const IslamiMockData = {
         arabic: "اللَّهُمَّ إِنَّ الضُّحَاءَ ضُحَاؤُكَ وَالْبَهَاءَ بَهَاؤُكَ وَالْجَمَالَ جَمَالُكَ، اللَّهُمَّ إِنْ كَانَ رِزْقِي فِي السَّمَاءِ فَأَنْزِلْهُ وَإِنْ كَانَ فِي الأَرْضِ فَأَخْرِجْهُ",
         latin: "Allahumma innadh dhuha'a dhuha'uka wal baha'a baha'uka wal jamala jamaluka, Allahumma in kana rizqi fis sama'i fa anzilhu wa in kana fil ardhi fa akhrijhu",
         meaning: "Ya Allah, sesungguhnya waktu dhuha adalah dhuha-Mu, keindahan adalah keindahan-Mu. Jika rezekiku di langit turunkanlah, jika di bumi keluarkanlah."
+      },
+      completed: true
+    },
+    {
+      id: "routine-keluar-rumah",
+      title: {
+        id: "Doa Keluar Rumah & Safar Berangkat Kerja",
+        en: "Leaving Home & Travel Prayer",
+        ms: "Doa Keluar Rumah & Safar"
+      },
+      category: "dhuha",
+      time: "07:00 WIB",
+      arabic: "بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ • اللَّهُمَّ إِنِّي أَعُوذُ بِكَ أَنْ أَضِلَّ أَوْ أُضَلَّ",
+      latin: "Bismillahi tawakkaltu 'alallah la hawla wa la quwwata illa billah. Allahumma inni a'udzu bika an adhilla aw udhalla",
+      translation: {
+        id: "Dengan nama Allah, aku berserah diri kepada Allah, tiada daya dan upaya kecuali dengan pertolongan Allah. Ya Allah lindungilah daku dari kesesatan.",
+        en: "In the name of Allah, I trust in Allah, there is no might nor power except with Allah. O Allah, I seek refuge in You from going astray.",
+        ms: "Dengan nama Allah, aku bertawakal kepada Allah, tiada daya melainkan dengan Allah. Ya Allah lindungilah daku daripada kesesatan."
       },
       completed: true
     },

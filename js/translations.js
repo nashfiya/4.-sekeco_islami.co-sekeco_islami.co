@@ -85,10 +85,12 @@ const IslamiTranslations = {
     sub_ustadz: "Khotib & Kajian",
     menu_jenazah: "Tanggap Jenazah",
     sub_jenazah: "Ambulan 24 Jam",
+    menu_kiblat: "Arah Kiblat",
+    sub_kiblat: "Kompas Ka'bah",
 
     // Kartu & Drawer Fitur Lainnya (+8 Fitur)
-    menu_more_features: "Fitur Islami Lainnya",
-    menu_more_sub: "Arah Kiblat, Zakat, Kalender Hijriah, Tasbih & Lainnya",
+    menu_more_features: "Lainnya",
+    menu_more_sub: "Fitur Terpadu",
     more_badge: "+8 Fitur",
     more_drawer_title: "Fitur & Layanan Lainnya",
     more_drawer_sub: "Eksplorasi ragam fitur ibadah dan kemaslahatan umat",
@@ -243,10 +245,12 @@ const IslamiTranslations = {
     sub_ustadz: "Preacher & Studies",
     menu_jenazah: "Funeral Care",
     sub_jenazah: "24h Ambulance",
+    menu_kiblat: "Qibla Direction",
+    sub_kiblat: "Kaaba Compass",
 
     // Kartu & Drawer Fitur Lainnya (+8 Features)
-    menu_more_features: "Other Islamic Features",
-    menu_more_sub: "Qibla Compass, Zakat, Hijri Calendar, Tasbih & More",
+    menu_more_features: "More",
+    menu_more_sub: "Integrated Features",
     more_badge: "+8 Features",
     more_drawer_title: "More Features & Services",
     more_drawer_sub: "Explore various worship tools and community benefits",
@@ -401,10 +405,12 @@ const IslamiTranslations = {
     sub_ustadz: "Khatib & Kuliah",
     menu_jenazah: "Pengurusan Jenazah",
     sub_jenazah: "Ambulan 24 Jam",
+    menu_kiblat: "Arah Kiblat",
+    sub_kiblat: "Kompas Kaabah",
 
     // Kartu & Drawer Fitur Lainnya (+8 Ciri)
-    menu_more_features: "Ciri-ciri Islam Lain",
-    menu_more_sub: "Arah Kiblat, Zakat, Kalendar Hijriah, Tasbih & Lain-lain",
+    menu_more_features: "Lain-lain",
+    menu_more_sub: "Ciri Bersepadu",
     more_badge: "+8 Ciri",
     more_drawer_title: "Ciri & Perkhidmatan Lain",
     more_drawer_sub: "Terokai pelbagai ciri ibadah dan kemaslahatan ummah",
