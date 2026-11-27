@@ -54,9 +54,9 @@ body {
 }
 
 /* Mobile Container Wrapper (Direct Mobile App Experience) */
-#mobileAppRoot {
+#mobileAppRoot, #app-shell, #app-container {
   width: 100%;
-  max-width: 480px;
+  max-width: 430px;
   min-height: 100vh;
   margin: 0 auto;
   background-color: var(--bg-main);
@@ -64,6 +64,7 @@ body {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
   transition: all 0.3s ease;
 }
 
@@ -77,7 +78,8 @@ body {
     min-height: 100vh;
     padding: 1.5rem 0;
   }
-  #mobileAppRoot {
+  #mobileAppRoot, #app-shell, #app-container {
+    max-width: 430px;
     min-height: 860px;
     height: 94vh;
     border-radius: 40px;
@@ -269,7 +271,7 @@ body {
   transform: translateX(-50%);
   width: calc(100% - 28px);
   max-width: 452px;
-  z-index: 45;
+  z-index: 50;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -368,7 +370,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 2rem);
-  max-width: 440px;
+  max-width: 400px;
   border-radius: 9999px !important;
   background: linear-gradient(135deg, #7F1D1D 0%, #8B1E1E 50%, #6E1212 100%) !important;
   border: 1px solid rgba(254, 202, 202, 0.28) !important;

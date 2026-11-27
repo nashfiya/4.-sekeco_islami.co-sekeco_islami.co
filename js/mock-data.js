@@ -579,7 +579,7 @@ const IslamiMockData = {
       readTime: "4 min baca",
       category: "Kolom",
       tag: "Islam Ramah",
-      imageUrl: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=500&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=500&q=80",
       url: "https://islami.co/islam-ramah-merawat-kebinekaan/",
       summary: "Mengapa penting menghadirkan narasi keislaman yang menyejukkan, inklusif, dan berpijak pada kebudayaan luhur Nusantara di era banjir informasi.",
       content: `
@@ -634,7 +634,7 @@ const IslamiMockData = {
       readTime: "4 min baca",
       category: "Tanya Jawab",
       tag: "Fiqih Praktis",
-      imageUrl: "https://images.unsplash.com/photo-1590076215667-875d4ef2d7ee?auto=format&fit=crop&w=500&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=500&q=80",
       url: "https://islami.co/shalat-di-kendaraan-dan-fiqih-safar/",
       summary: "Panduan lengkap fiqih safar ketika waktu shalat tiba saat menempuh perjalanan darat, laut, atau penerbangan jarak jauh.",
       content: `
@@ -764,7 +764,7 @@ const IslamiMockData = {
       videoId: "oF_B6p9m924",
       duration: "18:24",
       summary: "Kajian mendalam tentang konsep persaudaraan sejati dalam Islam dan tafsir kemanusiaan universal.",
-      thumbnail: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80"
+      thumbnail: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=600&q=80"
     },
     {
       id: "vid-2",

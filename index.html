@@ -66,7 +66,7 @@
 
   <!-- ==================== MOBILE APPLICATION FRAME ==================== -->
   <div id="mobileAppRoot"
-    class="w-full max-w-md mx-auto min-h-screen bg-[#FAF7F2] dark:bg-[#0B0E14] flex flex-col shadow-2xl relative overflow-x-hidden">
+    class="w-full max-w-[430px] mx-auto min-h-screen bg-[#FAF7F2] dark:bg-[#0B0E14] flex flex-col shadow-2xl relative overflow-x-hidden">
 
     <!-- ==================== 1. ONBOARDING OVERLAY ==================== -->
     <div id="onboardingScreen"
@@ -134,7 +134,7 @@
 
     <!-- ==================== 2. OFFICIAL TOP HEADER (LOGO MERAH MARUN BERSIH & SEJAJAR) ==================== -->
     <header
-      class="sticky top-0 z-40 bg-[#FAF7F2]/95 dark:bg-[#0B0E14]/95 backdrop-blur-md px-3.5 pt-3 pb-2 flex items-center justify-between gap-2 border-b border-stone-200/40 dark:border-slate-800/40">
+      class="sticky top-0 z-40 bg-[#FAF7F2]/95 dark:bg-[#0B0E14]/95 backdrop-blur-md px-3.5 pt-3 pb-2 flex items-center justify-between gap-2 border-b border-stone-200/40 dark:border-slate-800/40 w-full max-w-[430px] mx-auto">
       <!-- Left: Menu Button & Clean Unboxed Maroon Logo islami.co -->
       <div class="flex items-center gap-2 shrink-0">
         <!-- Back Button (Dinamis Muncul Saat di Sub-Halaman) -->
@@ -187,7 +187,7 @@
     <main id="appMain" class="flex-1 overflow-y-auto px-4 py-2 space-y-4 no-scrollbar pb-32">
 
       <!-- ==================== VIEW: BERANDA (HOME) ==================== -->
-      <section id="view-home" class="space-y-4 pb-36">
+      <section id="view-home" class="space-y-4 pb-32">
 
         <!-- ==================== HERO SECTION: PRAYER CARD & REALISTIC 3D MOSQUE (BLEED TO RIGHT EDGE) ==================== -->
         <div class="relative pt-1 min-h-[185px]">
@@ -493,12 +493,11 @@
 
           </div>
         </div>
-        </div>
 
       </section>
 
       <!-- ==================== VIEW: ARTIKEL & PILIHAN REDAKSI ==================== -->
-      <section id="view-articles" class="hidden space-y-4">
+      <section id="view-articles" class="hidden space-y-4 pb-32">
         <!-- Title & Direct Portal Link -->
         <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
           <div>
@@ -596,7 +595,7 @@
       </section>
 
       <!-- ==================== VIEW: AL-QUR'AN (PERSIS GAMBAR REFERENSI DENGAN WARNA MARUN) ==================== -->
-      <section id="view-quran" class="hidden -mx-4 -mt-2 space-y-0 relative min-h-[calc(100vh-140px)]">
+      <section id="view-quran" class="hidden -mx-4 -mt-2 space-y-0 relative pb-32">
 
         <!-- 1. Header Solid Merah Marun Islami.co (#8B1E1E) -->
         <div class="bg-gradient-to-b from-[#8B1E1E] to-[#7B1818] text-white px-4 pt-4 pb-3 shadow-md sticky top-0 z-30">
@@ -701,7 +700,7 @@
       </section>
 
       <!-- ==================== VIEW: KALENDER & JADWAL SHOLAT ==================== -->
-      <section id="view-calendar" class="hidden space-y-4 pb-28">
+      <section id="view-calendar" class="hidden space-y-4 pb-32">
         
         <!-- Header Halaman Kalender -->
         <div class="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-slate-800">
@@ -823,7 +822,7 @@
       </section>
 
       <!-- ==================== VIEW: PENGATURAN ==================== -->
-      <section id="view-settings" class="hidden space-y-4">
+      <section id="view-settings" class="hidden space-y-4 pb-32">
         <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
           <div>
             <h2
@@ -941,7 +940,7 @@
       </section>
 
       <!-- ==================== VIEW: HADITS ==================== -->
-      <section id="view-hadith" class="hidden space-y-3">
+      <section id="view-hadith" class="hidden space-y-3 pb-32">
         <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
           <div>
             <h2
@@ -962,7 +961,7 @@
       </section>
 
       <!-- ==================== VIEW: TANYA JAWAB SYARIAH ==================== -->
-      <section id="view-consultation" class="hidden space-y-3">
+      <section id="view-consultation" class="hidden space-y-3 pb-32">
         <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
           <div>
             <h2
@@ -977,7 +976,7 @@
       </section>
 
       <!-- ==================== VIEW: KHUTBAH JUMAT ==================== -->
-      <section id="view-khutbah" class="hidden space-y-3">
+      <section id="view-khutbah" class="hidden space-y-3 pb-32">
         <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
           <div>
             <h2
@@ -992,7 +991,7 @@
       </section>
 
       <!-- ==================== VIEW: DOA HARIAN ==================== -->
-      <section id="view-doa" class="hidden space-y-4 pb-28">
+      <section id="view-doa" class="hidden space-y-4 pb-32">
         
         <!-- Header -->
         <div class="flex items-center justify-between pb-1 border-b border-stone-200/80 dark:border-slate-800">
@@ -1070,7 +1069,7 @@
       </section>
 
       <!-- ==================== VIEW: TASBIH DIGITAL ==================== -->
-      <section id="view-yasin" class="hidden space-y-4">
+      <section id="view-yasin" class="hidden space-y-4 pb-32">
         <div class="card-islami p-6 text-center bg-white dark:bg-slate-900">
           <span class="text-xs font-bold text-red-700 dark:text-red-400 tracking-wider uppercase">Tasbih Digital
             Islami.co</span>
@@ -1098,7 +1097,7 @@
       </section>
 
       <!-- ==================== VIEW: ARAH KIBLAT ==================== -->
-      <section id="view-qibla" class="hidden space-y-4">
+      <section id="view-qibla" class="hidden space-y-4 pb-32">
         <div class="card-islami p-6 text-center bg-white dark:bg-slate-900">
           <h3 class="text-sm font-bold text-stone-900 dark:text-white">Kompas Arah Kiblat</h3>
           <p class="text-xs text-stone-500 dark:text-stone-400 mt-1">Arah Ka'bah: ~295° Barat Laut</p>
@@ -1122,7 +1121,7 @@
       </section>
 
       <!-- ==================== VIEW: CARI USTADZ ==================== -->
-      <section id="view-services" class="hidden space-y-3">
+      <section id="view-services" class="hidden space-y-3 pb-32">
         <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
           <div>
             <h2
@@ -1137,7 +1136,7 @@
       </section>
 
       <!-- ==================== VIEW: LAYANAN JENAZAH ==================== -->
-      <section id="view-funeral" class="hidden space-y-3">
+      <section id="view-funeral" class="hidden space-y-3 pb-32">
         <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
           <div>
             <h2
@@ -1152,7 +1151,7 @@
       </section>
 
       <!-- ==================== VIEW: TERSIMPAN / BOOKMARKS ==================== -->
-      <section id="view-bookmarks" class="hidden space-y-3">
+      <section id="view-bookmarks" class="hidden space-y-3 pb-32">
         <div class="flex items-center justify-between pb-1 border-b border-stone-200 dark:border-slate-800">
           <h2 class="text-sm font-extrabold text-stone-900 dark:text-white">Item Tersimpan</h2>
           <span class="text-xs text-red-700 dark:text-red-400 font-semibold">Bookmarks Pribadi</span>
@@ -1186,8 +1185,15 @@
       </div>
     </div>
 
+    <!-- ==================== FLOATING SCROLL TO TOP BUTTON ==================== -->
+    <button id="btnScrollToTop" onclick="scrollToTop()"
+      class="fixed bottom-20 right-4 sm:right-[calc(50%-195px)] z-40 w-10 h-10 rounded-full bg-[#801818] hover:bg-[#991B1B] text-white shadow-xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110 active:scale-95 border border-white/20"
+      aria-label="Kembali ke Atas" title="Kembali ke Atas">
+      <i data-lucide="arrow-up" class="w-5 h-5"></i>
+    </button>
+
     <!-- ==================== 5. FLOATING PILL BOTTOM NAVIGATION (CRIMSON RED SESUAI GAMBAR) ==================== -->
-    <nav class="floating-bottom-nav py-2 px-3 flex items-center justify-around">
+    <nav id="mobileNavBar" class="fixed bottom-4 left-0 right-0 max-w-[400px] mx-auto z-50 floating-bottom-nav py-2 px-3 flex items-center justify-around">
       <!-- 1. Beranda -->
       <button onclick="switchTab('home')" id="tab-home"
         class="nav-btn active flex flex-col items-center gap-0.5 px-3 py-1" aria-label="Beranda">
@@ -1304,8 +1310,6 @@
         </form>
       </div>
     </div>
-
-  </div>
 
   <!-- Scripts: Mock Data, Translations & Main Logic (Cache Busted) -->
   <script src="js/mock-data.js?v=2.4.5"></script>
@@ -1661,6 +1665,7 @@
     </div>
   </div>
 
+  </div> <!-- END #mobileAppRoot -->
 </body>
 
 </html>

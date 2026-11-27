@@ -1029,7 +1029,7 @@ function applyLanguage(lang) {
         <!-- Thumbnail Square Samping (w-24 h-24 rounded-xl shrink-0 object-cover) -->
         <div class="w-24 h-24 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 shrink-0 border border-stone-200/60 dark:border-stone-700/60 shadow-2xs">
           <img src="${art.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=300&q=80'}"
-            alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.onerror=null; this.src='assets/3d/real_quran.png';">
         </div>
 
         <!-- Info & Title -->
@@ -1110,7 +1110,7 @@ function applyLanguage(lang) {
       <div class="flex items-start gap-3">
         <div class="w-24 h-24 rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-800 shrink-0 border border-stone-200/60 dark:border-stone-700/60 shadow-2xs">
           <img src="${art.imageUrl || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=300&q=80'}"
-            alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            alt="${art.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.onerror=null; this.src='assets/3d/real_quran.png';">
         </div>
         <div class="flex-1 min-w-0 space-y-1">
           <div class="flex items-center justify-between text-[9.5px] text-stone-500 dark:text-stone-400">
@@ -3586,7 +3586,7 @@ function deleteDailyPlan(id) {
         <!-- Thumbnail with Play Button -->
         <div class="relative w-full h-44 rounded-xl overflow-hidden bg-stone-950 flex items-center justify-center cursor-pointer"
           onclick="openVideoModal('${v.videoId}', '${encodeURIComponent(v.title)}')">
-          <img src="${v.thumbnail}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-85">
+          <img src="${v.thumbnail}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-85" onerror="this.onerror=null; this.src='assets/3d/masjid_maroon.png';">
           <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
           
           <!-- Red Play Circle -->
