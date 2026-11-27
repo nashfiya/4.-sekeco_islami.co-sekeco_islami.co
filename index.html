@@ -1185,15 +1185,17 @@
       </div>
     </div>
 
-    <!-- ==================== FLOATING SCROLL TO TOP BUTTON ==================== -->
-    <button id="btnScrollToTop" onclick="scrollToTop()"
-      class="fixed bottom-20 right-4 sm:right-[calc(50%-195px)] z-40 w-10 h-10 rounded-full bg-[#801818] hover:bg-[#991B1B] text-white shadow-xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110 active:scale-95 border border-white/20"
-      aria-label="Kembali ke Atas" title="Kembali ke Atas">
-      <i data-lucide="arrow-up" class="w-5 h-5"></i>
-    </button>
+    <!-- ==================== FLOATING SCROLL TO TOP BUTTON WRAPPER ==================== -->
+    <div class="fixed bottom-22 left-1/2 -translate-x-1/2 w-full max-w-[430px] pointer-events-none flex justify-end px-4 z-40">
+      <button id="btnScrollToTop" onclick="scrollToTop()"
+        class="w-10 h-10 rounded-full bg-[#801818] hover:bg-[#991B1B] text-white shadow-xl flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:scale-110 active:scale-95 border border-white/20"
+        aria-label="Kembali ke Atas" title="Kembali ke Atas">
+        <i data-lucide="arrow-up" class="w-5 h-5"></i>
+      </button>
+    </div>
 
     <!-- ==================== 5. FLOATING PILL BOTTOM NAVIGATION (CRIMSON RED SESUAI GAMBAR) ==================== -->
-    <nav id="mobileNavBar" class="fixed bottom-4 left-0 right-0 max-w-[400px] mx-auto z-50 floating-bottom-nav py-2 px-3 flex items-center justify-around">
+    <nav id="mobileNavBar" class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-[398px] z-50 floating-bottom-nav py-2 px-3 flex items-center justify-around">
       <!-- 1. Beranda -->
       <button onclick="switchTab('home')" id="tab-home"
         class="nav-btn active flex flex-col items-center gap-0.5 px-3 py-1" aria-label="Beranda">
